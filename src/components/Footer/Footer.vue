@@ -38,10 +38,12 @@
         <img class="weibo" src="../../assets/images/weibo.png" alt="" />
       </div>
       <div class="copyRight">
-        <span>
-          <a href="">蜀ICP备15012512号 </a> 川网文[2019]2118-124
-          网络视听许可证0112648号 增值业务许可证A2.B1.B2-20100001 川公网安备
-          51010702002209号
+        <span class="blankSpace">
+          <a href="">蜀ICP备15012512号</a>
+          <span>川网文[2019]2118-124</span>
+          <span>网络视听许可证0112648号</span>
+          <span>增值业务许可证A2.B1.B2-20100001 </span>
+          <span>川公网安备 51010702002209号</span>
         </span>
         <span>Copyright © 2005-2021 咪咕音乐有限公司</span>
       </div>
@@ -111,6 +113,13 @@ export default {
     color: #666;
     display: flex;
     justify-content: space-between;
+    .blankSpace span {
+      display: inline-block;
+      padding-left: 10px;
+    }
+  }
+  a:hover {
+    text-decoration: none;
   }
 }
 </style>
