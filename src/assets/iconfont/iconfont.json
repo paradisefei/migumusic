@@ -1,0 +1,23 @@
+{
+  "id": "2307483",
+  "name": "咪咕",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "36566",
+      "name": "播放",
+      "font_class": "bofang",
+      "unicode": "e600",
+      "unicode_decimal": 58880
+    },
+    {
+      "icon_id": "429212",
+      "name": "搜索",
+      "font_class": "search",
+      "unicode": "e60e",
+      "unicode_decimal": 58894
+    }
+  ]
+}

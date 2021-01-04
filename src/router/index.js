@@ -2,11 +2,11 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 
-
+import Migulist from "../views/Migulist/Migulist";
 // 路由组件懒加载
 // 1. 会将路由组件打包成单独的js文件（webpack代码分割）
 // 2. 异步加载路由组件（需要使用才加载）（Vue异步加载组件功能）
-const Home = () => import(/* webpackChunkName: "Home" */"../views/Home");
+const Home = () => import(/* webpackChunkName: "Home" */ "../views/Home");
 
 // 重写push和replace方法
 // 目的：为了让编程式导航重复点击时不报错~
@@ -19,7 +19,7 @@ VueRouter.prototype.push = function (location, onComplete, onAbort) {
 		return push.call(this, location, onComplete, onAbort);
 	}
 	// 如果用户不处理失败，给默认值：空函数
-	return push.call(this, location, onComplete, () => { });
+	return push.call(this, location, onComplete, () => {});
 };
 
 VueRouter.prototype.replace = function (location, onComplete, onAbort) {
@@ -28,7 +28,7 @@ VueRouter.prototype.replace = function (location, onComplete, onAbort) {
 		return replace.call(this, location, onComplete, onAbort);
 	}
 	// 如果用户不处理失败，给默认值：空函数
-	return replace.call(this, location, onComplete, () => { });
+	return replace.call(this, location, onComplete, () => {});
 };
 
 // 安装插件
@@ -44,12 +44,15 @@ const router = new VueRouter({
 			path: "/home",
 			component: Home,
 		},
+		{
+			path: "/migulist",
+			component: Migulist,
+		},
 	],
 	// 每次切换路由页面滚动条位置
 	scrollBehavior() {
 		return { x: 0, y: 0 };
 	},
 });
-
 
 export default router;
