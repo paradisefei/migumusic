@@ -7,6 +7,7 @@ import VueRouter from "vue-router";
 // 1. 会将路由组件打包成单独的js文件（webpack代码分割）
 // 2. 异步加载路由组件（需要使用才加载）（Vue异步加载组件功能）
 const Home = () => import(/* webpackChunkName: "Home" */"../views/Home");
+const My = () => import(/* webpackChunkName: "Home" */"../views/My");
 
 // 重写push和replace方法
 // 目的：为了让编程式导航重复点击时不报错~
@@ -41,8 +42,16 @@ const router = new VueRouter({
 	// 路由配置
 	routes: [
 		{
+			path: "/",
+			component: My,
+		},
+		{
 			path: "/home",
 			component: Home,
+		},
+		{
+			path: "/my",
+			component: My,
 		},
 	],
 	// 每次切换路由页面滚动条位置
