@@ -58,7 +58,7 @@
       <!-- 使用字体图标 -->
       <div class="control">
         <i class="iconfont icon-shangyiquicoyinlekongzhimianban"></i>
-        <i class="iconfont icon-bofang1"></i>
+        <i class="iconfont icon-bofangicoyinlekongzhimianban"></i>
         <i class="iconfont icon-xiayiquicoyinlekongzhimianban"></i>
       </div>
       <div class="progress">
@@ -170,7 +170,7 @@ a {
   // bottom: 20px;
   // background: red;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
   align-items: center;
 }
 .bottom .control {

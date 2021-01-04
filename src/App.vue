@@ -1,19 +1,37 @@
 <template>
   <div id="app">
-    <BigHeader></BigHeader>
-    <router-view></router-view>
-    <Footer></Footer>
+    <div v-if="!showPlay">
+      <BigHeader></BigHeader>
+      <router-view></router-view>
+      <Footer></Footer>
+    </div>
+    <div v-else>
+      <Play></Play>
+    </div>
   </div>
 </template>
 
 <script>
 import BigHeader from "./views/BigHeader";
 import Footer from "@comps/Footer/Footer.vue";
+import Play from "@views/Play";
 export default {
   name: "app",
+  data() {
+    return {
+      showPlay: false,
+    };
+  },
+  watch: {
+    $route() {
+      console.log(this.$route);
+      this.showPlay = this.$route.meta.showPlay
+    },
+  },
   components: {
     BigHeader,
     Footer,
+    Play
   },
 };
 </script>

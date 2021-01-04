@@ -1,7 +1,7 @@
 <template>
   <div>
     <Header />
-    <NavBar />
+    <NavBar v-show="!hideNavBar"/>
   </div>
 </template>
 
@@ -10,9 +10,20 @@ import Header from "../../components/Header/Header";
 import NavBar from "../../components/NavBar/NavBar";
 
 export default {
-  name: "Home",
+  name: "BigHeader",
+  data() {
+    return {
+      hideNavBar: false,
+    }
+  },
   computed: {},
   methods: {},
+  watch: {
+    $route() {
+      console.log(this.$route);
+      this.hideNavBar = this.$route.meta.hideNavBar;
+    }
+  },
   mounted() {},
   components: {
     Header,

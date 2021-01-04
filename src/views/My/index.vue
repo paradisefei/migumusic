@@ -90,15 +90,14 @@ export default {
     };
   },
   computed: {},
-  methods: {
-  },
+  methods: {},
   components: {
     SongList,
   },
   mounted() {
     window.onscroll = (e) => {
       let scrollY = e.path[1].pageYOffset;
-      if (scrollY < 360) {
+      if (scrollY < 420) {
         this.isAbsolute = true;
       } else {
         this.isAbsolute = false;
@@ -187,7 +186,7 @@ export default {
 // 固定定位的类名
 .isFixed {
   position: fixed;
-  top: 30px;
+  top: 50px;
 }
 // 左边列表中的每一项
 .bottom .left li {

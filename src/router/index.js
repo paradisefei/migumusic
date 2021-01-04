@@ -53,10 +53,16 @@ const router = new VueRouter({
 		{
 			path: "/my",
 			component: My,
+			meta: {
+				hideNavBar: true,
+			},
 		},
 		{
 			path: "/play",
 			component: Play,
+			meta: {
+				showPlay: true,
+			},
 		},
 		{
 			path: "/migulist",
