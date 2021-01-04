@@ -2,12 +2,14 @@
   <div>
     <Header />
     <NavBar />
+    <Footer />
   </div>
 </template>
 
 <script>
 import Header from "../../components/Header/Header";
 import NavBar from "../../components/NavBar/NavBar";
+import Footer from "../../components/Footer/Footer";
 export default {
   name: "Home",
   computed: {},
@@ -16,6 +18,7 @@ export default {
   components: {
     Header,
     NavBar,
+    Footer
   },
 };
 </script>
