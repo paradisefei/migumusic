@@ -60,14 +60,14 @@
       </ul>
       <div class="right">
         <div class="twoButtom">
-          <div class="tb play active">
+          <a class="tb play active">
             <i class="iconfont icon-bofang"></i>
             播放选中歌曲
-          </div>
-          <div class="tb add">
+          </a>
+          <a class="tb add">
             <i class="iconfont icon-tianjiadao"></i>
             添加到
-          </div>
+          </a>
         </div>
         <SongList></SongList>
       </div>

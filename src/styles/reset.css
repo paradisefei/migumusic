@@ -11,6 +11,10 @@ th, td {
 body {
     min-width: 1200px;
 }
+body, html {
+    width: 100%;
+    height: 100%;
+}
 
 
 h1 { font-size: 18px; /* 18px / 12px = 1.5 */ }
@@ -27,8 +31,10 @@ small { font-size: 12px; } /* 小于 12px 的中文很难阅读，让 small 正�
 ul, ol { list-style: none; }
 
 /* 重置文本格式元素 */
-a { text-decoration: none; color: #666;}
-
+a { text-decoration: none; color: #333;}
+a:hover {
+    cursor: pointer;
+}
 
 /* 重置表单元素 */
 legend { color: #000; } /* for ie6 */

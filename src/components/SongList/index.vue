@@ -9,12 +9,25 @@
       @selection-change="handleSelectionChange"
     >
       <el-table-column type="selection" width="50"> </el-table-column>
-      <el-table-column type="index" width="50"></el-table-column>
+      <el-table-column type="index" width="50">
+        <template slot-scope="scope"
+          ><a>{{ scope.$index + 1 }}</a></template
+        ></el-table-column
+      >
       <el-table-column label="歌曲">
-        <template slot-scope="scope">{{ scope.row.date }}</template>
+        <template slot-scope="scope"
+          ><a>{{ scope.row.date }}</a></template
+        >
       </el-table-column>
-      <el-table-column prop="name" label="歌手"> </el-table-column>
+      <el-table-column prop="name" label="歌手">
+        <template slot-scope="scope"
+          ><a>{{ scope.row.name }}</a></template
+        ></el-table-column
+      >
       <el-table-column prop="address" label="专辑" show-overflow-tooltip>
+        <template slot-scope="scope"
+          ><a>{{ scope.row.address }}</a></template
+        >
       </el-table-column>
     </el-table>
     <el-pagination
@@ -184,6 +197,10 @@ export default {
 /deep/.el-table th.is-leaf {
   border: none;
 }
+// 每一列
+.el-table-column:hover {
+  cursor: pointer;
+}
 // 分页器
 /**
   1.被选中时的样式
@@ -209,13 +226,14 @@ export default {
   background: #e91e63;
 }
 /deep/.el-pagination button {
-    width: 44px;
-    height: 44px;
-    line-height: 44px;
+  width: 44px;
+  height: 44px;
+  line-height: 44px;
 }
-/deep/.el-pagination button:hover, /deep/.el-pager li:hover {
-    border-radius: 50%;
-    background: #e91e63;
-    color: white;
+/deep/.el-pagination button:hover,
+/deep/.el-pager li:hover {
+  border-radius: 50%;
+  background: #e91e63;
+  color: white;
 }
 </style>

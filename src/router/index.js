@@ -8,6 +8,7 @@ import VueRouter from "vue-router";
 // 2. 异步加载路由组件（需要使用才加载）（Vue异步加载组件功能）
 const Home = () => import(/* webpackChunkName: "Home" */"../views/Home");
 const My = () => import(/* webpackChunkName: "Home" */"../views/My");
+const Play = () => import(/* webpackChunkName: "Home" */"../views/Play");
 
 // 重写push和replace方法
 // 目的：为了让编程式导航重复点击时不报错~
@@ -52,6 +53,10 @@ const router = new VueRouter({
 		{
 			path: "/my",
 			component: My,
+		},
+		{
+			path: "/play",
+			component: Play,
 		},
 	],
 	// 每次切换路由页面滚动条位置

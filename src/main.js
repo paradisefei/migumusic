@@ -2,6 +2,9 @@
  * 1.个人中心页面
  * 	1.基本结构
  * 	2.配置路由
+ * 2.歌曲播放界面
+ * 	1.基本结构
+ * 	2.配置路由
  */
 import Vue from 'vue'
 import App from './App.vue'
