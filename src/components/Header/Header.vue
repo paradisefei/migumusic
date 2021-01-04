@@ -1,31 +1,33 @@
 <template>
-  <div class="header">
-    <h1 class="logo">
-      <img src="../../assets/images/logo.png" />
-    </h1>
-    <div>
-      <ul class="center">
-        <li class="active">音乐</li>
-        <li>现场</li>
-        <li>会员中心</li>
-        <li>凡响计划</li>
-        <li>客户端下载</li>
-      </ul>
-    </div>
-    <div class="searchText">
-      <input
-        class="search"
-        type="text"
-        name=""
-        id=""
-        placeholder="搜索歌曲、歌手、MV"
-      />
-      <span class="iconfont icon-search"></span>
-    </div>
-    <div class="login">
-      <a href="">
-        <img src="../../assets/images/no-login.png" alt="" />
-      </a>
+  <div class="border-bottom">
+    <div class="header">
+      <h1 class="logo">
+        <img src="../../assets/images/logo.png" />
+      </h1>
+      <div>
+        <ul class="center">
+          <li class="active">音乐</li>
+          <li>现场</li>
+          <li>会员中心</li>
+          <li>凡响计划</li>
+          <li>客户端下载</li>
+        </ul>
+      </div>
+      <div class="searchText">
+        <input
+          class="search"
+          type="text"
+          name=""
+          id=""
+          placeholder="搜索歌曲、歌手、MV"
+        />
+        <span class="iconfont icon-search"></span>
+      </div>
+      <div class="login">
+        <a href="">
+          <img src="../../assets/images/no-login.png" alt="" />
+        </a>
+      </div>
     </div>
   </div>
 </template>
@@ -37,6 +39,9 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.border-bottom {
+  border-bottom: 1px solid rgb(233, 233, 233);
+}
 .header {
   width: 1400px;
   height: 70px;
@@ -45,6 +50,7 @@ export default {
   // justify-content: space-between;
   align-items: center;
   position: relative;
+
   .logo {
     margin-right: 50px;
   }
@@ -53,6 +59,7 @@ export default {
     justify-content: space-around;
     width: 492px;
     font-size: 16px;
+    color: #999;
     .active {
       color: #e91e63;
     }

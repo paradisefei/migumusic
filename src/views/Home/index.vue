@@ -1,11 +1,13 @@
 <template>
   <div>
     <Header />
+    <NavBar />
   </div>
 </template>
 
 <script>
 import Header from "../../components/Header/Header";
+import NavBar from "../../components/NavBar/NavBar";
 export default {
   name: "Home",
   computed: {},
@@ -13,6 +15,7 @@ export default {
   mounted() {},
   components: {
     Header,
+    NavBar,
   },
 };
 </script>
