@@ -67,6 +67,7 @@ export default {
   padding: 50px;
   .miguMsg {
     display: flex;
+    position: relative;
     border-bottom: 1px solid #d4d4d4;
     .con {
       width: 350px;
@@ -89,6 +90,9 @@ export default {
       width: 240px;
       display: flex;
       flex-direction: column;
+      position: absolute;
+      top: 0;
+      right: 0;
       h6 {
         font-size: 12px;
         margin-bottom: 30px;

@@ -25,6 +25,7 @@ export default {
 .border-bottom {
   border-bottom: 1px solid rgb(233, 233, 233);
   box-shadow: 2px 4px 8px #f2f2f2;
+  margin-bottom: 30px;
 }
 .header {
   width: 1400px;
