@@ -2,13 +2,13 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 
-
 // 路由组件懒加载
 // 1. 会将路由组件打包成单独的js文件（webpack代码分割）
 // 2. 异步加载路由组件（需要使用才加载）（Vue异步加载组件功能）
 const Home = () => import(/* webpackChunkName: "Home" */"../views/Home");
-const My = () => import(/* webpackChunkName: "Home" */"../views/My");
-const Play = () => import(/* webpackChunkName: "Home" */"../views/Play");
+const My = () => import(/* webpackChunkName: "My" */"../views/My");
+const Play = () => import(/* webpackChunkName: "Play" */"../views/Play");
+const MiGuList = () => import(/* webpackChunkName: "MiGuList" */"../views/MiGuList");
 
 // 重写push和replace方法
 // 目的：为了让编程式导航重复点击时不报错~
@@ -44,7 +44,7 @@ const router = new VueRouter({
 	routes: [
 		{
 			path: "/",
-			component: My,
+			component: Home,
 		},
 		{
 			path: "/home",
@@ -58,12 +58,15 @@ const router = new VueRouter({
 			path: "/play",
 			component: Play,
 		},
+		{
+			path: "/migulist",
+			component: MiGuList,
+		}
 	],
 	// 每次切换路由页面滚动条位置
 	scrollBehavior() {
 		return { x: 0, y: 0 };
 	},
 });
-
 
 export default router;

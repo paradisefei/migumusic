@@ -1,27 +1,19 @@
-/**
- * 1.个人中心页面
- * 	1.基本结构
- * 	2.配置路由
- * 2.歌曲播放界面
- * 	1.基本结构
- * 	2.配置路由
- */
-import Vue from 'vue'
-import App from './App.vue'
+import Vue from "vue";
+import App from "./App.vue";
 
 import router from "./router";
 import store from "./store";
 
-import './plugins/element.js'
+import "./plugins/element.js";
 
 // 引入公共资源
 import "./styles/reset.css";
-
-Vue.config.productionTip = false
+import "./assets/iconfont/iconfont.css";
+Vue.config.productionTip = false;
 
 new Vue({
-	render: h => h(App),
+	render: (h) => h(App),
 	// 应用router
 	router,
 	store,
-}).$mount('#app')
+}).$mount("#app");
