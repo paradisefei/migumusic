@@ -14,9 +14,6 @@
         </li>
       </ul>
       <div class="center">
-        <!-- 引入列表组件
-          这里的模式和之前的是不同的，这里是可滑动不需要分页的，那边是分页的
-         -->
         <div class="twoButtom">
           <a class="tb play active">
             <i class="iconfont icon-bofang"></i>
@@ -27,31 +24,7 @@
             添加到
           </a>
         </div>
-        <!-- <div class="music_Content">
-          <ul class="musicList">
-            <li>你好</li>
-            <li>你好</li>
-            <li>你好</li>
-            <li>你好</li>
-            <li>你好</li>
-            <li>你好</li>
-            <li>你好</li>
-            <li>你好</li>
-            <li>你好</li>
-            <li>你好</li>
-            <li>你好</li>
-            <li>你好</li>
-            <li>你好</li>
-            <li>你好</li>
-            <li>你好</li>
-            <li>你好</li>
-            <li>你好</li>
-            <li>你好</li>
-            <li>你好</li>
-            <li>你好</li>
-            <li>你好</li>
-          </ul>
-        </div> -->
+
         <el-scrollbar class="scrollbar">
           <el-table
             ref="multipleTable"

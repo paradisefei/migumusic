@@ -13,14 +13,11 @@ export default {
     /* 获取用户最近播放 */
     async getRecentlyListen({ commit }, data) {
       const res = await reqGetRecentlyListen(data);
-      // console.log(commit);
-      // console.log(res);
       commit("GET_RECENTLY_LISTEN", res);
     },
     /* 获取用户歌单 */
     async getPlayListDetail({ commit }, uid) {
       const res = await reqGetPlayListDetail(uid);
-      // console.log(commit);
       console.log(res);
       commit("GET_PLAYLIST_DETAIL", res);
     }

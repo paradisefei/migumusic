@@ -15,8 +15,6 @@
       <el-table-column prop="createTime" label="创建日期"> </el-table-column>
       <el-table-column label="操作">
         <template>
-          <!-- <i class="iconfont icon-lajitong-copy"></i>
-          <i class="iconfont icon-tianjiadao"></i> -->
           <el-button icon="el-icon-edit" size="mini"></el-button>
           <el-button icon="el-icon-delete" size="mini"></el-button>
         </template>
@@ -26,34 +24,11 @@
 </template>
 
 <script>
-// import "./iconfont/iconfont.css";
 
 export default {
   name: "PlayListDetail",
   data() {
     return {
-      // tableData: [
-      //   {
-      //     date: "2016-05-02",
-      //     name: "王小虎",
-      //     address: "上海市普陀区金沙江路 1518 弄",
-      //   },
-      //   {
-      //     date: "2016-05-04",
-      //     name: "王小虎",
-      //     address: "上海市普陀区金沙江路 1518 弄",
-      //   },
-      //   {
-      //     date: "2016-05-01",
-      //     name: "王小虎",
-      //     address: "上海市普陀区金沙江路 1518 弄",
-      //   },
-      //   {
-      //     date: "2016-05-03",
-      //     name: "王小虎",
-      //     address: "上海市普陀区金沙江路 1518 弄",
-      //   },
-      // ],
     };
   },
   props: {

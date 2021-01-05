@@ -1,15 +1,5 @@
 <template>
   <div class="my_center">
-    <!-- 上方背景图部分
-      1.设置背景图
-      2.头像
-      3.使用flex
-      4.等级
-      5.字体图标
-        1.下载
-        2.引入css
-      6.监视滚轮的变化
-     -->
     <div class="top">
       <div class="avatar">
         <img :src="avatarUrl" class="avatarImg" v-if="avatarUrl"/>
@@ -27,18 +17,7 @@
         <a class="putMoney">充值</a>
       </span>
     </div>
-    <!-- 下方的各种列表
-      1.歌曲列表渲染
-     -->
     <div class="bottom">
-      <!-- 左边的固定定位部分
-        1.固定定位
-       -->
-      <!-- 右边的列表
-        1.播放和选中按钮
-        2.大小
-        3.字体图标
-      -->
       <ul class="left" :class="isAbsolute ? 'isAbsolute' : 'isFixed'">
         <li
           v-for="item in leftList"
@@ -55,12 +34,6 @@
 </template>
 
 <script>
-/**
- * 1.顶部背景图
- * 2.点击我的歌单，跳转到我的歌单界面
- *  1.需要改变li的样式
- * 3.来到个人中心页面时，请求最近收听
- */
 import "./icon/iconfont.css";
 // import SongList from "@comps/SongList";
 // import Create from "@views/My/MyList/Create";

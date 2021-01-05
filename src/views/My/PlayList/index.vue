@@ -6,10 +6,7 @@
         <!-- 点击新建歌单会显示隐藏 -->
         <a class="create" @click="showCreate = false">+创建歌单</a>
       </div>
-      <!-- <SongList></SongList> -->
-      <!-- 歌单列表 
-        1.把数据传入组件中
-      -->
+      <!-- 歌单列表 -->
       <PlayListDetail :playList="playListDetail"></PlayListDetail>
     </div>
     <div v-else>
@@ -19,12 +16,6 @@
 </template>
 
 <script>
-/**
- * 1.点击创建歌单出现歌单创建页面
- * 2.歌单和新建歌单显示隐藏
- * 3.页面挂载成功请求歌单数据
- *  1.api
- */
 // import SongList from "@comps/SongList";
 import Create from "./Create";
 import PlayListDetail from "./PlayListDetail";
@@ -51,7 +42,6 @@ export default {
   },
   watch: {},
   components: {
-    // SongList,
     Create,
     PlayListDetail
   },
@@ -67,7 +57,6 @@ export default {
 <style lang="less" scoped>
 #mylist {
   min-height: 500px;
-  // background: red;
 }
 // 头部
 .header {
