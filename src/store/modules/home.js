@@ -12,6 +12,7 @@ export default {
       const recommendPlayList = res.data.list;
       commit("GET_RECOMMEND_PLAYLIST", recommendPlayList);
     }
+    /* 获取新歌单信息 */
   },
   mutations: {
     GET_RECOMMEND_PLAYLIST(state, recommendPlayList) {

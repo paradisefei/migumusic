@@ -10,6 +10,14 @@ export const reqGetBannerList = () => {
     url: "/getbannerlist"
   });
 };
+
+/* 四大金刚图片 */
+export const reqGetFourForKingKong = () => {
+  return request({
+    method: "GET",
+    url: "/getfourforkingkong"
+  });
+};
 /* 推荐歌单数据 */
 export const reqGetRecommendPlayList = () => {
   return request({
@@ -17,3 +25,4 @@ export const reqGetRecommendPlayList = () => {
     url: "/recommend/playlist"
   });
 };
+/* 新歌速递信息 */

@@ -9,17 +9,18 @@
         </el-carousel-item>
       </el-carousel>
     </div>
+
     <!-- 4个导航图标 -->
     <div class="home-navbar">
       <div class="home-navbar-inner">
         <div class="home-navbar-item">
-          <a href="#"><img src="@static/images/home/ia_100000010.png" alt=""/></a>
-          <a href="#"><img src="@static/images/home/ia_100000011.png" alt=""/></a>
-          <a href="#"><img src="@static/images/home/ia_100000012.png" alt=""/></a>
-          <a href="#"><img src="@static/images/home/ia_100000013.png" alt=""/></a>
+          <a href="#" v-for="item in fourForKingKong" :key="item.id"
+            ><img :src="item.imgUrl" alt=""
+          /></a>
         </div>
       </div>
     </div>
+
     <!-- 歌单推荐 -->
     <div class="home-recommend-list w">
       <!-- 歌单头部 -->
@@ -37,7 +38,11 @@
         <!-- 底部左边 -->
         <div class="home-recommend-container-left">
           <div class="container-left-box">
-            <img src="@static/images/home/ia_100000037.jpg" alt="" />
+            <div class="mask"></div>
+            <img
+              src="//cdnmusic.migu.cn/tycms_picture/20/06/170/200618151935142_500x500_7541.jpg"
+              alt=""
+            />
             <p>开启你的咪咕专属歌单</p>
           </div>
         </div>
@@ -58,6 +63,7 @@
         </div>
       </div>
     </div>
+
     <!-- 新歌速递 -->
     <div class="home-newsong">
       <div class="home-newsong-tag w">
@@ -143,19 +149,79 @@
 
     <!-- 新碟上架 -->
     <SectionSong></SectionSong>
+
+    <!-- 排行榜 -->
+    <div class="rank-list-title w">
+      <h2>排行榜</h2>
+      <div class="rank-list-more">
+        <a href="#"
+          >更多
+          <i class="iconfont icon-more"></i>
+        </a>
+      </div>
+    </div>
+    <div class="rank-list">
+      <div class="rank-list-container w">
+        <div class="rank-list-container">
+          <div class="rank-list-left">
+            <!-- 轮播图 -->
+            <div class="rank-list-carousel">
+              <el-carousel
+                type="card"
+                height="213px"
+                indicator-position="none"
+                arrow="always"
+                :autoplay="false"
+              >
+                <el-carousel-item v-for="item in banners" :key="item.id">
+                  <img :src="item.imgUrl" alt="" />
+                </el-carousel-item>
+              </el-carousel>
+            </div>
+            <h3 class="rank-list-title">尖叫榜新歌</h3>
+            <p class="rank-list-time">每小时更新</p>
+            <div class="rank-list-play"><i class="iconfont icon-play"></i> 播放榜单</div>
+          </div>
+          <div class="rank-list-right">
+            <!-- 滚动条 -->
+            <div class="rank-list-right-scroll">
+              <el-scrollbar class="scroll">
+                <!-- 滚动条歌曲排行榜 -->
+                <div class="item-column">
+                  <span class="item-num">01</span>
+                  <img class="item-img" src="@static/images/home/ia_100000024.jpg" alt="" />
+
+                  <span class="item-songname">迟迟奥士达按时打算打算 </span>
+                  <span class="item-singername">薛之谦奥士达按时奥士达奥士达</span>
+                </div>
+                <div class="item-column">
+                  <span class="item-num">01</span>
+                  <img class="item-img" src="@static/images/home/ia_100000024.jpg" alt="" />
+
+                  <span class="item-songname">迟迟</span>
+                  <span class="item-singername">薛之谦</span>
+                </div>
+              </el-scrollbar>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 音乐人 -->
+    <SectionSong></SectionSong>
   </div>
 </template>
 <script>
-import { reqGetBannerList } from "@api/home";
+import { reqGetBannerList, reqGetFourForKingKong } from "@api/home";
 import SectionSong from "@comps/SectionSong";
 import { mapState, mapActions } from "vuex";
-// import Carousel from "@comps/Carousel";
 
 export default {
   name: "Home",
   data() {
     return {
-      banners: []
+      banners: [],
+      fourForKingKong: []
     };
   },
   computed: {
@@ -167,8 +233,12 @@ export default {
     ...mapActions(["getRecommendPlayList"])
   },
   async mounted() {
+    /* 轮播 */
     const resBannerList = await reqGetBannerList();
     this.banners = resBannerList.bannerList;
+    /* 金刚 */
+    const resFourForKingKong = await reqGetFourForKingKong();
+    this.fourForKingKong = resFourForKingKong.kingKongList;
     this.getRecommendPlayList();
   },
   components: {
@@ -204,7 +274,7 @@ a {
     width: 992px;
     margin: 0 auto;
     img {
-      padding: 0 25px;
+      margin: 0 25px;
       width: 198px;
       height: 80px;
     }
@@ -238,6 +308,8 @@ a {
         align-items: center;
         transform: translateY(100px);
         img {
+          // filter: blur(2rem);
+          border-radius: 10px;
           margin: o auto;
           width: 238px;
           height: 238px;
@@ -378,6 +450,123 @@ a {
   }
   .banner-item-img {
     border-radius: 10px;
+  }
+}
+.rank-list-title {
+  height: 62px;
+  margin-top: 60px;
+  display: flex;
+  justify-content: space-between;
+  h2 {
+    font-size: 24px;
+    color: #333;
+  }
+}
+.rank-list {
+  width: 100%;
+  height: 474px;
+  background: #f2f2f2;
+  .rank-list-container {
+    display: flex;
+    .rank-list-left {
+      width: 542px - 80;
+      margin-right: 80px;
+      height: 443px;
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      .rank-list-carousel {
+        height: 213px;
+        width: 100%;
+        background: blueviolet;
+        img {
+          height: 213px;
+          width: 213px;
+        }
+      }
+      .rank-list-title {
+        height: 27px;
+        font-size: 18px;
+        margin-top: 20px;
+      }
+      .rank-list-time {
+        margin-top: 15px;
+        color: rgba(0, 0, 0, 0.4);
+        font-size: 14px;
+      }
+      .rank-list-play {
+        text-align: center;
+        line-height: 38px;
+        height: 38px;
+        width: 138px;
+        border: 1px solid #333;
+        margin-top: 22px;
+        border-radius: 20px;
+        font-weight: 700;
+        font-size: 14px;
+      }
+    }
+    .rank-list-right {
+      padding: 21px 24px 0;
+      width: 810px;
+      height: 432px;
+
+      .rank-list-right-scroll {
+        width: 100%;
+        height: 100%;
+
+        /deep/.el-scrollbar__wrap {
+          overflow-x: hidden;
+        }
+        .scroll {
+          width: 100%;
+          height: 100%;
+          .item-column {
+            border-radius: 10px;
+            height: 60px;
+            width: 100%;
+
+            display: flex;
+            color: #333;
+            font-size: 14px;
+            padding: 6px 0;
+            &:hover {
+              background-color: #e6e6e6;
+              transition: all 0.8s;
+            }
+            .item-num {
+              display: inline-block;
+              height: 60px;
+              width: 60px;
+              color: #333;
+              line-height: 60px;
+              text-align: center;
+            }
+            .item-img {
+              border-radius: 10px;
+              cursor: pointer;
+              height: 60px;
+              width: 60px;
+            }
+            .item-songname {
+              padding-left: 30px;
+              height: 60px;
+              width: 370px;
+              margin-right: 10px;
+
+              line-height: 60px;
+            }
+            .item-singername {
+              height: 60px;
+              color: rgba(51, 51, 51, 0.6);
+              line-height: 60px;
+            }
+          }
+        }
+      }
+    }
   }
 }
 </style>

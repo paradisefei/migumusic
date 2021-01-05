@@ -63,7 +63,14 @@ export default {
   height: 100%;
   margin: 0 auto;
 }
-
+a {
+  color: #999;
+  font-size: 14px;
+  &:hover {
+    color: #fd3f7f;
+    transition: all 0.5s;
+  }
+}
 .sectionsong-container {
   margin-top: 80px;
 }
