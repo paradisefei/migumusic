@@ -86,24 +86,42 @@
             />
           </div>
         </div>
-        <div class="newsong-data-right">
-          <div class="data-right-item" v-for="list in playList" :key="list.al.id">
-            <img class="data-right-item-img" :src="list.al.picUrl" alt="" />
+        <div class="newsong-data-right" @click="getSongId">
+          <div
+            class="data-right-item"
+            v-for="list in playList"
+            :key="list.al.id"
+            @mouseenter="songMouseEnter(list)"
+            @mouseleave="songMouseLeave(list)"
+          >
+            <img class="data-right-item-img" :src="list.al.picUrl" alt="" :id="list.id" />
             <div class="data-right-item-content">
-              <p>{{ list.al.name }}</p>
-              <p class="data-right-item-content-name">{{ list.ar[0].name }}</p>
+              <p class="data-right-item-content-name1">{{ list.al.name }}</p>
+              <p class="data-right-item-content-name2">{{ list.ar[0].name }}</p>
             </div>
-            <span class="data-right-item-time">{{ dayjs(list.dt).format("mm:ss") }}</span>
+            <span class="data-right-item-time" v-show="!list.isPlayButtonShow">{{
+              dayjs(list.dt).format("mm:ss")
+            }}</span>
+            <div class="data-right-item-show" v-show="list.isPlayButtonShow">
+              <div class="data-right-item-show-img ">
+                <img src="@static/images/home/ia_100000166.png" class="" alt="" />
+              </div>
+            </div>
+            <div class="data-right-item-show-icon" v-show="list.isPlayButtonShow">
+              <i class="iconfont icon-aixin"></i>
+              <i class="iconfont icon-zhuanfa"></i>
+              <i class="iconfont icon-lingdang"></i>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
     <!-- 新碟上架 -->
-    <SectionSong :h2Title="h2Title[0]"></SectionSong>
+    <SectionSong :h2Title="h2Title[0]" :songList="newSongList"></SectionSong>
 
     <!-- 新碟上架 -->
-    <SectionSong :h2Title="h2Title[1]"></SectionSong>
+    <SectionSong :h2Title="h2Title[1]" :songList="albumList"></SectionSong>
 
     <!-- 排行榜 -->
     <div class="rank-list-title w">
@@ -142,19 +160,12 @@
             <div class="rank-list-right-scroll">
               <el-scrollbar class="scroll">
                 <!-- 滚动条歌曲排行榜 -->
-                <div class="item-column">
-                  <span class="item-num">01</span>
-                  <img class="item-img" src="@static/images/home/ia_100000024.jpg" alt="" />
+                <div class="item-column" v-for="(list, index) in hotSongList" :key="list.id">
+                  <span class="item-num">{{ index + 1 }}</span>
+                  <img class="item-img" :src="list.al.picUrl" alt="" />
 
-                  <span class="item-songname">迟迟奥士达按时打算打算 </span>
-                  <span class="item-singername">薛之谦奥士达按时奥士达奥士达</span>
-                </div>
-                <div class="item-column">
-                  <span class="item-num">01</span>
-                  <img class="item-img" src="@static/images/home/ia_100000024.jpg" alt="" />
-
-                  <span class="item-songname">迟迟</span>
-                  <span class="item-singername">薛之谦</span>
+                  <span class="item-songname">{{ list.al.name }} </span>
+                  <span class="item-singername">{{ list.ar[0].name }}</span>
                 </div>
               </el-scrollbar>
             </div>
@@ -162,12 +173,20 @@
         </div>
       </div>
     </div>
-    <!-- 音乐人 -->
-    <SectionSong :h2Title="h2Title[2]"></SectionSong>
+    <!-- 推荐电台 -->
+    <SectionSong :h2Title="h2Title[2]" :songList="personalizedList"></SectionSong>
   </div>
 </template>
 <script>
-import { reqGetBannerList, reqGetFourForKingKong, reqGetPlayListChinese } from "@api/home";
+import {
+  reqGetBannerList,
+  reqGetFourForKingKong,
+  reqGetPlayListChinese,
+  reqGetNewSong,
+  reqGetAlbumList,
+  reqPersonalized,
+  reqGetHotTopSongs
+} from "@api/home";
 import SectionSong from "@comps/SectionSong";
 import { mapState, mapActions } from "vuex";
 import dayjs from "dayjs";
@@ -180,7 +199,13 @@ export default {
       fourForKingKong: [],
       playList: [],
       playListImg: [],
-      h2Title: ["新碟上架", "数字专辑", "音乐人"]
+      h2Title: ["新碟上架", "数字专辑", "推荐电台"],
+      newSongList: [],
+      albumList: [],
+      personalizedList: [],
+      songId: null,
+      hotSongList: []
+      // isPlayButtonShow: false
     };
   },
   computed: {
@@ -195,6 +220,25 @@ export default {
       const resPlayListChinese = await reqGetPlayListChinese();
       this.playList = resPlayListChinese.playlist.tracks.splice(1, 8);
       this.playListImg = this.playList.slice(0, 6);
+    },
+    getSongId(e) {
+      this.songId = e.target.getAttribute("id");
+      this.$router.push({
+        name: "play",
+        query: {
+          songId: this.songId
+        }
+      });
+    },
+    songMouseEnter(list) {
+      this.$set(list, "isPlayButtonShow", true);
+      console.log(list);
+
+      // this.isPlayButtonShow = true;
+    },
+    songMouseLeave(list) {
+      this.$set(list, "isPlayButtonShow", false);
+      console.log(list);
     }
   },
   async mounted() {
@@ -207,8 +251,43 @@ export default {
     this.fourForKingKong = resFourForKingKong.kingKongList;
     /* 推荐歌单 */
     this.getRecommendPlayList();
-
+    /* 华语歌单 */
     this.getPlayListChinese();
+    /* 新歌歌单 */
+    const resNewSong = await reqGetNewSong();
+    resNewSong.result.forEach(item => {
+      this.newSongList.push({
+        id: item.id,
+        name: item.name,
+        picUrl: item.picUrl,
+        singer: item.song.artists[0].name
+      });
+    });
+    /* 专辑 */
+    const resAlbumList = await reqGetAlbumList();
+
+    resAlbumList.albumProducts.forEach(item => {
+      this.albumList.push({
+        id: item.albumId,
+        name: item.albumName,
+        picUrl: item.coverUrl,
+        singer: item.artistName
+      });
+    });
+    /* 电台 */
+    const resPersonalized = await reqPersonalized();
+    resPersonalized.result.slice(0, 5).forEach(item => {
+      this.personalizedList.push({
+        id: item.id,
+        name: item.name,
+        picUrl: item.picUrl,
+        singer: item.program.channels[0]
+      });
+    });
+    /* 排行榜榜单 */
+    const resHotTopSongs = await reqGetHotTopSongs();
+    // this.hotSongList = resHotTopSongs;
+    this.hotSongList = resHotTopSongs.playlist.tracks.splice(1, 50);
   },
   components: {
     SectionSong
@@ -392,17 +471,45 @@ a {
         float: left;
         width: 50%;
         height: 80px;
-
+        position: relative;
         margin-bottom: 15px;
         box-sizing: border-box;
         padding: 0 22px;
         display: flex;
         font-size: 14px;
         border-radius: 10px;
-        &:hover {
-          background: #e6e6e6;
+        // 移入显示图片
+        .data-right-item-show {
+          position: absolute;
+          top: 20px;
+          left: 40px;
+          display: flex;
+          .data-right-item-show-img {
+            img {
+              width: 40px;
+              height: 40px;
+              cursor: pointer;
+              // background: yellow;
+            }
+          }
+        }
+        .data-right-item-show-icon {
+          position: absolute;
+          top: 20px;
+          right: 40px;
+          text-align: center;
+          line-height: 44px;
+          .iconfont {
+            font-size: 18px;
+            padding: 0 20px;
+            &:hover {
+              cursor: pointer;
+              color: #e91e63;
+            }
+          }
         }
         .data-right-item-img {
+          cursor: pointer;
           border-radius: 10px;
           width: 80px;
           height: 80px;
@@ -418,13 +525,24 @@ a {
             text-overflow: ellipsis;
             white-space: nowrap;
           }
-          .data-right-item-content-name {
+          .data-right-item-content-name1:hover {
+            cursor: pointer;
+            color: #e91e63;
+          }
+          .data-right-item-content-name2 {
             color: rgba(51, 51, 51, 0.4);
+            &:hover {
+              cursor: pointer;
+              color: #e91e63;
+            }
           }
         }
         .data-right-item-time {
           color: rgba(51, 51, 51, 0.4);
           line-height: 80px;
+        }
+        &:hover {
+          background: #e6e6e6;
         }
       }
     }
@@ -475,6 +593,7 @@ a {
         height: 213px;
         width: 100%;
         img {
+          border-radius: 10px;
           height: 213px;
           width: 213px;
         }

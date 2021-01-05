@@ -11,39 +11,11 @@
         </div>
       </div>
       <div class="sectionsong-container-bottom">
-        <div class="inner-item">
+        <div class="inner-item" v-for="song in songList" :key="song.id">
           <div class="inner-item-container">
-            <img src="@static/images/home/ia_100000024.jpg" alt="" />
-            <p class="album-name">我这么脆弱的人</p>
-            <p class="singer-name">王加一</p>
-          </div>
-        </div>
-        <div class="inner-item">
-          <div class="inner-item-container">
-            <img src="@static/images/home/ia_100000024.jpg" alt="" />
-            <p class="album-name">我这么脆弱的人</p>
-            <p class="singer-name">王加一</p>
-          </div>
-        </div>
-        <div class="inner-item">
-          <div class="inner-item-container">
-            <img src="@static/images/home/ia_100000024.jpg" alt="" />
-            <p class="album-name">我这么脆弱的人</p>
-            <p class="singer-name">王加一</p>
-          </div>
-        </div>
-        <div class="inner-item">
-          <div class="inner-item-container">
-            <img src="@static/images/home/ia_100000024.jpg" alt="" />
-            <p class="album-name">我这么脆弱的人</p>
-            <p class="singer-name">王加一</p>
-          </div>
-        </div>
-        <div class="inner-item">
-          <div class="inner-item-container">
-            <img src="@static/images/home/ia_100000024.jpg" alt="" />
-            <p class="album-name">我这么脆弱的人</p>
-            <p class="singer-name">王加一</p>
+            <img :src="song.picUrl" alt="" />
+            <p class="album-name">{{ song.name }}</p>
+            <p class="singer-name">{{ song.singer ? song.singer : "网易云咪咕" }}</p>
           </div>
         </div>
       </div>
@@ -55,10 +27,8 @@
 export default {
   name: "SectionSong",
   props: {
-    h2Title: {
-      type: String,
-      default: "标题"
-    }
+    h2Title: String,
+    songList: Array
   }
 };
 </script>
@@ -106,17 +76,25 @@ a {
       flex-direction: column;
       background: url("../../static/images/home/ia_100000181.png") no-repeat 22px 0;
       img {
+        cursor: pointer;
         height: 216px;
         width: 216px;
+        border-radius: 10px;
       }
       p {
-        margin-top: 14px;
+        margin: 7px 0;
       }
       .album-name {
         color: #333;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
       .singer-name {
         color: #999;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
     }
   }
