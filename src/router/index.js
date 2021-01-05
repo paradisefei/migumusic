@@ -58,6 +58,7 @@ const router = new VueRouter({
 			},
 		},
 		{
+      name:'play',
 			path: "/play",
 			component: Play,
 			meta: {

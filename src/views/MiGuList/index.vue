@@ -2,59 +2,118 @@
   <div>
     <div class="con">
       <div>
-        <div class="drawDown" @click="showList">
-          <p>咪咕尖叫榜</p>
-        </div>
-        <div class="item" v-show="showItemList">
-          <p class="active">尖叫热歌榜</p>
-          <p>尖叫热歌榜</p>
-          <p>尖叫热歌榜</p>
-        </div>
-        <!-- <el-row class="tac">
-          <el-col :span="12">
-            <h5>自定义颜色</h5>
+        <el-row class="tac">
+          <el-col :span="4">
             <el-menu
               default-active="2"
               class="el-menu-vertical-demo"
               @open="handleOpen"
               @close="handleClose"
-              background-color="#545c64"
-              text-color="#fff"
+              background-color="#F8F8F8"
+              text-color="#333"
               active-text-color="#ffd04b"
             >
-              <el-submenu index="1">
+              <el-submenu class="menuTitle" index="1">
                 <template slot="title">
-                  <i class="el-icon-location"></i>
-                  <span>导航一</span>
+                  <span class="menuTitleText">咪咕尖叫榜</span>
                 </template>
-                <el-menu-item-group>
-                  <template slot="title">分组一</template>
-                  <el-menu-item index="1-1">选项1</el-menu-item>
-                  <el-menu-item index="1-2">选项2</el-menu-item>
-                </el-menu-item-group>
-                <el-menu-item-group title="分组2">
-                  <el-menu-item index="1-3">选项3</el-menu-item>
-                </el-menu-item-group>
-                <el-submenu index="1-4">
-                  <template slot="title">选项4</template>
-                  <el-menu-item index="1-4-1">选项1</el-menu-item>
-                </el-submenu>
+                <el-menu-item class="menuitem active" index="1-4"
+                  >尖叫新歌榜</el-menu-item
+                >
+                <el-menu-item class="menuitem" index="1-4"
+                  >尖叫热歌榜</el-menu-item
+                >
+                <el-menu-item class="menuitem" index="1-4"
+                  >尖叫原创榜</el-menu-item
+                >
               </el-submenu>
-              <el-menu-item index="2">
-                <i class="el-icon-menu"></i>
-                <span slot="title">导航二</span>
-              </el-menu-item>
-              <el-menu-item index="3" disabled>
-                <i class="el-icon-document"></i>
-                <span slot="title">导航三</span>
-              </el-menu-item>
-              <el-menu-item index="4">
-                <i class="el-icon-setting"></i>
-                <span slot="title">导航四</span>
-              </el-menu-item>
             </el-menu>
           </el-col>
-        </el-row> -->
+        </el-row>
+        <el-row class="tac">
+          <el-col :span="4">
+            <el-menu
+              default-active="2"
+              class="el-menu-vertical-demo"
+              @open="handleOpen"
+              @close="handleClose"
+              background-color="#F8F8F8"
+              text-color="#333"
+              active-text-color="#ffd04b"
+            >
+              <el-submenu class="menuTitle" index="1">
+                <template slot="title">
+                  <span class="menuTitleText">咪咕尖叫榜</span>
+                </template>
+                <el-menu-item class="menuitem" index="1-4"
+                  >尖叫新歌榜</el-menu-item
+                >
+                <el-menu-item class="menuitem" index="1-4"
+                  >尖叫热歌榜</el-menu-item
+                >
+                <el-menu-item class="menuitem" index="1-4"
+                  >尖叫原创榜</el-menu-item
+                >
+              </el-submenu>
+            </el-menu>
+          </el-col>
+        </el-row>
+        <el-row class="tac">
+          <el-col :span="4">
+            <el-menu
+              default-active="2"
+              class="el-menu-vertical-demo"
+              @open="handleOpen"
+              @close="handleClose"
+              background-color="#F8F8F8"
+              text-color="#333"
+              active-text-color="#ffd04b"
+            >
+              <el-submenu class="menuTitle" index="1">
+                <template slot="title">
+                  <span class="menuTitleText">咪咕尖叫榜</span>
+                </template>
+                <el-menu-item class="menuitem" index="1-4"
+                  >尖叫新歌榜</el-menu-item
+                >
+                <el-menu-item class="menuitem" index="1-4"
+                  >尖叫热歌榜</el-menu-item
+                >
+                <el-menu-item class="menuitem" index="1-4"
+                  >尖叫原创榜</el-menu-item
+                >
+              </el-submenu>
+            </el-menu>
+          </el-col>
+        </el-row>
+        <el-row class="tac">
+          <el-col :span="4">
+            <el-menu
+              default-active="2"
+              class="el-menu-vertical-demo"
+              @open="handleOpen"
+              @close="handleClose"
+              background-color="#F8F8F8"
+              text-color="#333"
+              active-text-color="#ffd04b"
+            >
+              <el-submenu class="menuTitle" index="1">
+                <template slot="title">
+                  <span class="menuTitleText">咪咕尖叫榜</span>
+                </template>
+                <el-menu-item class="menuitem" index="1-4"
+                  >尖叫新歌榜</el-menu-item
+                >
+                <el-menu-item class="menuitem" index="1-4"
+                  >尖叫热歌榜</el-menu-item
+                >
+                <el-menu-item class="menuitem" index="1-4"
+                  >尖叫原创榜</el-menu-item
+                >
+              </el-submenu>
+            </el-menu>
+          </el-col>
+        </el-row>
       </div>
       <div class="bigBox">
         <div class="songCon">
@@ -81,16 +140,21 @@
           </div>
         </div>
       </div>
+      <div class="songlist">
+        <SongList />
+      </div>
     </div>
+
     <FixedIcon />
-    <Footer />
+    <!-- <Footer /> -->
   </div>
 </template>
 
 <script>
 // import { Dropdown } from "element-ui";
 import FixedIcon from "../../components/FixedIcon/FixedIcon";
-import Footer from "../../components/Footer/Footer";
+// import Footer from "../../components/Footer/Footer";
+import SongList from "../../components/SongList/index";
 
 export default {
   name: "Migulist",
@@ -100,9 +164,6 @@ export default {
     };
   },
   methods: {
-    showList() {
-      this.showItemList = !this.showItemList;
-    },
     // handleOpen(key, keyPath) {
     //   console.log(key, keyPath);
     // },
@@ -112,7 +173,8 @@ export default {
   },
   components: {
     FixedIcon,
-    Footer,
+    // Footer,
+    SongList,
   },
 };
 </script>
@@ -120,39 +182,35 @@ export default {
 <style lang="less" scoped>
 .con {
   width: 1400px;
-  margin: 0 auto;
+  margin: 30px auto 0;
   position: relative;
 }
-.drawDown {
-  width: 200px;
-  height: 55px;
-  background-color: #f8f8f8;
+.menuTitle {
   border-bottom: 1px solid #fff;
+}
+.menuTitleTextText {
+  font-size: 16px;
+}
+.menuitem {
+  height: 55px;
+  padding-left: 20px;
+  font-size: 14px;
+  background-color: #ffffff;
+
   display: flex;
-  justify-content: center;
+  justify-content: left;
   align-items: center;
 }
-.item {
-  width: 200px;
-  p {
-    height: 46px;
-    line-height: 46px;
-    padding-left: 20px;
-    font-size: 14px;
-  }
-  .active {
-    color: #e91e63;
-  }
+.active {
+  color: #e91e63;
 }
-.bigBox {
-  height: 180px;
-}
+
 .songCon {
   width: 1160px;
   margin: 0 auto;
   position: absolute;
   top: 0;
-  left: 230px;
+  left: 280px;
   .bigImg {
     width: 180px;
     height: 180px;
@@ -207,5 +265,8 @@ export default {
       }
     }
   }
+}
+.songlist {
+  margin-left: 280px;
 }
 </style>
