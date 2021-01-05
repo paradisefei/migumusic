@@ -37,7 +37,7 @@ instance.interceptors.response.use(
   response => {
     // 进度条结束
     NProgress.done();
-    // console.log("response", response);
+    console.log("response", response);
     // 判断响应的code是否是200
     if (response.status === 200) {
       // 返回成功的响应数据

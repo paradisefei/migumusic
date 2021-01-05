@@ -39,14 +39,22 @@
         3.字体图标
       -->
       <ul class="left" :class="isAbsolute ? 'isAbsolute' : 'isFixed'">
-        <li class="active">
-          <a>最近在听</a>
+        <li
+          v-for="item in leftList"
+          :key="item.id"
+          :class="isActive === item.id ? 'active' : ''"
+          @click="handleTitle(item.id)"
+        >
+          <a>{{ item.title }}</a>
+        </li>
+        <!-- <li class="active">
+          <router-link to="/my/listen">最近在听</router-link>
         </li>
         <li>
           <a>我喜欢的</a>
         </li>
         <li>
-          <a>我的歌单</a>
+          <router-link to="/my/playlist">我的歌单</router-link>
         </li>
         <li>
           <a>关注歌手</a>
@@ -56,9 +64,11 @@
         </li>
         <li>
           <a>彩铃设置</a>
-        </li>
+        </li> -->
       </ul>
-      <div class="right">
+      <!-- <Create></Create> -->
+      <router-view></router-view>
+      <!-- <div class="right">
         <div class="twoButtom">
           <a class="tb play active">
             <i class="iconfont icon-bofang"></i>
@@ -70,7 +80,7 @@
           </a>
         </div>
         <SongList></SongList>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -78,21 +88,66 @@
 <script>
 /**
  * 1.顶部背景图
+ * 2.点击我的歌单，跳转到我的歌单界面
+ *  1.需要改变li的样式
  */
 import "./icon/iconfont.css";
-import SongList from "@comps/SongList";
+// import SongList from "@comps/SongList";
+// import Create from "@views/My/MyList/Create";
 export default {
   name: "My",
   data() {
     return {
       // 是否是绝对定位
       isAbsolute: true,
+      // 是否被选中
+      isActive: 1,
+      // 左边定位的列表数据
+      leftList: [
+        {
+          id: 1,
+          title: "最近在听",
+        },
+        {
+          id: 2,
+          title: "我喜欢的",
+        },
+        {
+          id: 3,
+          title: "我的歌单",
+        },
+        {
+          id: 4,
+          title: "关注歌手",
+        },
+        {
+          id: 5,
+          title: "数字专辑",
+        },
+        {
+          id: 6,
+          title: "彩铃设置",
+        },
+      ],
     };
   },
   computed: {},
-  methods: {},
+  methods: {
+    handleTitle(id) {
+      if (this.isActive === id) return;
+      console.log(id);
+      this.isActive = id;
+
+      if (id === 1) {
+        this.$router.push("/my/listen");
+      }
+      if (id === 3) {
+        this.$router.push("/my/playlist");
+      }
+    },
+  },
   components: {
-    SongList,
+    // Create,
   },
   mounted() {
     window.onscroll = (e) => {
