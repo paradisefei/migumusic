@@ -9,7 +9,7 @@ export default {
     /* 获取推荐歌单信息 */
     async getRecommendPlayList({ commit }) {
       const res = await reqGetRecommendPlayList();
-      const recommendPlayList = res.data.list;
+      const recommendPlayList = res.playlists.splice(1, 10);
       commit("GET_RECOMMEND_PLAYLIST", recommendPlayList);
     }
     /* 获取新歌单信息 */

@@ -22,7 +22,14 @@ export const reqGetFourForKingKong = () => {
 export const reqGetRecommendPlayList = () => {
   return request({
     method: "GET",
-    url: "/recommend/playlist"
+    url: "/top/playlist/highquality"
   });
 };
 /* 新歌速递信息 */
+// 华语   /playlist/detail?id=21845217
+export const reqGetPlayListChinese = () => {
+  return request({
+    method: "GET",
+    url: "/playlist/detail?id=21845217"
+  });
+};

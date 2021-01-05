@@ -38,7 +38,7 @@
         <!-- 底部左边 -->
         <div class="home-recommend-container-left">
           <div class="container-left-box">
-            <div class="mask"></div>
+            <!-- <div class="mask"></div> -->
             <img
               src="//cdnmusic.migu.cn/tycms_picture/20/06/170/200618151935142_500x500_7541.jpg"
               alt=""
@@ -53,11 +53,11 @@
             v-for="recommendList in recommendPlayList"
             :key="recommendList.id"
           >
-            <img :src="recommendList.picUrl" alt="" />
+            <img :src="recommendList.coverImgUrl" alt="" />
             <span>{{ recommendList.name }}</span>
             <div class="right-play-count">
               <i class="iconfont icon-erji"></i>
-              <span>{{ recommendList.playCount }}</span>
+              <span>{{ parseInt(recommendList.playCount / 10000) }}w</span>
             </div>
           </div>
         </div>
@@ -76,79 +76,34 @@
 
       <div class="home-newsong-data w">
         <div class="newsong-data-left">
-          <div class="data-left-content"></div>
+          <div class="data-left-content">
+            <img
+              v-for="list in playListImg"
+              :key="list.al.picUrl"
+              class="data-left-imgs"
+              :src="list.al.picUrl"
+              alt=""
+            />
+          </div>
         </div>
         <div class="newsong-data-right">
-          <div class="data-right-item">
-            <img class="data-right-item-img" src="@static/images/home/ia_100000037.jpg" alt="" />
+          <div class="data-right-item" v-for="list in playList" :key="list.al.id">
+            <img class="data-right-item-img" :src="list.al.picUrl" alt="" />
             <div class="data-right-item-content">
-              <p>万岁圆舞曲</p>
-              <p>薛之谦</p>
+              <p>{{ list.al.name }}</p>
+              <p class="data-right-item-content-name">{{ list.ar[0].name }}</p>
             </div>
-            <span class="data-right-item-time">4:22</span>
-          </div>
-          <div class="data-right-item">
-            <img class="data-right-item-img" src="@static/images/home/ia_100000037.jpg" alt="" />
-            <div class="data-right-item-content">
-              <p>万岁圆舞曲</p>
-              <p>薛之谦</p>
-            </div>
-            <span class="data-right-item-time">4:22</span>
-          </div>
-          <div class="data-right-item">
-            <img class="data-right-item-img" src="@static/images/home/ia_100000037.jpg" alt="" />
-            <div class="data-right-item-content">
-              <p>万岁圆舞曲</p>
-              <p>薛之谦</p>
-            </div>
-            <span class="data-right-item-time">4:22</span>
-          </div>
-          <div class="data-right-item">
-            <img class="data-right-item-img" src="@static/images/home/ia_100000037.jpg" alt="" />
-            <div class="data-right-item-content">
-              <p>万岁圆舞曲</p>
-              <p>薛之谦</p>
-            </div>
-            <span class="data-right-item-time">4:22</span>
-          </div>
-          <div class="data-right-item">
-            <img class="data-right-item-img" src="@static/images/home/ia_100000037.jpg" alt="" />
-            <div class="data-right-item-content">
-              <p>万岁圆舞曲</p>
-              <p>薛之谦</p>
-            </div>
-            <span class="data-right-item-time">4:22</span>
-          </div>
-          <div class="data-right-item">
-            <img class="data-right-item-img" src="@static/images/home/ia_100000037.jpg" alt="" />
-            <div class="data-right-item-content">
-              <p>万岁圆舞曲</p>
-              <p>薛之谦</p>
-            </div>
-            <span class="data-right-item-time">4:22</span>
-          </div>
-          <div class="data-right-item">
-            <img class="data-right-item-img" src="@static/images/home/ia_100000037.jpg" alt="" />
-            <div class="data-right-item-content">
-              <p>万岁圆舞曲</p>
-              <p>薛之谦</p>
-            </div>
-            <span class="data-right-item-time">4:22</span>
-          </div>
-          <div class="data-right-item">
-            <img class="data-right-item-img" src="@static/images/home/ia_100000037.jpg" alt="" />
-            <div class="data-right-item-content">
-              <p>万岁圆舞曲</p>
-              <p>薛之谦</p>
-            </div>
-            <span class="data-right-item-time">4:22</span>
+            <span class="data-right-item-time">{{ dayjs(list.dt).format("mm:ss") }}</span>
           </div>
         </div>
       </div>
     </div>
 
     <!-- 新碟上架 -->
-    <SectionSong></SectionSong>
+    <SectionSong :h2Title="h2Title[0]"></SectionSong>
+
+    <!-- 新碟上架 -->
+    <SectionSong :h2Title="h2Title[1]"></SectionSong>
 
     <!-- 排行榜 -->
     <div class="rank-list-title w">
@@ -208,20 +163,24 @@
       </div>
     </div>
     <!-- 音乐人 -->
-    <SectionSong></SectionSong>
+    <SectionSong :h2Title="h2Title[2]"></SectionSong>
   </div>
 </template>
 <script>
-import { reqGetBannerList, reqGetFourForKingKong } from "@api/home";
+import { reqGetBannerList, reqGetFourForKingKong, reqGetPlayListChinese } from "@api/home";
 import SectionSong from "@comps/SectionSong";
 import { mapState, mapActions } from "vuex";
+import dayjs from "dayjs";
 
 export default {
   name: "Home",
   data() {
     return {
       banners: [],
-      fourForKingKong: []
+      fourForKingKong: [],
+      playList: [],
+      playListImg: [],
+      h2Title: ["新碟上架", "数字专辑", "音乐人"]
     };
   },
   computed: {
@@ -230,16 +189,26 @@ export default {
     })
   },
   methods: {
-    ...mapActions(["getRecommendPlayList"])
+    ...mapActions(["getRecommendPlayList"]),
+    /* 华语歌单 */
+    async getPlayListChinese() {
+      const resPlayListChinese = await reqGetPlayListChinese();
+      this.playList = resPlayListChinese.playlist.tracks.splice(1, 8);
+      this.playListImg = this.playList.slice(0, 6);
+    }
   },
   async mounted() {
+    this.dayjs = dayjs;
     /* 轮播 */
     const resBannerList = await reqGetBannerList();
     this.banners = resBannerList.bannerList;
     /* 金刚 */
     const resFourForKingKong = await reqGetFourForKingKong();
     this.fourForKingKong = resFourForKingKong.kingKongList;
+    /* 推荐歌单 */
     this.getRecommendPlayList();
+
+    this.getPlayListChinese();
   },
   components: {
     SectionSong
@@ -308,14 +277,13 @@ a {
         align-items: center;
         transform: translateY(100px);
         img {
-          // filter: blur(2rem);
           border-radius: 10px;
           margin: o auto;
           width: 238px;
           height: 238px;
         }
         p {
-          margin-top: 30px;
+          margin-top: 40px;
           font-size: 14px;
           color: #fff;
         }
@@ -325,12 +293,14 @@ a {
       width: 1116px;
       display: flex;
       flex-wrap: wrap;
+      color: #666;
+      font-size: 14px;
       .container-right-item {
         width: 20%;
         height: 50%;
         position: relative;
         span {
-          margin: 16px;
+          margin: 12px 16px;
           display: inline-block;
           overflow: hidden;
           text-overflow: ellipsis;
@@ -349,13 +319,13 @@ a {
           border-radius: 12px;
           width: 78px;
           height: 24px;
-          background: rgba(0, 0, 0, 0.4);
+          background: rgba(27, 25, 25, 0.4);
           position: absolute;
           right: 20px;
           top: 10px;
           color: #fff;
           i {
-            padding: 0 5px;
+            padding: 0 8px;
           }
           span {
             display: inline;
@@ -397,11 +367,19 @@ a {
       .data-left-content {
         width: 335px;
         height: 495px;
-
+        // padding: 6px 6px 0 6px;
         position: relative;
         top: -60px;
         background: url("../../static/images/home/ia_100000011532.png");
         background-size: cover;
+        display: flex;
+        z-index: 10;
+        flex-wrap: wrap;
+        .data-left-imgs {
+          opacity: 0.3;
+          width: 50%;
+          height: 33.3%;
+        }
       }
     }
     .newsong-data-right {
@@ -420,19 +398,32 @@ a {
         padding: 0 22px;
         display: flex;
         font-size: 14px;
+        border-radius: 10px;
+        &:hover {
+          background: #e6e6e6;
+        }
         .data-right-item-img {
+          border-radius: 10px;
           width: 80px;
           height: 80px;
         }
         .data-right-item-content {
-          width: 320px;
-          padding-left: 20px;
+          width: 300px;
+          padding: 0 20px;
           p {
-            height: 40px;
-            line-height: 40px;
+            margin-top: 10px;
+            height: 30px;
+            line-height: 30px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+          .data-right-item-content-name {
+            color: rgba(51, 51, 51, 0.4);
           }
         }
         .data-right-item-time {
+          color: rgba(51, 51, 51, 0.4);
           line-height: 80px;
         }
       }
@@ -447,6 +438,9 @@ a {
     width: 100%;
     border-radius: 10px;
     box-shadow: 0 0 10px #666;
+  }
+  /deep/ .el-carousel__button {
+    background: #e91e63;
   }
   .banner-item-img {
     border-radius: 10px;
@@ -480,7 +474,6 @@ a {
       .rank-list-carousel {
         height: 213px;
         width: 100%;
-        background: blueviolet;
         img {
           height: 213px;
           width: 213px;
