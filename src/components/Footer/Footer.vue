@@ -58,6 +58,7 @@
         </div>
       </div>
     </div>
+    <!-- 右侧固定图标 -->
     <div class="fixIcon" ref="icons">
       <a href="#" class="iconBox" v-show="show">
         <span class="iconfont icon-fanhuidingbu"></span>
@@ -66,7 +67,7 @@
         <span class="iconfont icon-kefu icon"></span>
       </div>
       <router-link to="/play">
-        <div class="iconBox"> 
+        <div class="iconBox">
           <span class="iconfont icon-bofang1 icon"></span>
         </div>
       </router-link>
@@ -89,7 +90,7 @@ export default {
     // 屏幕高度
     // let topY = document.documentElement.clientHeight;
     window.onscroll = (e) => {
-      console.log(e);
+      // console.log(e);
       let pageY = e.path[1].pageYOffset;
       if (pageY > 500) {
         this.show = true;
@@ -170,6 +171,7 @@ export default {
     text-decoration: none;
   }
 }
+// 固定图标
 html {
   position: relative;
 }

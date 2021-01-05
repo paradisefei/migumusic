@@ -1,4 +1,5 @@
 <template>
+  <!-- 右侧固定图标 -->
   <div class="fixIcon" ref="icons">
     <a href="#" class="iconBox" v-show="show">
       <span class="iconfont icon-fanhuidingbu"></span>
@@ -7,7 +8,8 @@
       <span class="iconfont icon-kefu icon"></span>
     </div>
     <router-link to="/play">
-      <div class="iconBox">aaa
+      <div class="iconBox">
+        aaa
         <span class="iconfont icon-bofang1 icon">qq</span>
       </div>
     </router-link>

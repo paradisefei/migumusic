@@ -3,9 +3,11 @@
     <div class="header">
       <div>
         <ul class="center">
-          <li class="active">首页</li>
+          <router-link to="/">
+            <li class="active">首页</li>
+          </router-link>
           <li>歌单</li>
-          <li>专辑</li>
+          <li>专辑</li> 
           <li>
             <router-link to="/migulist">榜单</router-link>
           </li>
