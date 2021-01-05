@@ -33,3 +33,36 @@ export const reqGetPlayListChinese = () => {
     url: "/playlist/detail?id=21845217"
   });
 };
+
+/* 新歌 */
+//  /personalized/newsong
+export const reqGetNewSong = () => {
+  return request({
+    method: "GET",
+    url: "/personalized/newsong"
+  });
+};
+/* 专辑 */
+//  /personalized/newsong
+export const reqGetAlbumList = () => {
+  return request({
+    method: "GET",
+    url: "/album/list/style?area=Z_H&limit=5"
+  });
+};
+/* 推荐电台 */
+//  /personalized/newsong
+export const reqPersonalized = () => {
+  return request({
+    method: "GET",
+    url: "/personalized/djprogram"
+  });
+};
+/* 热歌榜 */
+//  /personalized/newsong
+export const reqGetHotTopSongs = () => {
+  return request({
+    method: "GET",
+    url: "/playlist/detail?id=3778678"
+  });
+};
