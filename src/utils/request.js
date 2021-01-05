@@ -7,7 +7,7 @@ import "nprogress/nprogress.css";
 
 // 通过其值来区分运行环境
 // console.log(process.env.NODE_ENV); // development  production
-const prefix_url = process.env.NODE_ENV === "development" ? "/" : "http://81.69.57.198:3000";
+const prefix_url = process.env.NODE_ENV === "development" ? "/" : " ";
 
 const instance = axios.create({
   //  / 就是当前服务器地址

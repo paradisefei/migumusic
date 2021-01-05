@@ -23,9 +23,12 @@
         </template>
       </el-table-column>
       <el-table-column label="歌曲">
-        <template slot-scope="scope"
-          ><a>{{ scope.row.song }}</a></template
-        >
+        <template slot-scope="scope">
+          <div class="songAndPic">
+            <img :src="scope.row.pic" class="songPic" />
+            <a>{{ scope.row.song }}</a>
+          </div>
+        </template>
       </el-table-column>
       <el-table-column prop="name" label="歌手">
         <template slot-scope="scope"
@@ -52,138 +55,17 @@
 </template>
 
 <script>
-/**
- * 1.使用element ui组件
- *  1.列表
- *  2.样式，让3列平分整个宽度
- *  3.勾选时的颜色
- *  4.不要有线条
- *  5.分页器
- *    1.居中
- */
 import "./iconfont/iconfont.css";
 export default {
   name: "SongList",
   data() {
     return {
       fit: true,
-      tableData: [
-        {
-          date: "2016-05-02",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-        {
-          date: "2016-05-04",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1517 弄",
-        },
-        {
-          date: "2016-05-01",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1519 弄",
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1516 弄",
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1516 弄",
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1516 弄",
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1516 弄",
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1516 弄",
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1516 弄",
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1516 弄",
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1516 弄",
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1516 弄",
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1516 弄",
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1516 弄",
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1516 弄",
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1516 弄",
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1516 弄",
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1516 弄",
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1516 弄",
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1516 弄",
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1516 弄",
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1516 弄",
-        },
-      ],
       // showPlay: true,
     };
   },
   props: {
-    songList:{
+    songList: {
       type: Array,
     },
   },
@@ -220,6 +102,17 @@ export default {
 .songList {
   width: 1160px;
   margin-top: 20px;
+}
+// 歌曲图片
+img.songPic {
+  width: 60px;
+  height: 60px;
+  margin-right: 20px;
+}
+// 歌名和图片
+.songAndPic {
+  display: flex;
+  align-items: center;
 }
 /deep/.el-table td,
 /deep/.el-table th.is-leaf {

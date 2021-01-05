@@ -9,8 +9,7 @@
     </div>
     <router-link to="/play">
       <div class="iconBox">
-        aaa
-        <span class="iconfont icon-bofang1 icon">qq</span>
+        <span class="iconfont icon-bofang1 icon"></span>
       </div>
     </router-link>
   </div>
@@ -32,7 +31,6 @@ export default {
     // 屏幕高度
     // let topY = document.documentElement.clientHeight;
     window.onscroll = (e) => {
-      console.log(e);
       let pageY = e.path[1].pageYOffset;
       if (pageY > 500) {
         this.show = true;
