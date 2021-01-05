@@ -8,8 +8,8 @@ import VueRouter from "vue-router";
 const Home = () => import(/* webpackChunkName: "Home" */"../views/Home");
 const My = () => import(/* webpackChunkName: "My" */"../views/My");
 const Listen = () => import(/* webpackChunkName: "Listen" */"../views/My/Listen");
-const MyList = () => import(/* webpackChunkName: "Listen" */"../views/My/MyList");
-const Create = () => import(/* webpackChunkName: "Listen" */"../views/My/MyList/Create");
+const PlayList = () => import(/* webpackChunkName: "Listen" */"../views/My/PlayList");
+const Create = () => import(/* webpackChunkName: "Listen" */"../views/My/PlayList/Create");
 const Play = () => import(/* webpackChunkName: "Play" */"../views/Play");
 const MiGuList = () => import(/* webpackChunkName: "MiGuList" */"../views/MiGuList");
 
@@ -18,22 +18,22 @@ const MiGuList = () => import(/* webpackChunkName: "MiGuList" */"../views/MiGuLi
 const push = VueRouter.prototype.push;
 const replace = VueRouter.prototype.replace;
 
-VueRouter.prototype.push = function(location, onComplete, onAbort) {
-  // 如果用户想处理失败，就处理
-  if (onComplete && onAbort) {
-    return push.call(this, location, onComplete, onAbort);
-  }
-  // 如果用户不处理失败，给默认值：空函数
-  return push.call(this, location, onComplete, () => {});
+VueRouter.prototype.push = function (location, onComplete, onAbort) {
+	// 如果用户想处理失败，就处理
+	if (onComplete && onAbort) {
+		return push.call(this, location, onComplete, onAbort);
+	}
+	// 如果用户不处理失败，给默认值：空函数
+	return push.call(this, location, onComplete, () => { });
 };
 
-VueRouter.prototype.replace = function(location, onComplete, onAbort) {
-  // 如果用户想处理失败，就处理
-  if (onComplete && onAbort) {
-    return replace.call(this, location, onComplete, onAbort);
-  }
-  // 如果用户不处理失败，给默认值：空函数
-  return replace.call(this, location, onComplete, () => {});
+VueRouter.prototype.replace = function (location, onComplete, onAbort) {
+	// 如果用户想处理失败，就处理
+	if (onComplete && onAbort) {
+		return replace.call(this, location, onComplete, onAbort);
+	}
+	// 如果用户不处理失败，给默认值：空函数
+	return replace.call(this, location, onComplete, () => { });
 };
 
 // 安装插件
@@ -56,27 +56,27 @@ const router = new VueRouter({
 		{
 			path: "/my",
 			component: My,
-			redirect:"/my/listen",
+			redirect: "/my/listen",
 			meta: {
 				hideNavBar: true,
 			},
 			children: [
 				{
-					path:"listen",
+					path: "listen",
 					component: Listen,
 					meta: {
 						hideNavBar: true,
 					},
 				},
 				{
-					path:"mylist",
-					component: MyList,
+					path: "playlist",
+					component: PlayList,
 					meta: {
 						hideNavBar: true,
 					},
 					children: [
 						{
-							path:"create",
+							path: "create",
 							component: Create,
 						}
 					]

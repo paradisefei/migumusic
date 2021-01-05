@@ -1,28 +1,42 @@
 <template>
   <div id="mylist">
-    <div class="header">
-      <span class="list">我的歌单</span>
-      <a class="create">+创建歌单</a>
+    <div v-if="showCreate">
+      <div class="header">
+        <span class="list">我的歌单</span>
+        <!-- 点击新建歌单会显示隐藏 -->
+        <a class="create" @click="showCreate = false">+创建歌单</a>
+      </div>
+      <SongList></SongList>
     </div>
-    <SongList></SongList>
+    <div v-else>
+      <Create @toggleShowCreate="toggleShowCreate"></Create>
+    </div>
   </div>
 </template>
 
 <script>
 /**
  * 1.点击创建歌单出现歌单创建页面
+ * 2.歌单和新建歌单显示隐藏
  */
 import SongList from "@comps/SongList";
+import Create from "./Create"
 export default {
-  name: "MyList",
+  name: "PlayList",
   data() {
     return {
+      showCreate: true,
     };
   },
-  watch: {
+  methods: {
+    toggleShowCreate() {
+      this.showCreate = true;
+    }
   },
+  watch: {},
   components: {
-    SongList
+    SongList,
+    Create
   },
 };
 </script>
@@ -34,6 +48,7 @@ export default {
 }
 // 头部
 .header {
+  width: 1000px;
   display: flex;
   justify-content: space-between;
   align-items: center;

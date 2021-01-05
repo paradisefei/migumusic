@@ -24,7 +24,6 @@ export default {
   },
   watch: {
     $route() {
-      console.log(this.$route);
       this.showPlay = this.$route.meta.showPlay
     },
   },

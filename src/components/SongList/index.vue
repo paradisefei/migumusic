@@ -9,11 +9,19 @@
       @selection-change="handleSelectionChange"
     >
       <el-table-column type="selection" width="50"> </el-table-column>
-      <el-table-column type="index" width="50">
-        <template slot-scope="scope"
-          ><a>{{ scope.$index + 1 }}</a></template
-        ></el-table-column
-      >
+      <el-table-column width="50">
+        <template slot-scope="scope">
+          <a
+            class="iconfont icon-bofang"
+            v-if="scope.row.showPlay"
+            @mouseleave="scope.row.showPlay = false"
+            @click="toPlay"
+          ></a>
+          <a v-else @mouseenter="handleMouseEnter(scope.row)">{{
+            scope.$index + 1
+          }}</a>
+        </template>
+      </el-table-column>
       <el-table-column label="歌曲">
         <template slot-scope="scope"
           ><a>{{ scope.row.date }}</a></template
@@ -50,6 +58,7 @@
  *  5.分页器
  *    1.居中
  */
+import "./iconfont/iconfont.css";
 export default {
   name: "SongList",
   data() {
@@ -167,10 +176,20 @@ export default {
           address: "上海市普陀区金沙江路 1516 弄",
         },
       ],
+      // showPlay: true,
     };
   },
   computed: {},
   methods: {
+    // 去到播放界面
+    toPlay() {
+      console.log(111111111);
+      this.$router.push("/play");
+    },
+    // 播放按钮显示隐藏
+    handleMouseEnter(row) {
+      this.$set(row, "showPlay", true);
+    },
     toggleSelection(rows) {
       if (rows) {
         rows.forEach((row) => {
@@ -196,6 +215,20 @@ export default {
 /deep/.el-table td,
 /deep/.el-table th.is-leaf {
   border: none;
+}
+// 复选框的背景颜色
+/deep/.el-checkbox__inner {
+  background: transparent;
+}
+// 被选中时的背景颜色
+/deep/.el-checkbox__input.is-checked .el-checkbox__inner {
+  background: #333333;
+  border-color: #ccc;
+}
+// 表头复选框
+/deep/.el-checkbox__input.is-indeterminate .el-checkbox__inner {
+  background: transparent;
+  border-color: transparent;
 }
 // 每一列
 .el-table-column:hover {

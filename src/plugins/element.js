@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import { Button, Scrollbar, Table, TableColumn, Pagination, Menu, Carousel, CarouselItem} from 'element-ui'
+import { Button, Scrollbar,Upload, Table, TableColumn, Form, Input, FormItem, Pagination, Menu, Carousel, CarouselItem} from 'element-ui'
 
 Vue.use(Button);
 Vue.use(Table);
@@ -9,3 +9,7 @@ Vue.use(Menu);
 Vue.use(Carousel);
 Vue.use(CarouselItem);
 Vue.use(Scrollbar);
+Vue.use(Form);
+Vue.use(FormItem);
+Vue.use(Input);
+Vue.use(Upload);
