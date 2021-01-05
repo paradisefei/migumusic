@@ -192,6 +192,7 @@ export default {
 // 整个列表
 .songList {
   width: 1160px;
+  margin-top: 20px;
 }
 /deep/.el-table td,
 /deep/.el-table th.is-leaf {
