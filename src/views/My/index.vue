@@ -58,7 +58,9 @@
           <a>彩铃设置</a>
         </li>
       </ul>
-      <div class="right">
+      <!-- <Create></Create> -->
+      <router-view></router-view>
+      <!-- <div class="right">
         <div class="twoButtom">
           <a class="tb play active">
             <i class="iconfont icon-bofang"></i>
@@ -70,7 +72,7 @@
           </a>
         </div>
         <SongList></SongList>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -80,7 +82,8 @@
  * 1.顶部背景图
  */
 import "./icon/iconfont.css";
-import SongList from "@comps/SongList";
+// import SongList from "@comps/SongList";
+// import Create from "@views/My/MyList/Create";
 export default {
   name: "My",
   data() {
@@ -92,7 +95,7 @@ export default {
   computed: {},
   methods: {},
   components: {
-    SongList,
+    // Create,
   },
   mounted() {
     window.onscroll = (e) => {

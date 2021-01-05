@@ -7,6 +7,9 @@ import VueRouter from "vue-router";
 // 2. 异步加载路由组件（需要使用才加载）（Vue异步加载组件功能）
 const Home = () => import(/* webpackChunkName: "Home" */"../views/Home");
 const My = () => import(/* webpackChunkName: "My" */"../views/My");
+const Listen = () => import(/* webpackChunkName: "Listen" */"../views/My/Listen");
+const MyList = () => import(/* webpackChunkName: "Listen" */"../views/My/MyList");
+const Create = () => import(/* webpackChunkName: "Listen" */"../views/My/MyList/Create");
 const Play = () => import(/* webpackChunkName: "Play" */"../views/Play");
 const MiGuList = () => import(/* webpackChunkName: "MiGuList" */"../views/MiGuList");
 
@@ -53,9 +56,32 @@ const router = new VueRouter({
 		{
 			path: "/my",
 			component: My,
+			redirect:"/my/listen",
 			meta: {
 				hideNavBar: true,
 			},
+			children: [
+				{
+					path:"listen",
+					component: Listen,
+					meta: {
+						hideNavBar: true,
+					},
+				},
+				{
+					path:"mylist",
+					component: MyList,
+					meta: {
+						hideNavBar: true,
+					},
+					children: [
+						{
+							path:"create",
+							component: Create,
+						}
+					]
+				}
+			]
 		},
 		{
 			path: "/play",

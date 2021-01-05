@@ -5,7 +5,7 @@
       <router-view></router-view>
       <Footer></Footer>
     </div>
-    <div v-else>
+    <div v-else style="height:100%">
       <Play></Play>
     </div>
   </div>
