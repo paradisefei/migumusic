@@ -59,7 +59,7 @@
                 </div>
               </div>
               <div class="but">
-                <button class="but1">登录</button>
+                <button class="but1" @click="login">登录</button>
                 <button class="but2">注册</button>
               </div>
             </div>
@@ -67,9 +67,14 @@
         </div>
       </div>
     </div>
-    <div class="black">
+    <div class="black" v-show="mask">
       <form class="passLogin">
-        <img class="img" src="../../assets/images/x.png" alt="" />
+        <img
+          class="img"
+          src="../../assets/images/x.png"
+          alt=""
+          @click="cancleMask"
+        />
         <div class="loginCon">
           <div class="loginWays">
             <p>短信登录</p>
@@ -116,6 +121,7 @@ export default {
   data() {
     return {
       showLogin: false,
+      mask: false,
     };
   },
   methods: {
@@ -124,6 +130,12 @@ export default {
     },
     handleLoginDis() {
       this.showLogin = false;
+    },
+    login() {
+      this.mask = true;
+    },
+    cancleMask() {
+      this.mask = false;
     },
   },
 };
