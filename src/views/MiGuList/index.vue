@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="con">
-      <div>
+      <div class="lsitBox">
         <el-row class="tac">
           <el-col :span="4">
             <el-menu
@@ -146,16 +146,14 @@
     </div>
 
     <FixedIcon />
-    <!-- <Footer /> -->
   </div>
 </template>
 
 <script>
-// import { Dropdown } from "element-ui";
 import FixedIcon from "../../components/FixedIcon/FixedIcon";
-// import Footer from "../../components/Footer/Footer";
 import SongList from "../../components/SongList/index";
 
+import { mapActions, mapState } from "vuex";
 export default {
   name: "Migulist",
   data() {
@@ -163,17 +161,25 @@ export default {
       showItemList: false,
     };
   },
-  methods: {
-    // handleOpen(key, keyPath) {
-    //   console.log(key, keyPath);
-    // },
-    // handleClose(key, keyPath) {
-    //   console.log(key, keyPath);
-    // },
+  computed: {
+    ...mapState({
+      newSongList: (state) => state.migulist.newSongList,
+    }),
   },
+  methods: {
+    ...mapActions(["getNewSongList"]),
+  },
+  mounted() {
+    this.getNewSongList();
+    console.log(this.newSongList);
+    // 处理获取到的数据
+    const resNewSongList = this.newSongList.result;
+    console.log(resNewSongList);
+
+  },
+
   components: {
     FixedIcon,
-    // Footer,
     SongList,
   },
 };
@@ -184,6 +190,9 @@ export default {
   width: 1400px;
   margin: 30px auto 0;
   position: relative;
+}
+.lsitBox {
+  display: fixed;
 }
 .menuTitle {
   border-bottom: 1px solid #fff;
