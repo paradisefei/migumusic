@@ -61,6 +61,9 @@
 import "./iconfont/iconfont.css";
 export default {
   name: "SongList",
+  props: {
+    newSongList: Object,
+  },
   data() {
     return {
       fit: true,

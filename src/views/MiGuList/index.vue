@@ -141,16 +141,13 @@
         </div>
       </div>
       <div class="songlist">
-        <SongList />
+        <SongList :newSongList="newSongList" />
       </div>
     </div>
-
-    <FixedIcon />
   </div>
 </template>
 
 <script>
-import FixedIcon from "../../components/FixedIcon/FixedIcon";
 import SongList from "../../components/SongList/index";
 
 import { mapActions, mapState } from "vuex";
@@ -168,6 +165,12 @@ export default {
   },
   methods: {
     ...mapActions(["getNewSongList"]),
+    handleOpen(key, keyPath) {
+      console.log(key, keyPath);
+    },
+    handleClose(key, keyPath) {
+      console.log(key, keyPath);
+    },
   },
   mounted() {
     this.getNewSongList();
@@ -175,11 +178,9 @@ export default {
     // 处理获取到的数据
     const resNewSongList = this.newSongList.result;
     console.log(resNewSongList);
-
   },
 
   components: {
-    FixedIcon,
     SongList,
   },
 };
