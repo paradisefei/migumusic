@@ -6,7 +6,9 @@
           <li class="active">首页</li>
           <li>歌单</li>
           <li>专辑</li>
-          <li>榜单</li>
+          <li>
+            <router-link to="/migulist">榜单</router-link>
+          </li>
           <li>歌手</li>
           <li>彩铃</li>
         </ul>

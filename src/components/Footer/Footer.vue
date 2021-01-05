@@ -1,52 +1,75 @@
 <template>
-  <div class="footerCon">
-    <div class="footer">
-      <div class="miguMsg">
-        <div class="con">
-          <h6>咪咕文化</h6>
-          <p>
-            <a>咪咕文化网</a>
-          </p>
-          <p><a>咪咕音乐简介</a></p>
-          <p><a>服务协议</a></p>
-          <p><a>隐私权政策</a></p>
-        </div>
-        <div class="con">
-          <h6>咪咕音乐家族</h6>
-          <p><a>圈子彩铃</a></p>
-        </div>
-        <div class="con">
-          <h6>联系我们</h6>
-          <p><a>业务合作</a></p>
-          <p><a>常见问题</a></p>
-        </div>
-        <div class="miGuCon">
-          <h6>咪咕客户端</h6>
-          <div class="imgCon">
-            <div>
-              <img class="img" src="../../assets/images/miguMusic.png" alt="" />
-              <p>咪咕音乐</p>
-            </div>
-            <div>
-              <img class="img" src="../../assets/images/miguVideo.jpg" alt="" />
-              <p>咪咕视频</p>
+  <div>
+    <div class="footerCon">
+      <div class="footer">
+        <div class="miguMsg">
+          <div class="con">
+            <h6>咪咕文化</h6>
+            <p>
+              <a>咪咕文化网</a>
+            </p>
+            <p><a>咪咕音乐简介</a></p>
+            <p><a>服务协议</a></p>
+            <p><a>隐私权政策</a></p>
+          </div>
+          <div class="con">
+            <h6>咪咕音乐家族</h6>
+            <p><a>圈子彩铃</a></p>
+          </div>
+          <div class="con">
+            <h6>联系我们</h6>
+            <p><a>业务合作</a></p>
+            <p><a>常见问题</a></p>
+          </div>
+          <div class="miGuCon">
+            <h6>咪咕客户端</h6>
+            <div class="imgCon">
+              <div>
+                <img
+                  class="img"
+                  src="../../assets/images/miguMusic.png"
+                  alt=""
+                />
+                <p>咪咕音乐</p>
+              </div>
+              <div>
+                <img
+                  class="img"
+                  src="../../assets/images/miguVideo.jpg"
+                  alt=""
+                />
+                <p>咪咕视频</p>
+              </div>
             </div>
           </div>
         </div>
+        <div>
+          <img class="weibo" src="../../assets/images/weibo.png" alt="" />
+        </div>
+        <div class="copyRight">
+          <span class="blankSpace">
+            <a href="">蜀ICP备15012512号</a>
+            <span>川网文[2019]2118-124</span>
+            <span>网络视听许可证0112648号</span>
+            <span>增值业务许可证A2.B1.B2-20100001 </span>
+            <span>川公网安备 51010702002209号</span>
+          </span>
+          <span>Copyright © 2005-2021 咪咕音乐有限公司</span>
+        </div>
       </div>
-      <div>
-        <img class="weibo" src="../../assets/images/weibo.png" alt="" />
+    </div>
+    <div class="fixIcon" ref="icons">
+      <a href="#" class="iconBox" v-show="show">
+        <span class="iconfont icon-fanhuidingbu"></span>
+      </a>
+      <div class="iconBox">
+        <span class="iconfont icon-kefu icon"></span>
       </div>
-      <div class="copyRight">
-        <span class="blankSpace">
-          <a href="">蜀ICP备15012512号</a>
-          <span>川网文[2019]2118-124</span>
-          <span>网络视听许可证0112648号</span>
-          <span>增值业务许可证A2.B1.B2-20100001 </span>
-          <span>川公网安备 51010702002209号</span>
-        </span>
-        <span>Copyright © 2005-2021 咪咕音乐有限公司</span>
-      </div>
+      <router-link to="/play">
+        <div class="iconBox"> 
+          <span class="iconfont icon-bofang1 icon"></span>
+        </div>
+      </router-link>
     </div>
   </div>
 </template>
@@ -54,6 +77,27 @@
 <script>
 export default {
   name: "Footer",
+  data() {
+    return {
+      // heights: 0,
+      show: false,
+    };
+  },
+  mounted() {
+    // 获取页面的高度还有滚动条滚过的距离
+    // 监视滚动条滚动的距离，并依据距离和页面高度比较
+    // 屏幕高度
+    // let topY = document.documentElement.clientHeight;
+    window.onscroll = (e) => {
+      console.log(e);
+      let pageY = e.path[1].pageYOffset;
+      if (pageY > 500) {
+        this.show = true;
+      } else {
+        this.show = false;
+      }
+    };
+  },
 };
 </script>
 
@@ -124,6 +168,34 @@ export default {
   }
   a:hover {
     text-decoration: none;
+  }
+}
+html {
+  position: relative;
+}
+
+.fixIcon {
+  position: fixed;
+  bottom: 50px;
+  right: 100px;
+  width: 54px;
+  height: 164px;
+
+  .iconBox {
+    width: 100%;
+    height: 54px;
+    background-color: #666;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 1px solid #fff;
+    .iconfont {
+      font-size: 30px;
+      color: #fff;
+    }
+    .icon:hover {
+      color: #e91e63;
+    }
   }
 }
 </style>
