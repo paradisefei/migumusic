@@ -20,7 +20,6 @@ export default {
   methods: {},
   watch: {
     $route() {
-      console.log(this.$route);
       this.hideNavBar = this.$route.meta.hideNavBar;
     }
   },

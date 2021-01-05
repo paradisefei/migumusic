@@ -20,14 +20,14 @@
         <div class="twoButtom">
           <a class="tb play active">
             <i class="iconfont icon-bofang"></i>
-            播放选中歌曲
+            添加到歌单
           </a>
           <a class="tb add">
             <i class="iconfont icon-tianjiadao"></i>
             添加到
           </a>
         </div>
-        <div class="music_Content">
+        <!-- <div class="music_Content">
           <ul class="musicList">
             <li>你好</li>
             <li>你好</li>
@@ -51,7 +51,39 @@
             <li>你好</li>
             <li>你好</li>
           </ul>
-        </div>
+        </div> -->
+        <el-scrollbar class="scrollbar">
+          <el-table
+            ref="multipleTable"
+            :data="tableData"
+            tooltip-effect="dark"
+            style="width: 100%; background: #393938"
+            fit
+            @selection-change="handleSelectionChange"
+          >
+            <el-table-column type="selection" width="50"> </el-table-column>
+            <el-table-column type="index" width="50">
+              <template slot-scope="scope"
+                ><a>{{ scope.$index + 1 }}</a></template
+              ></el-table-column
+            >
+            <el-table-column label="歌曲">
+              <template slot-scope="scope"
+                ><a>{{ scope.row.date }}</a></template
+              >
+            </el-table-column>
+            <el-table-column prop="name" label="歌手">
+              <template slot-scope="scope"
+                ><a>{{ scope.row.name }}</a></template
+              ></el-table-column
+            >
+            <el-table-column prop="address" label="专辑" show-overflow-tooltip>
+              <template slot-scope="scope"
+                ><a>{{ scope.row.address }}</a></template
+              >
+            </el-table-column>
+          </el-table>
+        </el-scrollbar>
       </div>
     </div>
     <div class="bottom">
@@ -61,9 +93,15 @@
         <i class="iconfont icon-bofangicoyinlekongzhimianban"></i>
         <i class="iconfont icon-xiayiquicoyinlekongzhimianban"></i>
       </div>
-      <div class="progress">
-        <div class="played">
-          <div class="ball"></div>
+      <div class="msgAndProgress">
+        <div class="msg">
+          <span class="name">修炼爱情-林俊杰</span>
+          <span class="time">00:03/04:47</span>
+        </div>
+        <div class="progress">
+          <div class="played">
+            <div class="ball"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -75,15 +113,144 @@ import "./iconfont/iconfont.css";
 
 export default {
   name: "Play",
+  data() {
+    return {
+      tableData: [
+        {
+          date: "2016-05-02",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1518 弄",
+        },
+        {
+          date: "2016-05-04",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1517 弄",
+        },
+        {
+          date: "2016-05-01",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1519 弄",
+        },
+        {
+          date: "2016-05-03",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1516 弄",
+        },
+        {
+          date: "2016-05-03",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1516 弄",
+        },
+        {
+          date: "2016-05-03",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1516 弄",
+        },
+        {
+          date: "2016-05-03",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1516 弄",
+        },
+        {
+          date: "2016-05-03",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1516 弄",
+        },
+        {
+          date: "2016-05-03",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1516 弄",
+        },
+        {
+          date: "2016-05-03",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1516 弄",
+        },
+        {
+          date: "2016-05-03",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1516 弄",
+        },
+        {
+          date: "2016-05-03",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1516 弄",
+        },
+        {
+          date: "2016-05-03",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1516 弄",
+        },
+        {
+          date: "2016-05-03",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1516 弄",
+        },
+        {
+          date: "2016-05-03",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1516 弄",
+        },
+        {
+          date: "2016-05-03",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1516 弄",
+        },
+        {
+          date: "2016-05-03",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1516 弄",
+        },
+        {
+          date: "2016-05-03",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1516 弄",
+        },
+        {
+          date: "2016-05-03",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1516 弄",
+        },
+        {
+          date: "2016-05-03",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1516 弄",
+        },
+        {
+          date: "2016-05-03",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1516 弄",
+        },
+        {
+          date: "2016-05-03",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1516 弄",
+        },
+      ],
+    };
+  },
   computed: {},
-  methods: {},
+  methods: {
+    toggleSelection(rows) {
+      if (rows) {
+        rows.forEach((row) => {
+          this.$refs.multipleTable.toggleRowSelection(row);
+        });
+      } else {
+        this.$refs.multipleTable.clearSelection();
+      }
+    },
+    handleSelectionChange(val) {
+      this.multipleSelection = val;
+    },
+  },
   mounted() {},
 };
 </script>
 
 <style lang="less" scoped>
 a {
-  color: white;
+  color: #bdbdbd;
 }
 // 整个页面
 .play_container {
@@ -110,6 +277,20 @@ a {
 // 中间部分
 .center_container {
   display: flex;
+}
+// 滚动条
+.center_container .scrollbar {
+  height: 630px;
+  background: #393938;
+  color: #070707;
+}
+// 横向滚动条
+/deep/.el-scrollbar__wrap {
+  overflow-x: hidden;
+}
+// 每一行鼠标悬浮时
+/deep/ .el-table tbody tr:hover > td {
+  background-color: #141515;
 }
 // 左边
 .center_container .left {
@@ -144,31 +325,36 @@ a {
 */
 .center_container .center {
   width: 970px;
-  background: white;
-}
-.music_Content {
-  padding-top: 40px;
 }
 // 具体的音乐列表块
-.center_container .music_Content {
-  width: 100%;
-  height: 630px;
-  background: #393938;
-
-  overflow: hidden;
+/deep/.el-table td,
+/deep/.el-table th.is-leaf {
+  background: #393939;
+  border-bottom: none;
 }
-// 音乐列表
-.center_container .music_Content .musicList {
-  position: absolute;
-  overflow: auto;
+// 复选框的背景颜色
+/deep/.el-checkbox__inner {
+  background: transparent;
+}
+// 被选中时的背景颜色
+/deep/.el-checkbox__input.is-checked .el-checkbox__inner {
+  background: transparent;
+  border-color: #ccc;
+}
+// 表头复选框
+/deep/.el-checkbox__input.is-indeterminate .el-checkbox__inner {
+  background: transparent;
+  border-color: #ccc;
+}
+// 聚焦时
+/deep/.el-checkbox__input.is-focus .el-checkbox__inner {
+  background: transparent;
+  border-color: #ccc;
 }
 // 底部播放控制
 .bottom {
   width: 80%;
   height: 110px;
-  // position: absolute;
-  // bottom: 20px;
-  // background: red;
   display: flex;
   justify-content: space-evenly;
   align-items: center;
@@ -189,13 +375,20 @@ a {
   height: 4px;
   background: #848484;
 }
+// 歌曲信息
+.bottom .msg {
+  color: #cbcbcb;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
 // 已播放
 .bottom .progress .played {
   width: 10%;
   height: 100%;
   background: white;
 }
-// 播放秋
+// 播放球
 .bottom .progress .played .ball {
   width: 12px;
   height: 12px;

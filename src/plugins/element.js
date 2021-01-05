@@ -7,6 +7,11 @@ import {
 	Menu,
 	Carousel,
 	CarouselItem,
+	Scrollbar,
+	Upload,
+	Form,
+	Input,
+	FormItem,
 	Col,
 	Row,
 	Submenu,
@@ -22,3 +27,8 @@ Vue.use(CarouselItem);
 Vue.use(Col);
 Vue.use(Row);
 Vue.use(Submenu);
+Vue.use(Scrollbar);
+Vue.use(Form);
+Vue.use(FormItem);
+Vue.use(Input);
+Vue.use(Upload);

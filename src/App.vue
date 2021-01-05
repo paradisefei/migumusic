@@ -5,7 +5,7 @@
       <router-view></router-view>
       <Footer></Footer>
     </div>
-    <div v-else>
+    <div v-else style="height:100%">
       <Play></Play>
     </div>
   </div>
@@ -24,7 +24,6 @@ export default {
   },
   watch: {
     $route() {
-      console.log(this.$route);
       this.showPlay = this.$route.meta.showPlay
     },
   },
