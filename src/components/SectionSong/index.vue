@@ -2,7 +2,7 @@
   <div>
     <div class="sectionsong-container w">
       <div class="home-recommend-title">
-        <h2>歌单推荐</h2>
+        <h2>{{ h2Title }}</h2>
         <div class="home-recommend-more">
           <a href="#"
             >更多
@@ -53,7 +53,13 @@
 
 <script>
 export default {
-  name: "SectionSong"
+  name: "SectionSong",
+  props: {
+    h2Title: {
+      type: String,
+      default: "标题"
+    }
+  }
 };
 </script>
 
