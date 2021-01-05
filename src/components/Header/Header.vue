@@ -288,7 +288,6 @@ body {
 .black {
   width: 100%;
   height: 100%;
-  opacity: 70%;
   background-color: rgba(0, 0, 0, 0.7);
   position: fixed;
   z-index: 1000;
