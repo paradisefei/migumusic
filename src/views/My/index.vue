@@ -12,12 +12,13 @@
      -->
     <div class="top">
       <div class="avatar">
-        <img src="./images/uniaccess.png" class="avatarImg" />
+        <img :src="avatarUrl" class="avatarImg" v-if="avatarUrl"/>
+        <img src="@assets/images/no-login.png" class="avatarImg" v-else />
         <!-- 等级 -->
         <span class="level">LV5 咪咕新人</span>
       </div>
       <span class="username">
-        欢乐的大提琴
+        {{nickname}}
         <i class="iconfont icon-VIPICON"></i>
         <i class="iconfont icon-cailing"></i>
       </span>
@@ -47,40 +48,8 @@
         >
           <a>{{ item.title }}</a>
         </li>
-        <!-- <li class="active">
-          <router-link to="/my/listen">最近在听</router-link>
-        </li>
-        <li>
-          <a>我喜欢的</a>
-        </li>
-        <li>
-          <router-link to="/my/playlist">我的歌单</router-link>
-        </li>
-        <li>
-          <a>关注歌手</a>
-        </li>
-        <li>
-          <a>数字专辑</a>
-        </li>
-        <li>
-          <a>彩铃设置</a>
-        </li> -->
       </ul>
-      <!-- <Create></Create> -->
       <router-view></router-view>
-      <!-- <div class="right">
-        <div class="twoButtom">
-          <a class="tb play active">
-            <i class="iconfont icon-bofang"></i>
-            播放选中歌曲
-          </a>
-          <a class="tb add">
-            <i class="iconfont icon-tianjiadao"></i>
-            添加到
-          </a>
-        </div>
-        <SongList></SongList>
-      </div> -->
     </div>
   </div>
 </template>
@@ -90,10 +59,12 @@
  * 1.顶部背景图
  * 2.点击我的歌单，跳转到我的歌单界面
  *  1.需要改变li的样式
+ * 3.来到个人中心页面时，请求最近收听
  */
 import "./icon/iconfont.css";
 // import SongList from "@comps/SongList";
 // import Create from "@views/My/MyList/Create";
+import { mapState } from "vuex";
 export default {
   name: "My",
   data() {
@@ -131,7 +102,12 @@ export default {
       ],
     };
   },
-  computed: {},
+  computed: {
+    ...mapState({
+      nickname: state => state.login.nickname,
+      avatarUrl: state => state.login.avatarUrl,
+    })
+  },
   methods: {
     handleTitle(id) {
       if (this.isActive === id) return;

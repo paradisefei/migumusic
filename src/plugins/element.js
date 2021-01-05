@@ -32,3 +32,4 @@ Vue.use(Form);
 Vue.use(FormItem);
 Vue.use(Input);
 Vue.use(Upload);
+// Vue.use(Message);

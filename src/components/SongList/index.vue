@@ -2,7 +2,7 @@
   <div class="songList">
     <el-table
       ref="multipleTable"
-      :data="tableData"
+      :data="songList"
       tooltip-effect="dark"
       style="width: 100%"
       fit
@@ -24,25 +24,28 @@
       </el-table-column>
       <el-table-column label="歌曲">
         <template slot-scope="scope"
-          ><a>{{ scope.row.date }}</a></template
+          ><a>{{ scope.row.song }}</a></template
         >
       </el-table-column>
       <el-table-column prop="name" label="歌手">
         <template slot-scope="scope"
-          ><a>{{ scope.row.name }}</a></template
+          ><a>{{ scope.row.singer }}</a></template
         ></el-table-column
       >
       <el-table-column prop="address" label="专辑" show-overflow-tooltip>
         <template slot-scope="scope"
-          ><a>{{ scope.row.address }}</a></template
+          ><a>{{ scope.row.album }}</a></template
         >
       </el-table-column>
     </el-table>
+    <!-- 
+      1.根据数据的长度来确定
+     -->
     <el-pagination
       :page-size="20"
       :pager-count="11"
       layout="prev, pager, next"
-      :total="100"
+      :total="songList ? songList.length : 0"
     >
     </el-pagination>
   </div>
@@ -178,6 +181,11 @@ export default {
       ],
       // showPlay: true,
     };
+  },
+  props: {
+    songList:{
+      type: Array,
+    },
   },
   computed: {},
   methods: {

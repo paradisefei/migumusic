@@ -33,7 +33,8 @@
             @mouseleave="handleLoginDis"
           >
             <a>
-              <img src="../../assets/images/no-login.png" alt="" />
+              <img :src="avatarUrl" alt="" v-if="avatarUrl"/>
+              <img src="../../assets/images/no-login.png" alt="" v-else/>
             </a>
           </div>
           <div class="loginPageCon">
@@ -85,6 +86,7 @@
             <input
               class="inp"
               type="text"
+              v-model="phone"
               name=""
               id=""
               placeholder="手机号/邮箱/用户名"
@@ -92,6 +94,7 @@
             <input
               class="inp"
               type="password"
+              v-model="password"
               name=""
               id=""
               placeholder="密码"
@@ -105,7 +108,7 @@
               </div>
             </div>
           </div>
-          <button class="log">登录</button>
+          <button class="log" @click="toLogin">登录</button>
           <p class="text">
             登录即同意<a>《咪咕用户服务协议》</a>和<a>《咪咕隐私权政策》</a>
           </p>
@@ -116,15 +119,56 @@
 </template>
 
 <script>
+/**
+ * 1.手机手机号和密码
+ * 2.拿到数据发送请求
+ */
+import { Message } from "element-ui";
+import { mapState, mapActions } from "vuex";
 export default {
   name: "Header",
   data() {
     return {
       showLogin: false,
       mask: false,
+      phone: "",
+      password: "",
     };
   },
+  computed: {
+    ...mapState({
+      nickname: state => state.login.nickname,
+      avatarUrl: state => state.login.avatarUrl,
+    })
+  },
   methods: {
+    ...mapActions(["getLogin"]),
+    // 登录
+    async toLogin() {
+      /**
+       * 1.检验手机号或密码是否为空
+       *  1.弹出错误提示
+       *    1.elementui组件
+       *      1.按钮的防抖
+       * 2.登录成功会获取到一些数据，数据是保存在vuex中还是保存在localhost中
+       *  1.保存在vuex中
+       *    1.头部需要使用用户的头像和用户名信息
+       *    2.token
+       * 3.请求
+       *  1.api
+       * 4.跳转到个人中心页面
+       * 5.遮罩层也要隐藏
+       */
+      const { phone, password } = this;
+      if (!phone || !password) {
+        Message.error("用户名或密码不能为空");
+        return;
+      }
+      console.log("登录,请求用户数据");
+      await this.getLogin({phone, password});
+      this.mask = false;
+      this.$router.push("/my");
+    },
     handleLoginShow() {
       this.showLogin = true;
     },
@@ -210,13 +254,18 @@ body {
     }
   }
   // 登录
-  login {
-    position: relative;
-  }
+  // .login {
+  //   position: relative;
+  // }
   .loginImg {
     position: absolute;
     top: 18px;
     right: 0;
+  }
+  .loginImg img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
   }
   .loginPageCon {
     width: 360px;

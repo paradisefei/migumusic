@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Message } from "element-ui";
+// import { Message } from "element-ui";
 
 // 引入进度条插件
 import NProgress from "nprogress";
@@ -37,7 +37,7 @@ instance.interceptors.response.use(
   response => {
     // 进度条结束
     NProgress.done();
-    console.log("response", response);
+    // console.log("response", response);
     // 判断响应的code是否是200
     if (response.status === 200) {
       // 返回成功的响应数据
@@ -46,7 +46,7 @@ instance.interceptors.response.use(
 
     const { message } = response.data;
     // 提示错误
-    Message.error(message);
+    // Message.error(message);
     // 功能失败 --> 返回失败的Promise
     return Promise.reject(message);
   },
@@ -57,7 +57,7 @@ instance.interceptors.response.use(
     NProgress.done();
     const message = error.message || "网络错误";
     // 提示错误
-    Message.error(message);
+    // Message.error(message);
     return Promise.reject(message);
   }
 );

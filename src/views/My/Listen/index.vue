@@ -10,21 +10,39 @@
         添加到
       </a>
     </div>
-    <SongList></SongList>
+    <!-- 把列表数据传入到组件中去渲染 -->
+    <SongList :songList="recentlyListen"></SongList>
   </div>
 </template>
 
 <script>
+/**
+ * 1.挂载的时候请求最近播放数据
+ */
 import SongList from "@comps/SongList";
+import { mapState, mapActions } from "vuex";
 export default {
   name: "Listen",
   data() {
     return {};
   },
+  computed: {
+    ...mapState({
+      uid: state => state.login.uid,
+      recentlyListen: state => state.my.recentlyListen,
+    })
+  },
+  methods: {
+    ...mapActions(["getRecentlyListen"]),
+  },
   watch: {},
   components: {
     SongList,
   },
+  mounted(){
+    const { uid} = this;
+    this.getRecentlyListen({uid})
+  }
 };
 </script>
 
