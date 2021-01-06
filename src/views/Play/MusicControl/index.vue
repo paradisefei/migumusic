@@ -26,7 +26,7 @@
         </div>
       </div>
     </div> -->
-  <!-- <audio :src="songUrl" controls autoplay></audio> -->
+
   <aplayer
     autoplay
     :music="{
@@ -40,14 +40,6 @@
 </template>
 
 <script>
-/**
- * 1.点击切换播放和暂停图标
- * 2.接收正在播放的歌曲的id
- *  1.监视id的变化，每一次id的变化都要发送请求
- * 3.成功播放出音乐
- * 4.点击播放，要播放出歌曲
- * 5.引用音乐播放组件
- */
 import APlayer from "vue-aplayer";
 import dayjs from "dayjs";
 import { mapState, mapActions } from "vuex";

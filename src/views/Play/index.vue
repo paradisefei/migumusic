@@ -6,11 +6,7 @@
     </div>
     <div class="center_container">
       <ul class="left">
-        <!-- 正在播放哪个列表，这个图标就显示在哪里
-          1.加了active类，就会在前面
-         -->
         <li class="active">
-          <!-- <img class="isPlayingIcon" src="./images/playing.gif"> -->
           <a>默认播放列表</a>
         </li>
         <li>
@@ -43,11 +39,7 @@
             <el-table-column type="selection" width="50"> </el-table-column>
             <el-table-column type="index" width="50">
               <template slot-scope="scope">
-                <!-- <a>{{ scope.$index + 1 }}</a> -->
                 <span v-if="checkedRowIndex != scope.$index">
-                  <!-- 
-                    1.点击另一个之后，之前播放的那个图标应该显示数字而不是图标
-                   -->
                   <a
                     class="iconfont icon-bofang"
                     v-if="!scope.row.showPlay"
@@ -57,19 +49,7 @@
                   <a v-else @mouseenter="scope.row.showPlay = false">{{
                     scope.$index + 1
                   }}</a>
-                  <!-- <a v-if="scope.row.showPlay" @mouseenter="scope.row.showPlay = false">{{
-                    scope.$index + 1
-                  }}</a> -->
-                  <!-- 
-                    1.能变成正在播放的图标，说明前面一步就已经的把自己那一行的scope.row.showPlay变成true了
-                    2.点击前把自己的showPlay置为false
-                   -->
-                  <!-- <a
-                    class="iconfont icon-bofang"
-                    v-else
-                    @mouseleave="scope.row.showPlay = true"
-                    @click="playAudio(scope.$index, scope.row)"
-                  ></a> -->
+
                 </span>
                 <img v-else src="./images/playing.gif" /> </template
             ></el-table-column>
@@ -92,24 +72,12 @@
         </el-scrollbar>
       </div>
     </div>
-    <!-- 
-      1.封装组件
-      2.点击播放歌曲，把歌曲的id传到组件中，组件监视id的变化，一旦变化了就发送请求，渲染对应的歌曲信息
-     -->
     <MusicControl :songMsg="isPlayingSong"></MusicControl>
   </div>
 </template>
 
 <script>
-/**
- * 1.正在播放的列表
- *  1.可以选中和批量选中歌曲，将歌曲添加到正在播放列表中进行播放
- *  2.只有在播放页面才可以删除正在播放的列表中的歌曲
- *  3.正在播放的数据放入vuex中
- * 2.在每一个songList中，点击播放时，将当前歌曲添加到正在播放列表中
- * 3.这个页面挂载成功时，默认开始播放isPlayingList列表中的第一首歌曲
- *  1.每一行也有一个播放按钮和数字的切换
- */
+
 import MusicControl from "./MusicControl";
 import "./iconfont/iconfont.css";
 import { mapState, mapActions } from "vuex";
@@ -137,15 +105,7 @@ export default {
     ...mapActions(["getIsPlayingSong"]),
     // 表格某一行的样式
     tableRowClassName({ row, rowIndex }) {
-      /**
-       * 1.定义一个变量，表示被选中行的下标
-       * 2.点击播放按钮，这一行的就加上样式，其他行不加样式
-       *  1.点击播放按钮，拿到对应行的下标
-       *  2.当某一行的下标等于得到的下标，就加上样式
-       *    其他行的下标不等于得到的下标，就不加样式
-       * 3.被选中行，图标会变成正在播放的图标
-       */
-      // console.log(row, rowIndex, this.checkedRowIndex);
+
       row.index = rowIndex;
       // console.log(row);
       if (row.index === this.checkedRowIndex) {
@@ -156,17 +116,10 @@ export default {
     },
     // 点击播放
     playAudio(index, row) {
-      /**
-       * 1.点击播放，这一整行的字体颜色都变成红色
-       *  1.修改table中一整行的字体颜色
-       * 2.点击播放，把当前这首歌存到vuex中
-       */
-      console.log(11111111111, row);
-      // this.$set(row, "showPlay", false);
+
       row.showPlay = true;
       this.checkedRowIndex = index;
       this.getIsPlayingSong(row);
-      // this.
     },
     // 点击头像去到首页
     toMy() {
