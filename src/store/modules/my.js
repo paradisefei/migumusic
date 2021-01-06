@@ -25,6 +25,7 @@ export default {
     GET_RECENTLY_LISTEN(state, res) {
       /**
        * 1.对请求回来的数据进行处理
+       * 2.还要获取歌曲时长
        */
       state.recentlyListen = res.weekData.map((item) => {
         let song = item.song;
@@ -33,7 +34,8 @@ export default {
           pic: song.al.picUrl,
           singer: song.ar[0].name,
           song: song.name,
-          album: song.al.name
+          album: song.al.name,
+          time: song.dt
         }
       });
     },

@@ -15,7 +15,7 @@
             class="iconfont icon-bofang"
             v-if="scope.row.showPlay"
             @mouseleave="scope.row.showPlay = false"
-            @click="toPlay"
+            @click="toPlay(scope)"
           ></a>
           <a v-else @mouseenter="handleMouseEnter(scope.row)">{{
             scope.$index + 1
@@ -26,7 +26,7 @@
         <template slot-scope="scope">
           <div class="songAndPic">
             <img :src="scope.row.pic" class="songPic" />
-            <a>{{ scope.row.song }}</a>
+            <a class="songName">{{ scope.row.song }}</a>
           </div>
         </template>
       </el-table-column>
@@ -60,6 +60,7 @@
 
 <script>
 import "./iconfont/iconfont.css";
+import { mapActions } from "vuex";
 export default {
   name: "SongList",
   data() {
@@ -75,13 +76,9 @@ export default {
       type: Array,
     },
   },
-  watch: {
-    songList(newValue) {
-      this.songListFinally = newValue.slice(0, 10);
-    },
-  },
   computed: {},
   methods: {
+    ...mapActions(["addOneSong"]),
     // 点击分页器页码
     handleCurrentChange(value) {
       /**
@@ -89,14 +86,16 @@ export default {
        * 2.第2页，下标为10-19
        * 3.第3页，下标为20-29
        */
-      this.songListFinally = this.songList.slice(
-        value * 10 - 10,
-        value * 10
-      );
+      this.songListFinally = this.songList.slice(value * 10 - 10, value * 10);
     },
     // 去到播放界面
-    toPlay() {
-      console.log(111111111);
+    toPlay(scope) {
+      /**
+       * 1.把当前歌曲添加到正在播放的列表中
+       * 2.触发vuex中的函数执行
+       */
+      console.log(scope.row);
+      this.addOneSong(scope.row);
       this.$router.push("/play");
     },
     // 播放按钮显示隐藏
@@ -116,7 +115,9 @@ export default {
       this.multipleSelection = val;
     },
   },
-  mounted() {},
+  mounted() {
+    this.songListFinally = this.songList.slice(0, 10);
+  },
 };
 </script>
 
@@ -136,6 +137,10 @@ img.songPic {
 .songAndPic {
   display: flex;
   align-items: center;
+}
+// 歌名
+a.songName:hover {
+  color: #e91e63;
 }
 /deep/.el-table td,
 /deep/.el-table th.is-leaf {

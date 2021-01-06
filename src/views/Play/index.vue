@@ -2,7 +2,7 @@
   <div class="play_container">
     <div class="header">
       <img src="./images/logo.png" class="logo" />
-      <img src="./images/uniaccess.png" class="avatar" />
+      <img src="./images/uniaccess.png" class="avatar" @click="toMy" />
     </div>
     <div class="center_container">
       <ul class="left">
@@ -28,7 +28,7 @@
         <el-scrollbar class="scrollbar">
           <el-table
             ref="multipleTable"
-            :data="tableData"
+            :data="isPlayingList"
             tooltip-effect="dark"
             style="width: 100%; background: #393938"
             fit
@@ -42,17 +42,17 @@
             >
             <el-table-column label="歌曲">
               <template slot-scope="scope"
-                ><a>{{ scope.row.date }}</a></template
+                ><a>{{ scope.row.song }}</a></template
               >
             </el-table-column>
             <el-table-column prop="name" label="歌手">
               <template slot-scope="scope"
-                ><a>{{ scope.row.name }}</a></template
+                ><a>{{ scope.row.singer }}</a></template
               ></el-table-column
             >
-            <el-table-column prop="address" label="专辑" show-overflow-tooltip>
+            <el-table-column prop="address" label="时长" show-overflow-tooltip>
               <template slot-scope="scope"
-                ><a>{{ scope.row.address }}</a></template
+                ><a>{{ dayjs(scope.row.time).format("mm:ss") }}</a></template
               >
             </el-table-column>
           </el-table>
@@ -82,12 +82,22 @@
 </template>
 
 <script>
+/**
+ * 1.正在播放的列表
+ *  1.可以选中和批量选中歌曲，将歌曲添加到正在播放列表中进行播放
+ *  2.只有在播放页面才可以删除正在播放的列表中的歌曲
+ *  3.正在播放的数据放入vuex中
+ * 2.在每一个songList中，点击播放时，将当前歌曲添加到正在播放列表中
+ */
 import "./iconfont/iconfont.css";
+import { mapState } from "vuex";
+import dayjs from "dayjs";
 
 export default {
   name: "Play",
   data() {
     return {
+      dayjs: dayjs,
       tableData: [
         {
           date: "2016-05-02",
@@ -202,8 +212,16 @@ export default {
       ],
     };
   },
-  computed: {},
+  computed: {
+    ...mapState({
+      isPlayingList: (state) => state.play.isPlayingList,
+    }),
+  },
   methods: {
+    // 点击头像去到首页
+    toMy() {
+      this.$router.push("/");
+    },
     toggleSelection(rows) {
       if (rows) {
         rows.forEach((row) => {
@@ -246,6 +264,7 @@ a {
   width: 40px;
   height: 40px;
   border-radius: 50%;
+  cursor: pointer;
 }
 // 中间部分
 .center_container {
@@ -269,6 +288,7 @@ a {
 .center_container .left {
   width: 140px;
   color: #7b7b7b;
+  flex-shrink: 0;
 }
 // 每个列表项
 .center_container .left li {
@@ -324,6 +344,14 @@ a {
 /deep/.el-checkbox__input.is-focus .el-checkbox__inner {
   background: transparent;
   border-color: #ccc;
+}
+// table底部白条
+.el-table__row > td {
+  border: none;
+}
+
+.el-table::before {
+  height: 0px;
 }
 // 底部播放控制
 .bottom {
