@@ -17,7 +17,6 @@ export default {
 			state.newSongList = res.result.map((item) => {
 				let { id, picUrl } = item;
 				let { artists, name, album, duration} = item.song;
-
 				return {
 					id,
 					pic: picUrl,

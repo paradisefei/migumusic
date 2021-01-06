@@ -79,7 +79,7 @@ export default {
   },
   computed: {},
   methods: {
-    ...mapActions(["addOneSong"]),
+    ...mapActions(["addOneSong", "getIsPlayingSong"]),
     // 点击分页器页码
     handleCurrentChange(value) {
       /**
@@ -94,8 +94,10 @@ export default {
       /**
        * 1.把当前歌曲添加到正在播放的列表中
        * 2.触发vuex中的函数执行
+       * 3.把这首歌的信息保存到vuex中
        */
       console.log(scope.row);
+      this.getIsPlayingSong(scope.row);
       this.addOneSong(scope.row);
       this.$router.push("/play");
     },

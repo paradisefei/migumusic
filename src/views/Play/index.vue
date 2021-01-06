@@ -92,25 +92,11 @@
         </el-scrollbar>
       </div>
     </div>
-    <div class="bottom">
-      <!-- 使用字体图标 -->
-      <div class="control">
-        <i class="iconfont icon-shangyiquicoyinlekongzhimianban"></i>
-        <i class="iconfont icon-bofangicoyinlekongzhimianban"></i>
-        <i class="iconfont icon-xiayiquicoyinlekongzhimianban"></i>
-      </div>
-      <div class="msgAndProgress">
-        <div class="msg">
-          <span class="name">修炼爱情-林俊杰</span>
-          <span class="time">00:03/04:47</span>
-        </div>
-        <div class="progress">
-          <div class="played">
-            <div class="ball"></div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <!-- 
+      1.封装组件
+      2.点击播放歌曲，把歌曲的id传到组件中，组件监视id的变化，一旦变化了就发送请求，渲染对应的歌曲信息
+     -->
+    <MusicControl :songMsg="isPlayingSong"></MusicControl>
   </div>
 </template>
 
@@ -124,8 +110,9 @@
  * 3.这个页面挂载成功时，默认开始播放isPlayingList列表中的第一首歌曲
  *  1.每一行也有一个播放按钮和数字的切换
  */
+import MusicControl from "./MusicControl";
 import "./iconfont/iconfont.css";
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 import dayjs from "dayjs";
 
 export default {
@@ -134,14 +121,20 @@ export default {
     return {
       dayjs: dayjs,
       checkedRowIndex: 0,
+      songMsg: null,
     };
   },
   computed: {
     ...mapState({
       isPlayingList: (state) => state.play.isPlayingList,
+      isPlayingSong: (state) => state.play.isPlayingSong,
     }),
   },
+  components: {
+    MusicControl,
+  },
   methods: {
+    ...mapActions(["getIsPlayingSong"]),
     // 表格某一行的样式
     tableRowClassName({ row, rowIndex }) {
       /**
@@ -166,11 +159,14 @@ export default {
       /**
        * 1.点击播放，这一整行的字体颜色都变成红色
        *  1.修改table中一整行的字体颜色
+       * 2.点击播放，把当前这首歌存到vuex中
        */
       console.log(11111111111, row);
       // this.$set(row, "showPlay", false);
       row.showPlay = true;
       this.checkedRowIndex = index;
+      this.getIsPlayingSong(row);
+      // this.
     },
     // 点击头像去到首页
     toMy() {
