@@ -1,12 +1,10 @@
 <template>
   <div id="mylist">
     <div v-if="showCreate">
-      <div class="header">
+      <div class="header" v-show="showSongListName">
         <span class="list">我的歌单</span>
         <!-- 点击新建歌单会显示隐藏 -->
-        <a class="create" @click="showCreate = false" v-show="showSongListName"
-          >+创建歌单</a
-        >
+        <a class="create" @click="showCreate = false">+创建歌单</a>
       </div>
       <!-- 歌单列表 -->
       <PlayListDetail :playList="playListDetail"></PlayListDetail>
@@ -42,6 +40,10 @@ export default {
     toggleShowCreate() {
       this.showCreate = true;
     },
+    // 改变创建歌单状态
+    changeShowSongListName() {
+      this.showSongListName = !this.showSongListName;
+    },
   },
   watch: {},
   components: {
@@ -53,6 +55,7 @@ export default {
      * 1.挂载成功请求歌单数据
      */
     this.getPlayListDetail(this.uid);
+    this.$bus.$on("changeShowSongListName", this.changeShowSongListName);
   },
 };
 </script>

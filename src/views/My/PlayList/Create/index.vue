@@ -56,17 +56,22 @@ export default {
   },
   computed: {
     ...mapState({
-      createSongList: (state) => state.create.createSongList,
+      // createSongList: (state) => state.create.createSongList,
+      uid: (state) => state.login.uid,
     }),
   },
   methods: {
-    ...mapActions(["getCreateSongList"]),
+    ...mapActions(["getCreateSongList", "getPlayListDetail"]),
+    // ...mapActions(["getCreateSongList"]),
     // 保存歌单
-    save() {
+    async save() {
+      console.log(1);
+      // 调用接口，保存数据
+      await this.getCreateSongList(this.formLabelAlign.name);
       // 点击保存跳转到我的歌单页面，并重新发送请求
       this.$emit("toggleShowCreate");
-      // 发送请求
-      this.getCreateSongList(this.formLabelAlign.name);
+      // 发送请求,获取最新的歌单列表数据
+      await this.getPlayListDetail(this.uid);
     },
     // c添加歌单显示
     toggle() {
@@ -90,7 +95,7 @@ export default {
   },
   components: {},
   mounted() {
-    this.getCreateSongList(this.formLabelAlign.name);
+    // this.getCreateSongList(this.formLabelAlign.name);
   },
 };
 </script>
