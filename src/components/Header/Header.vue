@@ -193,14 +193,12 @@ export default {
         Message.error("用户名或密码不能为空");
         return;
       }
-      console.log("登录,请求用户数据");
       await this.getLogin({ phone, password });
-      this.mask = false;
       this.$router.push("/my");
+      this.mask = false;
     },
     // 鼠标移入请求登录
     handleLoginShow() {
-      console.log("去登录");
       if (this.nickname) {
         this.showLogout = true;
         return;
@@ -216,10 +214,10 @@ export default {
       this.mask = true;
     },
     // 退出登录
-    logout() {
+    async logout() {
       this.phone = "";
       this.password = "";
-      this.getLogout();
+      await this.getLogout();
       this.$router.push("/");
       this.showLogout = false;
     },
