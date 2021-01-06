@@ -216,10 +216,10 @@ export default {
       this.mask = true;
     },
     // 退出登录
-    logout() {
+    async logout() {
       this.phone = "";
       this.password = "";
-      this.getLogout();
+      await this.getLogout();
       this.$router.push("/");
       this.showLogout = false;
     },

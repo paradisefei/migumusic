@@ -18,8 +18,7 @@
         <el-table-column prop="createTime" label="创建日期"> </el-table-column>
         <el-table-column label="操作">
           <template>
-            <el-button icon="el-icon-edit" size="mini" @click="updataSongMsg"
-              >00
+            <el-button icon="el-icon-edit" size="mini" @click="updataSongMsg">
             </el-button>
             <el-button icon="el-icon-delete" size="mini"></el-button>
           </template>
@@ -31,8 +30,8 @@
     <div id="create" v-else>
       <div class="header">
         <!-- 点击返回，改变父组件中的值 -->
-        <a class="back" @click="showUpdata = true">返回</a>
-        <span class="title">更新歌单</span>
+        <a class="back" @click="updataSongMsg">返回</a>
+        <span class="title">编辑歌单</span>
       </div>
       <el-form label-width="80px" :model="formLabelAlign">
         <el-form-item label="歌单封面">
@@ -65,9 +64,7 @@
             <el-button class="save" type="primary" @click="save"
               >保存</el-button
             >
-            <el-button class="cancle" @click="showUpdata = true"
-              >取消</el-button
-            >
+            <el-button class="cancle" @click="updataSongMsg">取消</el-button>
           </div>
         </el-form-item>
       </el-form>
@@ -95,10 +92,15 @@ export default {
     },
   },
   methods: {
+    // 点击返回或取消时，改变头部的状态
+    changeSongList() {
+      this.$bus.$emit("changeShowSongListName");
+    },
     // 更新歌曲信息
     updataSongMsg() {
       // 使用全局事总线，当点击编辑按钮时，会触发更新页面的显示状态
       this.showUpdata = !this.showUpdata;
+      this.$bus.$emit("changeShowSongListName");
     },
     save() {
       // 点击保存跳转到我的歌单页面，并重新发送请求
@@ -114,7 +116,7 @@ export default {
       }
       return "";
     },
-  
+
     handleAvatarSuccess(res, file) {
       this.imageUrl = URL.createObjectURL(file.raw);
     },
