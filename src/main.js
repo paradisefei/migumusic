@@ -8,6 +8,7 @@ import "./plugins/element.js";
 
 // 引入公共资源
 import "./styles/reset.css";
+import "./styles/row.css";
 import "./assets/iconfont/iconfont.css";
 Vue.config.productionTip = false;
 

@@ -6,7 +6,11 @@
     </div>
     <div class="center_container">
       <ul class="left">
+        <!-- 正在播放哪个列表，这个图标就显示在哪里
+          1.加了active类，就会在前面
+         -->
         <li class="active">
+          <!-- <img class="isPlayingIcon" src="./images/playing.gif"> -->
           <a>默认播放列表</a>
         </li>
         <li>
@@ -15,7 +19,7 @@
       </ul>
       <div class="center">
         <div class="twoButtom">
-          <a class="tb play active">
+          <a class="tb play activeBtn">
             <i class="iconfont icon-bofang"></i>
             添加到歌单
           </a>
@@ -31,15 +35,44 @@
             :data="isPlayingList"
             tooltip-effect="dark"
             style="width: 100%; background: #393938"
+            :row-style="{ height: '80px' }"
             fit
             @selection-change="handleSelectionChange"
+            :row-class-name="tableRowClassName"
           >
             <el-table-column type="selection" width="50"> </el-table-column>
             <el-table-column type="index" width="50">
-              <template slot-scope="scope"
-                ><a>{{ scope.$index + 1 }}</a></template
-              ></el-table-column
-            >
+              <template slot-scope="scope">
+                <!-- <a>{{ scope.$index + 1 }}</a> -->
+                <span v-if="checkedRowIndex != scope.$index">
+                  <!-- 
+                    1.点击另一个之后，之前播放的那个图标应该显示数字而不是图标
+                   -->
+                  <a
+                    class="iconfont icon-bofang"
+                    v-if="!scope.row.showPlay"
+                    @mouseleave="scope.row.showPlay = true"
+                    @click="playAudio(scope.$index, scope.row)"
+                  ></a>
+                  <a v-else @mouseenter="scope.row.showPlay = false">{{
+                    scope.$index + 1
+                  }}</a>
+                  <!-- <a v-if="scope.row.showPlay" @mouseenter="scope.row.showPlay = false">{{
+                    scope.$index + 1
+                  }}</a> -->
+                  <!-- 
+                    1.能变成正在播放的图标，说明前面一步就已经的把自己那一行的scope.row.showPlay变成true了
+                    2.点击前把自己的showPlay置为false
+                   -->
+                  <!-- <a
+                    class="iconfont icon-bofang"
+                    v-else
+                    @mouseleave="scope.row.showPlay = true"
+                    @click="playAudio(scope.$index, scope.row)"
+                  ></a> -->
+                </span>
+                <img v-else src="./images/playing.gif" /> </template
+            ></el-table-column>
             <el-table-column label="歌曲">
               <template slot-scope="scope"
                 ><a>{{ scope.row.song }}</a></template
@@ -88,6 +121,8 @@
  *  2.只有在播放页面才可以删除正在播放的列表中的歌曲
  *  3.正在播放的数据放入vuex中
  * 2.在每一个songList中，点击播放时，将当前歌曲添加到正在播放列表中
+ * 3.这个页面挂载成功时，默认开始播放isPlayingList列表中的第一首歌曲
+ *  1.每一行也有一个播放按钮和数字的切换
  */
 import "./iconfont/iconfont.css";
 import { mapState } from "vuex";
@@ -98,6 +133,7 @@ export default {
   data() {
     return {
       dayjs: dayjs,
+      checkedRowIndex: 0,
     };
   },
   computed: {
@@ -106,6 +142,36 @@ export default {
     }),
   },
   methods: {
+    // 表格某一行的样式
+    tableRowClassName({ row, rowIndex }) {
+      /**
+       * 1.定义一个变量，表示被选中行的下标
+       * 2.点击播放按钮，这一行的就加上样式，其他行不加样式
+       *  1.点击播放按钮，拿到对应行的下标
+       *  2.当某一行的下标等于得到的下标，就加上样式
+       *    其他行的下标不等于得到的下标，就不加样式
+       * 3.被选中行，图标会变成正在播放的图标
+       */
+      // console.log(row, rowIndex, this.checkedRowIndex);
+      row.index = rowIndex;
+      // console.log(row);
+      if (row.index === this.checkedRowIndex) {
+        return "success-row";
+      } else {
+        return "";
+      }
+    },
+    // 点击播放
+    playAudio(index, row) {
+      /**
+       * 1.点击播放，这一整行的字体颜色都变成红色
+       *  1.修改table中一整行的字体颜色
+       */
+      console.log(11111111111, row);
+      // this.$set(row, "showPlay", false);
+      row.showPlay = true;
+      this.checkedRowIndex = index;
+    },
     // 点击头像去到首页
     toMy() {
       this.$router.push("/");
@@ -185,6 +251,21 @@ a {
 .active a {
   color: #e50078;
 }
+.active {
+  position: relative;
+  // background: green;
+}
+.active:before {
+  content: "";
+  display: block;
+  width: 20px;
+  height: 48px;
+  background: url("./images/playing.gif") no-repeat;
+  background-size: contain;
+  position: absolute;
+  left: -20px;
+  top: 10px;
+}
 // 中间
 .twoButtom {
   font-size: 14px;
@@ -232,6 +313,19 @@ a {
 /deep/.el-checkbox__input.is-focus .el-checkbox__inner {
   background: transparent;
   border-color: #ccc;
+}
+// 改变表格中的字体样式
+// /deep/.el-table .el-table__row {
+//   color: green;
+// }
+// 表格某一行的样式
+
+/deep/.el-table {
+  color: red !important;
+}
+
+/deep/.el-table .warning-row {
+  color: #34c934 !important;
 }
 // table底部白条
 .el-table__row > td {
