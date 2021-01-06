@@ -61,7 +61,7 @@
             placeholder="请输入歌单介绍"
           ></el-input>
           <div class="btn">
-            <el-button class="save" type="primary" @click="save"
+            <el-button class="save" type="primary" @click="save()"
               >保存</el-button
             >
             <el-button class="cancle" @click="updataSongMsg">取消</el-button>
@@ -73,6 +73,7 @@
 </template>
 
 <script>
+import { mapState, mapActions } from "vuex";
 export default {
   name: "PlayListDetail",
   data() {
@@ -84,6 +85,7 @@ export default {
         type: "",
       },
       imageUrl: "",
+      id: "",
     };
   },
   props: {
@@ -91,7 +93,30 @@ export default {
       type: Array,
     },
   },
+  computed: {
+    ...mapState({
+      uid: (state) => state.login.uid,
+      updateSongListName: (state) => state.updateSongList.updateSongListName,
+    }),
+  },
   methods: {
+    ...mapActions(["getUpdateSongListName",'getPlayListDetail']),
+    //  将 `this.getUpdateSongListName()` 映射为 `this.$store.dispatch('getUpdateSongListName')`
+    save() {
+      // 点击保存跳转到我的歌单页面，并重新发送请求
+      // this.$emit("toggleShowCreate");
+      // 发送请求
+      // 需要2个参数，一个是当前歌单的id值，第二个是输入的歌单的名字
+      // 获取当前歌单的id值，当点击修改时可以得到该行的相关信息，歌单的id值可以这个时候获取到
+      let id = this.id;
+      let name = this.formLabelAlign.name;
+      console.log(this);
+      let cookies = window.localStorage.getItem("userMsg");
+      // 登录状态有cookies，可以修改歌单
+      if (cookies) {
+        this.getUpdateSongListName({ id, name });
+      }
+    },
     // 点击返回或取消时，改变头部的状态
     changeSongList() {
       this.$bus.$emit("changeShowSongListName");
@@ -99,16 +124,18 @@ export default {
     // 更新歌曲信息
     updataSongMsg() {
       // 使用全局事总线，当点击编辑按钮时，会触发更新页面的显示状态
+
       this.showUpdata = !this.showUpdata;
       this.$bus.$emit("changeShowSongListName");
     },
-    save() {
-      // 点击保存跳转到我的歌单页面，并重新发送请求
-      // this.$emit("toggleShowCreate");
-      // 发送请求
-    },
-    tableRowClassName({ rowIndex }) {
+    // 点击保存时触发的函数
+
+    tableRowClassName({ row, rowIndex }) {
       // console.log(row);
+      // 拿到歌单的id值，并更新data中的id
+      let { id } = row;
+      this.id = id;
+      // console.log(id);
       if (rowIndex === 1) {
         return "warning-row";
       } else if (rowIndex === 3) {

@@ -5,12 +5,14 @@ import my from "./my";
 import migulist from "./migulist";
 import play from "./play";
 import create from "./create";
+import updateSongList from "./updateSongList";
 // 统一暴露出去
 export default {
-  home,
-  login,
-  my,
-  migulist,
-  play, 
+	home,
+	login,
+	my,
+	migulist,
+	play,
 	create,
-}
+	updateSongList,
+};
