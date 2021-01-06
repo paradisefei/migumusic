@@ -1,7 +1,9 @@
 <template>
   <div class="play_container">
     <div class="header">
-      <img src="./images/logo.png" class="logo" />
+      <router-link to="/"
+        ><img src="./images/logo.png" class="logo"
+      /></router-link>
       <img src="./images/uniaccess.png" class="avatar" @click="toMy" />
     </div>
     <div class="center_container">
@@ -49,7 +51,6 @@
                   <a v-else @mouseenter="scope.row.showPlay = false">{{
                     scope.$index + 1
                   }}</a>
-
                 </span>
                 <img v-else src="./images/playing.gif" /> </template
             ></el-table-column>
@@ -73,15 +74,34 @@
       </div>
     </div>
     <MusicControl :songMsg="isPlayingSong"></MusicControl>
+    <!-- <div class="bottom">
+      <div class="control">
+        <i class="iconfont icon-shangyiquicoyinlekongzhimianban"></i>
+        <i class="iconfont icon-bofangicoyinlekongzhimianban"></i>
+        <i class="iconfont icon-xiayiquicoyinlekongzhimianban"></i>
+      </div>
+      <div class="msgAndProgress">
+        <div class="msg">
+          <span class="name">修炼爱情-林俊杰</span>
+          <span class="time">00:03/04:47</span>
+        </div>
+        <div class="progress">
+          <div class="played">
+            <div class="ball"></div>
+          </div>
+        </div>
+      </div>
+    </div> -->
+    <Lyric></Lyric>
   </div>
 </template>
 
 <script>
-
 import MusicControl from "./MusicControl";
 import "./iconfont/iconfont.css";
 import { mapState, mapActions } from "vuex";
 import dayjs from "dayjs";
+import Lyric from "./Lyric";
 
 export default {
   name: "Play",
@@ -100,12 +120,12 @@ export default {
   },
   components: {
     MusicControl,
+    Lyric,
   },
   methods: {
     ...mapActions(["getIsPlayingSong"]),
     // 表格某一行的样式
     tableRowClassName({ row, rowIndex }) {
-
       row.index = rowIndex;
       // console.log(row);
       if (row.index === this.checkedRowIndex) {
@@ -116,7 +136,6 @@ export default {
     },
     // 点击播放
     playAudio(index, row) {
-
       row.showPlay = true;
       this.checkedRowIndex = index;
       this.getIsPlayingSong(row);

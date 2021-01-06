@@ -11,6 +11,7 @@ export default {
     isPlayingSong: null,
     // 歌曲的url
     songUrl: "",
+    songListId: []
   },
   getters: {},
   actions: {
@@ -43,6 +44,23 @@ export default {
     },
     GET_IS_PLAYING_SONG(state, data) {
       state.isPlayingSong = data;
+      const res = state.isPlayingList.find(item => item.id === data.id);
+      if (res) return;
+      state.isPlayingList.unshift(data);
+    },
+    ALL_SONG(state, data) {
+      const { songList, id } = data;
+      const res = state.songListId.find(item => item.id === id);
+      if (res) return;
+      state.songListId.push({ id });
+      songList.forEach(item => {
+        state.isPlayingList.unshift(item);
+      });
+    },
+    SEARCH_SONG(state, data) {
+      console.log("vuex", data);
+      state.isPlayingList = [];
+      state.isPlayingList = data;
     }
   }
 };

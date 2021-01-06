@@ -23,8 +23,9 @@
             name=""
             id=""
             placeholder="搜索歌曲、歌手、MV"
+            v-model="keywords"
           />
-          <span class="iconfont icon-search"></span>
+          <span class="iconfont icon-search" @click="searchKeywords"></span>
         </div>
         <div class="login">
           <!-- 
@@ -102,12 +103,7 @@
     </div>
     <div class="black" v-show="mask">
       <form class="passLogin">
-        <img
-          class="img"
-          src="../../assets/images/x.png"
-          alt=""
-          @click="cancleMask"
-        />
+        <img class="img" src="../../assets/images/x.png" alt="" @click="cancleMask" />
         <div class="loginCon">
           <div class="loginWays">
             <p>短信登录</p>
@@ -141,9 +137,7 @@
             </div>
           </div>
           <button class="log" @click="toLogin">登录</button>
-          <p class="text">
-            登录即同意<a>《咪咕用户服务协议》</a>和<a>《咪咕隐私权政策》</a>
-          </p>
+          <p class="text">登录即同意<a>《咪咕用户服务协议》</a>和<a>《咪咕隐私权政策》</a></p>
         </div>
       </form>
     </div>
@@ -151,6 +145,8 @@
 </template>
 
 <script>
+import { reqSearchKeyWords } from "@api/header";
+
 import { Message } from "element-ui";
 import { mapState, mapActions } from "vuex";
 import "./iconfont/iconfont.css";
@@ -164,13 +160,14 @@ export default {
       mask: false,
       phone: "",
       password: "",
+      keywords: ""
     };
   },
   computed: {
     ...mapState({
-      nickname: (state) => state.login.nickname,
-      avatarUrl: (state) => state.login.avatarUrl,
-    }),
+      nickname: state => state.login.nickname,
+      avatarUrl: state => state.login.avatarUrl
+    })
   },
   methods: {
     ...mapActions(["getLogin", "getLogout"]),
@@ -224,7 +221,33 @@ export default {
     cancleMask() {
       this.mask = false;
     },
-  },
+    /* 搜索功能 */
+    async searchKeywords() {
+      const { keywords } = this;
+      if (!keywords) return;
+      const res = await reqSearchKeyWords(keywords);
+      if (res.code === 200) {
+        const songs = res.result.songs;
+        // console.log(songs);
+        const playList = [];
+        songs.forEach(item => {
+          playList.push({
+            id: item.id,
+            name: item.name,
+            /* 搜索返回只有默认图片  没有歌曲信息的图片*/
+            picUrl: item.artists[0].img1v1Url,
+            singer: item.artists[0].name,
+            time: item.duration
+          });
+        });
+        // console.log(playList);
+        this.$store.commit("SEARCH_SONG", playList);
+        this.$router.push({
+          name: "play"
+        });
+      }
+    }
+  }
 };
 </script>
 
@@ -275,14 +298,17 @@ body {
     position: relative;
     .search {
       margin: 13px 0;
-      padding-left: 13px;
+      padding-left: 16px;
       width: 230px;
       border-radius: 50px;
       background-color: #f2f2f2;
       outline: none;
       border: none;
+      color: #999;
+      font-size: 14px;
     }
     .iconfont {
+      color: #999;
       display: inline-block;
       width: 25px;
       height: 25px;

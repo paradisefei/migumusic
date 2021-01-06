@@ -93,6 +93,7 @@ a {
       height: 70px;
       left: 33%;
       top: 50%-25px;
+      cursor: pointer;
     }
     .inner-item-container {
       margin: 0 21px;
