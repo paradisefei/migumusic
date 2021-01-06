@@ -29,6 +29,11 @@ export default {
       songList.forEach(item => {
         state.isPlayingList.unshift(item);
       });
+    },
+    SEARCH_SONG(state, data) {
+      console.log("vuex", data);
+      state.isPlayingList = [];
+      state.isPlayingList = data;
     }
   }
 };

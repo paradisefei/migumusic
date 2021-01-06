@@ -255,6 +255,7 @@ export default {
     })
   },
   methods: {
+    /* 获取歌单 */
     async getRecommendList(index) {
       const { id } = this.recommendPlayList[index];
 
@@ -277,6 +278,7 @@ export default {
         name: "play"
       });
     },
+    // tab切换
     tabChange(index) {
       console.log(index);
       this.tabChangeList.map(item => {
@@ -285,15 +287,14 @@ export default {
       this.tabChangeList[index].active = true;
       this.getQuickPlayList(this.tabChangeList[index].topId);
     },
+    /* 鼠标移入图片显示效果 */
     hoverBigImg(index) {
       this.$set(this.recommendPlayList[index], "isPlayShow", true);
     },
     leaveBigImg(index) {
       this.$set(this.recommendPlayList[index], "isPlayShow", false);
     },
-    test(id) {
-      console.log(id);
-    },
+    /* 切换排行榜单 */
     async rankChange(index) {
       const { topListId, title } = this.rankCourselList[index];
       this.rankTitle = title;

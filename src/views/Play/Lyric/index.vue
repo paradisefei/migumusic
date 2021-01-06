@@ -40,7 +40,7 @@
             <p>231asdasdad23</p>
             <p>231asdasdad23</p>
             <p>231asdasdad23</p>
-            <p>231asdasdad23</p>
+            <p>231asdasdad2asdasdasdasdsadsadsadsadasd fghsdgdfg ed gdfg asfasdf asd3</p>
             <p>231asdasdad23</p>
             <p>231asdasdad23</p>
           </el-scrollbar>
@@ -60,7 +60,7 @@ export default {
 .outer {
   width: calc(100vw - 100px - 140px - 1130px);
   min-width: 300px;
-  background: brown;
+  // background: brown;
   height: calc(100vh - 110px - 100px);
   min-height: 200px;
   position: fixed;
@@ -73,7 +73,7 @@ export default {
   position: relative;
   width: 240px;
   height: 100%;
-  background: gold;
+  // background: gold;
   margin: 0 auto;
 
   .inner-img {
@@ -94,7 +94,7 @@ export default {
     min-height: 100px;
     margin: auto;
     margin-top: 200px;
-    background: yellowgreen;
+    // background: yellowgreen;
     .inner-container-title {
       text-align: center;
       color: #999;
@@ -106,7 +106,8 @@ export default {
       }
     }
     .inner-container-scorll {
-      background: turquoise;
+      text-align: center;
+      // background: turquoise;
       position: absolute;
       top: 0;
       right: 0;
@@ -116,6 +117,10 @@ export default {
       margin: auto;
       margin-top: 60px;
       overflow: hidden;
+
+      &:hover {
+        cursor: move;
+      }
       .scroll {
         height: 100%;
         width: 100%;
@@ -125,6 +130,9 @@ export default {
       }
       /deep/ .el-select-dropdown .el-scrollbar {
         padding-bottom: 17px;
+      }
+      /deep/ .el-scrollbar__thumb {
+        display: none;
       }
     }
   }

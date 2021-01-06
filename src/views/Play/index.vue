@@ -1,7 +1,7 @@
 <template>
   <div class="play_container">
     <div class="header">
-      <img src="./images/logo.png" class="logo" />
+      <router-link to="/"><img src="./images/logo.png" class="logo"/></router-link>
       <img src="./images/uniaccess.png" class="avatar" @click="toMy" />
     </div>
     <div class="center_container">
