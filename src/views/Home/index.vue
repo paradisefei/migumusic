@@ -276,11 +276,20 @@ export default {
       this.getHotList(topListId);
     },
     ...mapActions(["getRecommendPlayList"]),
-    /* 华语歌单 */
+    /* 新歌速递 */
     async getQuickPlayList(id) {
+      const iDom = document.querySelector(".newsong-data-right");
+      let loadingInstance = Loading.service({
+        target: iDom,
+        background: "#f2f2f2"
+      });
+
       const resPlayListChinese = await reqGetQuickPlayList(id);
       this.playList = resPlayListChinese.playlist.tracks.splice(1, 8);
       this.playListImg = this.playList.slice(0, 6);
+      this.$nextTick(() => {
+        loadingInstance.close();
+      });
     },
     getSongId(id) {
       /* if (e) {
