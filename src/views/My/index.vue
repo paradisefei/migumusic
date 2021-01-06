@@ -84,7 +84,7 @@ export default {
   methods: {
     handleTitle(id) {
       if (this.isActive === id) return;
-      console.log(id);
+      // console.log(id);
       this.isActive = id;
 
       if (id === 1) {

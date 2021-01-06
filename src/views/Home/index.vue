@@ -232,13 +232,13 @@ export default {
     },
     songMouseEnter(list) {
       this.$set(list, "isPlayButtonShow", true);
-      console.log(list);
+      // console.log(list);
 
       // this.isPlayButtonShow = true;
     },
     songMouseLeave(list) {
       this.$set(list, "isPlayButtonShow", false);
-      console.log(list);
+      // console.log(list);
     }
   },
   async mounted() {
