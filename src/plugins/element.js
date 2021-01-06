@@ -1,21 +1,22 @@
 import Vue from "vue";
 import {
-	Button,
-	Table,
-	TableColumn,
-	Pagination,
-	Menu,
-	Carousel,
-	CarouselItem,
-	Scrollbar,
-	Upload,
-	Form,
-	Input,
-	FormItem,
-	Col,
-	Row,
-	Submenu,
-	MenuItem,
+  Button,
+  Table,
+  TableColumn,
+  Pagination,
+  Menu,
+  Carousel,
+  CarouselItem,
+  Scrollbar,
+  Upload,
+  Form,
+  Input,
+  FormItem,
+  Col,
+  Row,
+  Submenu,
+  MenuItem,
+  Loading
 } from "element-ui";
 
 Vue.use(Button);
@@ -34,4 +35,6 @@ Vue.use(FormItem);
 Vue.use(Input);
 Vue.use(Upload);
 Vue.use(MenuItem);
-// Vue.use(Message);
+Vue.use(Loading);
+
+Vue.prototype.$loading = Loading.service;
