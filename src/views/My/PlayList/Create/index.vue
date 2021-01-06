@@ -49,7 +49,6 @@ export default {
     return {
       formLabelAlign: {
         name: "",
-        region: "",
         type: "",
       },
       imageUrl: "",
