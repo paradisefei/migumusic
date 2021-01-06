@@ -20,8 +20,8 @@
             添加到歌单
           </a>
           <a class="tb add">
-            <i class="iconfont icon-tianjiadao"></i>
-            添加到
+            <i class="iconfont icon-lajitong"></i>
+            删除
           </a>
         </div>
 
@@ -280,6 +280,7 @@ a {
 // 中间
 .twoButtom {
   font-size: 14px;
+  margin-bottom: 30px;
   display: flex;
   background: #393938;
   color: white;
@@ -297,7 +298,7 @@ a {
   1.有最大高度，超过这个高度的部分隐藏，使用滚轮滑动查看
 */
 .center_container .center {
-  width: 970px;
+  width: 1130px;
 }
 // 具体的音乐列表块
 /deep/.el-table td,
@@ -326,8 +327,10 @@ a {
 }
 // 底部播放控制
 .bottom {
-  width: 80%;
+  width: 1130px;
   height: 110px;
+  padding-top: 20px;
+  margin-left: 70px;
   display: flex;
   justify-content: space-evenly;
   align-items: center;
@@ -335,13 +338,25 @@ a {
 .bottom .control {
   width: 280px;
   height: 100%;
-  font-size: 32px;
   color: white;
   // background: yellow;
   flex-shrink: 0;
   display: flex;
   justify-content: space-around;
   align-items: center;
+}
+// 控制条中的字体图标
+.bottom .control .iconfont {
+  font-size: 32px;
+}
+// 右边的进度条
+.msgAndProgress {
+  height: 100%;
+  padding-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  // align-items: center;
+  justify-content: center;
 }
 .bottom .progress {
   width: 760px;
@@ -354,6 +369,10 @@ a {
   display: flex;
   justify-content: space-between;
   margin-bottom: 10px;
+}
+// 歌曲名
+.bottom .msg .name {
+  font-size: 14px;
 }
 // 已播放
 .bottom .progress .played {

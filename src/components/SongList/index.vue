@@ -2,7 +2,7 @@
   <div class="songList">
     <el-table
       ref="multipleTable"
-      :data="songList"
+      :data="songListFinally"
       tooltip-effect="dark"
       style="width: 100%"
       fit
@@ -43,12 +43,16 @@
     </el-table>
     <!-- 
       1.根据数据的长度来确定
+      2.点击对应页码，显示那一页的数据
+        1.根据页码，重新赋值最终要被渲染的数据
      -->
     <el-pagination
-      :page-size="20"
+      :page-size="10"
       :pager-count="11"
       layout="prev, pager, next"
       :total="songList ? songList.length : 0"
+      @current-change="handleCurrentChange"
+      :current-page.sync="currentPage"
     >
     </el-pagination>
   </div>
@@ -62,6 +66,8 @@ export default {
     return {
       fit: true,
       // showPlay: true,
+      songListFinally: [],
+      currentPage: 1,
     };
   },
   props: {
@@ -69,8 +75,25 @@ export default {
       type: Array,
     },
   },
+  watch: {
+    songList(newValue) {
+      this.songListFinally = newValue.slice(0, 10);
+    },
+  },
   computed: {},
   methods: {
+    // 点击分页器页码
+    handleCurrentChange(value) {
+      /**
+       * 1.第1页，下标为0-9
+       * 2.第2页，下标为10-19
+       * 3.第3页，下标为20-29
+       */
+      this.songListFinally = this.songList.slice(
+        value * 10 - 10,
+        value * 10
+      );
+    },
     // 去到播放界面
     toPlay() {
       console.log(111111111);
