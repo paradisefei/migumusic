@@ -151,10 +151,6 @@
 </template>
 
 <script>
-/**
- * 1.手机手机号和密码
- * 2.拿到数据发送请求
- */
 import { Message } from "element-ui";
 import { mapState, mapActions } from "vuex";
 import "./iconfont/iconfont.css";
@@ -180,10 +176,6 @@ export default {
     ...mapActions(["getLogin", "getLogout"]),
     // 点击跳转到个人中心页面
     toMy() {
-      /**
-       * 1.如果用户未登录，则点击无效
-       * 2.如果用户已经登录，则鼠标移入时不会出现登录框
-       */
       // 未登录
       if (this.showLogin) {
         Message.error("请先登录");
@@ -196,20 +188,6 @@ export default {
     },
     // 登录
     async toLogin() {
-      /**
-       * 1.检验手机号或密码是否为空
-       *  1.弹出错误提示
-       *    1.elementui组件
-       *      1.按钮的防抖
-       * 2.登录成功会获取到一些数据，数据是保存在vuex中还是保存在localhost中
-       *  1.保存在vuex中
-       *    1.头部需要使用用户的头像和用户名信息
-       *    2.token
-       * 3.请求
-       *  1.api
-       * 4.跳转到个人中心页面
-       * 5.遮罩层也要隐藏
-       */
       const { phone, password } = this;
       if (!phone || !password) {
         Message.error("用户名或密码不能为空");
@@ -222,15 +200,8 @@ export default {
     },
     // 鼠标移入请求登录
     handleLoginShow() {
-      /**
-       * 1.如果用户未登录，则出现去登录的那个弹窗
-       * 2.如果用户已登录，则出现可退出登录的弹窗
-       */
       console.log("去登录");
       if (this.nickname) {
-        /**
-         * 1.如果登录，则显示登出弹窗
-         */
         this.showLogout = true;
         return;
       }
@@ -246,13 +217,6 @@ export default {
     },
     // 退出登录
     logout() {
-      /**
-       * 1.把vuex中的登录信息都置为空
-       *  1.不需要发送请求，直接触发mutation函数即可
-       * 2.跳转到首页
-       * 3.把退出登录的弹窗隐藏
-       * 4.把用户名和密码置空
-       */
       this.phone = "";
       this.password = "";
       this.getLogout();

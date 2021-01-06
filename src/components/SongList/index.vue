@@ -41,11 +41,7 @@
         >
       </el-table-column>
     </el-table>
-    <!-- 
-      1.根据数据的长度来确定
-      2.点击对应页码，显示那一页的数据
-        1.根据页码，重新赋值最终要被渲染的数据
-     -->
+    
     <el-pagination
       :page-size="10"
       :pager-count="11"
@@ -75,6 +71,11 @@ export default {
     songList: {
       type: Array,
     },
+  },
+  watch: {
+    songList(newValue) {
+    this.songListFinally = newValue.slice(0, 10);
+    }
   },
   computed: {},
   methods: {
@@ -116,7 +117,6 @@ export default {
     },
   },
   mounted() {
-    this.songListFinally = this.songList.slice(0, 10);
   },
 };
 </script>
