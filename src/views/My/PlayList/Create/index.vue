@@ -20,7 +20,7 @@
       </el-form-item>
       <el-form-item label="歌单名称">
         <el-input
-          v-model="formLabelAlign.region"
+          v-model="formLabelAlign.name"
           placeholder="请输入歌单名称"
           height="100px;"
         ></el-input>
@@ -33,8 +33,8 @@
           placeholder="请输入歌单介绍"
         ></el-input>
         <div class="btn">
-          <el-button type="primary">保存</el-button>
-          <el-button>取消</el-button>
+          <el-button type="primary" @click="save">保存</el-button>
+          <el-button @click="toggle">取消</el-button>
         </div>
       </el-form-item>
     </el-form>
@@ -42,19 +42,33 @@
 </template>
 
 <script>
+import { mapState, mapActions } from "vuex";
 export default {
   name: "Create",
   data() {
     return {
       formLabelAlign: {
         name: "",
-        region: "",
         type: "",
       },
       imageUrl: "",
     };
   },
+  computed: {
+    ...mapState({
+      createSongList: (state) => state.create.createSongList,
+    }),
+  },
   methods: {
+    ...mapActions(["getCreateSongList"]),
+    // 保存歌单
+    save() {
+      // 点击保存跳转到我的歌单页面，并重新发送请求
+      this.$emit("toggleShowCreate");
+      // 发送请求
+      this.getCreateSongList(this.formLabelAlign.name);
+    },
+    // c添加歌单显示
     toggle() {
       this.$emit("toggleShowCreate");
     },
@@ -75,6 +89,9 @@ export default {
     },
   },
   components: {},
+  mounted() {
+    this.getCreateSongList(this.formLabelAlign.name);
+  },
 };
 </script>
 

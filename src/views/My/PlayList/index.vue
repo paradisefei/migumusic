@@ -4,7 +4,9 @@
       <div class="header">
         <span class="list">我的歌单</span>
         <!-- 点击新建歌单会显示隐藏 -->
-        <a class="create" @click="showCreate = false">+创建歌单</a>
+        <a class="create" @click="showCreate = false" v-show="showSongListName"
+          >+创建歌单</a
+        >
       </div>
       <!-- 歌单列表 -->
       <PlayListDetail :playList="playListDetail"></PlayListDetail>
@@ -26,24 +28,25 @@ export default {
   data() {
     return {
       showCreate: true,
+      showSongListName: true,
     };
   },
   computed: {
     ...mapState({
-      uid: state => state.login.uid,
-      playListDetail: state => state.my.playListDetail,
-    })
+      uid: (state) => state.login.uid,
+      playListDetail: (state) => state.my.playListDetail,
+    }),
   },
   methods: {
     ...mapActions(["getPlayListDetail"]),
     toggleShowCreate() {
       this.showCreate = true;
-    }
+    },
   },
   watch: {},
   components: {
     Create,
-    PlayListDetail
+    PlayListDetail,
   },
   mounted() {
     /**

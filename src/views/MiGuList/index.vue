@@ -174,10 +174,10 @@ export default {
   },
   mounted() {
     this.getNewSongList();
-    console.log(this.newSongList);
+    // console.log(this.newSongList);
     // 处理获取到的数据
-    const resNewSongList = this.newSongList.result;
-    console.log(resNewSongList);
+    // const resNewSongList = this.newSongList.result;
+    // console.log(resNewSongList);
   },
   components: {
     SongList,
