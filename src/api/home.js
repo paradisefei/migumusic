@@ -27,10 +27,10 @@ export const reqGetRecommendPlayList = () => {
 };
 /* 新歌速递信息 */
 // 华语   /playlist/detail?id=21845217
-export const reqGetPlayListChinese = () => {
+export const reqGetQuickPlayList = id => {
   return request({
     method: "GET",
-    url: "/playlist/detail?id=21845217"
+    url: `/playlist/detail?id=${id}`
   });
 };
 
@@ -60,9 +60,17 @@ export const reqPersonalized = () => {
 };
 /* 热歌榜 */
 //  /personalized/newsong
-export const reqGetHotTopSongs = () => {
+export const reqGetHotTopSongs = id => {
   return request({
     method: "GET",
-    url: "/playlist/detail?id=3778678"
+    url: `/playlist/detail?id=${id ? id : 3778678}`
+  });
+};
+
+/* RANK轮播   /getRankCoursel */
+export const reqGetRankCoursel = () => {
+  return request({
+    method: "GET",
+    url: "/getRankCoursel"
   });
 };
