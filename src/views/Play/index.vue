@@ -78,6 +78,7 @@
         </div>
       </div>
     </div>
+    <Lyric></Lyric>
   </div>
 </template>
 
@@ -92,18 +93,19 @@
 import "./iconfont/iconfont.css";
 import { mapState } from "vuex";
 import dayjs from "dayjs";
+import Lyric from "./Lyric";
 
 export default {
   name: "Play",
   data() {
     return {
-      dayjs: dayjs,
+      dayjs: dayjs
     };
   },
   computed: {
     ...mapState({
-      isPlayingList: (state) => state.play.isPlayingList,
-    }),
+      isPlayingList: state => state.play.isPlayingList
+    })
   },
   methods: {
     // 点击头像去到首页
@@ -112,7 +114,7 @@ export default {
     },
     toggleSelection(rows) {
       if (rows) {
-        rows.forEach((row) => {
+        rows.forEach(row => {
           this.$refs.multipleTable.toggleRowSelection(row);
         });
       } else {
@@ -121,9 +123,12 @@ export default {
     },
     handleSelectionChange(val) {
       this.multipleSelection = val;
-    },
+    }
   },
-  mounted() {},
+  components: {
+    Lyric
+  },
+  mounted() {}
 };
 </script>
 

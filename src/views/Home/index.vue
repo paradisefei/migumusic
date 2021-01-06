@@ -54,6 +54,7 @@
             :key="recommendList.id"
             @mouseenter="hoverBigImg(index)"
             @mouseleave="leaveBigImg(index)"
+            @click="getRecommendList(index)"
           >
             <img
               class="container-right-item-showImg"
@@ -107,7 +108,7 @@
             :key="list.al.id"
             @mouseenter="songMouseEnter(list)"
             @mouseleave="songMouseLeave(list)"
-            @click="getSongId(list.id)"
+            @click="getSongMessage(list)"
           >
             <div class="data-right-item-img-container">
               <img class="data-right-item-img" :src="list.al.picUrl" alt="" />
@@ -188,7 +189,7 @@
                   class="item-column"
                   v-for="(list, index) in hotSongList"
                   :key="list.id"
-                  @click="getSongId(list.id)"
+                  @click="getSongMessage(list)"
                 >
                   <span class="item-num">{{ index + 1 }}</span>
                   <img class="item-img" :src="list.al.picUrl" alt="" />
@@ -242,7 +243,8 @@ export default {
       // songId: null,
       hotSongList: [],
       rankCourselList: [],
-      rankTitle: "热歌榜"
+      rankTitle: "热歌榜",
+      songMessage: {}
 
       // isPlayButtonShow: false
     };
@@ -253,6 +255,28 @@ export default {
     })
   },
   methods: {
+    async getRecommendList(index) {
+      const { id } = this.recommendPlayList[index];
+
+      const res = await reqGetQuickPlayList(id);
+      const tracks = res.playlist.tracks;
+      const songList = [];
+      tracks.forEach(item => {
+        songList.push({
+          id: item.id,
+          pic: item.al.picUrl,
+          singer: item.ar[0].name,
+          song: item.name,
+          album: item.al.name,
+          time: item.dt
+        });
+      });
+
+      this.$store.commit("ALL_SONG", { songList, id });
+      this.$router.push({
+        name: "play"
+      });
+    },
     tabChange(index) {
       console.log(index);
       this.tabChangeList.map(item => {
@@ -291,27 +315,41 @@ export default {
         loadingInstance.close();
       });
     },
-    getSongId(id) {
+    /* 获取歌曲信息 */
+    getSongMessage(message) {
       /* if (e) {
         this.songId = e.target.getAttribute("id");
       } else {
         this.songId = id;
       } */
 
-      // console.log(this.songId);
-      this.$router.push({
+      console.log(message);
+      this.songMessage = {
+        id: message.id,
+        pic: message.al.picUrl,
+        singer: message.ar[0].name,
+        song: message.name,
+        album: message.al.name,
+        time: message.dt
+      };
+      console.log(this.songMessage);
+      this.$store.commit("ONE_SONG", this.songMessage);
+      /* this.$router.push({
         name: "play",
         query: {
           songId: id
         }
-      });
+      }); */
+      this.$router.push("play");
     },
+    /* 移入事件 */
     songMouseEnter(list) {
       this.$set(list, "isPlayButtonShow", true);
       // console.log(list);
 
       // this.isPlayButtonShow = true;
     },
+    /* 移出事件 */
     songMouseLeave(list) {
       this.$set(list, "isPlayButtonShow", false);
       // console.log(list);
@@ -681,7 +719,7 @@ a {
   width: 84%;
   margin: 0 auto;
   /deep/ .el-carousel__item--card {
-    margin-left: -320px;
+    margin-left: -304px;
     width: 100%;
     border-radius: 10px;
     box-shadow: 0 0 10px #666;
