@@ -14,9 +14,9 @@
     <div class="home-navbar">
       <div class="home-navbar-inner">
         <div class="home-navbar-item">
-          <a href="#" v-for="item in fourForKingKong" :key="item.id"
+          <router-link to="/play" v-for="item in fourForKingKong" :key="item.id"
             ><img :src="item.imgUrl" alt=""
-          /></a>
+          /></router-link>
         </div>
       </div>
     </div>
@@ -50,14 +50,23 @@
         <div class="home-recommend-container-right">
           <div
             class="container-right-item"
-            v-for="recommendList in recommendPlayList"
+            v-for="(recommendList, index) in recommendPlayList"
             :key="recommendList.id"
+            @mouseenter="hoverBigImg(index)"
+            @mouseleave="leaveBigImg(index)"
           >
+            <img
+              class="container-right-item-showImg"
+              src="@static/images/home/ia_100000166.png"
+              alt=""
+              v-show="recommendList.isPlayShow"
+            />
+
             <img :src="recommendList.coverImgUrl" alt="" />
             <span>{{ recommendList.name }}</span>
             <div class="right-play-count">
               <i class="iconfont icon-erji"></i>
-              <span>{{ parseInt(recommendList.playCount / 10000) }}w</span>
+              <span>{{ parseInt(recommendList.playCount / 10000) }}W</span>
             </div>
           </div>
         </div>
@@ -66,11 +75,16 @@
 
     <!-- 新歌速递 -->
     <div class="home-newsong">
-      <div class="home-newsong-tag w">
+      <div class="home-newsong-tag ">
         <div class="tag-container">
-          <span class="hoverchange">华语</span>
-          <span class="hoverchange">欧美</span>
-          <span class="hoverchange">日韩</span>
+          <span
+            class="hoverchange "
+            :class="item.active ? 'active' : ''"
+            v-for="(item, index) in tabChangeList"
+            :key="item.topId"
+            @click="tabChange(index)"
+            >{{ item.title }}</span
+          >
         </div>
       </div>
 
@@ -86,15 +100,18 @@
             />
           </div>
         </div>
-        <div class="newsong-data-right" @click="getSongId">
+        <div class="newsong-data-right">
           <div
             class="data-right-item"
             v-for="list in playList"
             :key="list.al.id"
             @mouseenter="songMouseEnter(list)"
             @mouseleave="songMouseLeave(list)"
+            @click="getSongId(list.id)"
           >
-            <img class="data-right-item-img" :src="list.al.picUrl" alt="" :id="list.id" />
+            <div class="data-right-item-img-container">
+              <img class="data-right-item-img" :src="list.al.picUrl" alt="" />
+            </div>
             <div class="data-right-item-content">
               <p class="data-right-item-content-name1">{{ list.al.name }}</p>
               <p class="data-right-item-content-name2">{{ list.ar[0].name }}</p>
@@ -145,22 +162,34 @@
                 indicator-position="none"
                 arrow="always"
                 :autoplay="false"
+                :initial-index="0"
+                ref="remarkCarusel"
+                @change="rankChange"
               >
-                <el-carousel-item v-for="item in banners" :key="item.id">
-                  <img :src="item.imgUrl" alt="" />
+                <el-carousel-item v-for="list in rankCourselList" :key="list.id" :name="list.title">
+                  <img :src="list.imgUrl" alt="" />
                 </el-carousel-item>
               </el-carousel>
             </div>
-            <h3 class="rank-list-title">尖叫榜新歌</h3>
+            <h3 class="rank-list-title">{{ rankTitle }}</h3>
             <p class="rank-list-time">每小时更新</p>
-            <div class="rank-list-play"><i class="iconfont icon-play"></i> 播放榜单</div>
+            <router-link to="play"
+              ><div class="rank-list-play">
+                <i class="iconfont icon-play"></i> 播放榜单
+              </div></router-link
+            >
           </div>
           <div class="rank-list-right">
             <!-- 滚动条 -->
             <div class="rank-list-right-scroll">
               <el-scrollbar class="scroll">
                 <!-- 滚动条歌曲排行榜 -->
-                <div class="item-column" v-for="(list, index) in hotSongList" :key="list.id">
+                <div
+                  class="item-column"
+                  v-for="(list, index) in hotSongList"
+                  :key="list.id"
+                  @click="getSongId(list.id)"
+                >
                   <span class="item-num">{{ index + 1 }}</span>
                   <img class="item-img" :src="list.al.picUrl" alt="" />
 
@@ -181,12 +210,14 @@
 import {
   reqGetBannerList,
   reqGetFourForKingKong,
-  reqGetPlayListChinese,
+  reqGetQuickPlayList,
   reqGetNewSong,
   reqGetAlbumList,
   reqPersonalized,
-  reqGetHotTopSongs
+  reqGetHotTopSongs,
+  reqGetRankCoursel
 } from "@api/home";
+import { Loading } from "element-ui";
 import SectionSong from "@comps/SectionSong";
 import { mapState, mapActions } from "vuex";
 import dayjs from "dayjs";
@@ -196,6 +227,11 @@ export default {
   data() {
     return {
       banners: [],
+      tabChangeList: [
+        { title: "华语", topId: 21845217, active: true },
+        { title: "欧美", topId: 2023401535, active: false },
+        { title: "日语", topId: 60131, active: false }
+      ],
       fourForKingKong: [],
       playList: [],
       playListImg: [],
@@ -203,8 +239,11 @@ export default {
       newSongList: [],
       albumList: [],
       personalizedList: [],
-      songId: null,
-      hotSongList: []
+      // songId: null,
+      hotSongList: [],
+      rankCourselList: [],
+      rankTitle: "热歌榜"
+
       // isPlayButtonShow: false
     };
   },
@@ -214,31 +253,75 @@ export default {
     })
   },
   methods: {
+    tabChange(index) {
+      console.log(index);
+      this.tabChangeList.map(item => {
+        item.active = false;
+      });
+      this.tabChangeList[index].active = true;
+      this.getQuickPlayList(this.tabChangeList[index].topId);
+    },
+    hoverBigImg(index) {
+      this.$set(this.recommendPlayList[index], "isPlayShow", true);
+    },
+    leaveBigImg(index) {
+      this.$set(this.recommendPlayList[index], "isPlayShow", false);
+    },
+    test(id) {
+      console.log(id);
+    },
+    async rankChange(index) {
+      const { topListId, title } = this.rankCourselList[index];
+      this.rankTitle = title;
+      this.getHotList(topListId);
+    },
     ...mapActions(["getRecommendPlayList"]),
     /* 华语歌单 */
-    async getPlayListChinese() {
-      const resPlayListChinese = await reqGetPlayListChinese();
+    async getQuickPlayList(id) {
+      const resPlayListChinese = await reqGetQuickPlayList(id);
       this.playList = resPlayListChinese.playlist.tracks.splice(1, 8);
       this.playListImg = this.playList.slice(0, 6);
     },
-    getSongId(e) {
-      this.songId = e.target.getAttribute("id");
+    getSongId(id) {
+      /* if (e) {
+        this.songId = e.target.getAttribute("id");
+      } else {
+        this.songId = id;
+      } */
+
+      // console.log(this.songId);
       this.$router.push({
         name: "play",
         query: {
-          songId: this.songId
+          songId: id
         }
       });
     },
     songMouseEnter(list) {
       this.$set(list, "isPlayButtonShow", true);
-      console.log(list);
 
       // this.isPlayButtonShow = true;
     },
     songMouseLeave(list) {
       this.$set(list, "isPlayButtonShow", false);
-      console.log(list);
+    },
+    async getHotList(id) {
+      const iDom = document.querySelector(".rank-list-right-scroll");
+
+      let loadingInstance = Loading.service({
+        target: iDom,
+        background: "#f2f2f2"
+      });
+
+      const resHotTopSongs = await reqGetHotTopSongs(id);
+      // this.hotSongList = resHotTopSongs;
+      this.hotSongList = resHotTopSongs.playlist.tracks.splice(1, 20);
+      // loadingInstance.close();
+
+      // 以服务的方式调用的 Loading 需要异步关闭
+      this.$nextTick(() => {
+        loadingInstance.close();
+      });
     }
   },
   async mounted() {
@@ -252,7 +335,7 @@ export default {
     /* 推荐歌单 */
     this.getRecommendPlayList();
     /* 华语歌单 */
-    this.getPlayListChinese();
+    this.getQuickPlayList(this.tabChangeList[0].topId);
     /* 新歌歌单 */
     const resNewSong = await reqGetNewSong();
     resNewSong.result.forEach(item => {
@@ -285,9 +368,16 @@ export default {
       });
     });
     /* 排行榜榜单 */
-    const resHotTopSongs = await reqGetHotTopSongs();
-    // this.hotSongList = resHotTopSongs;
-    this.hotSongList = resHotTopSongs.playlist.tracks.splice(1, 50);
+    this.getHotList();
+    /* 排行榜轮播图 */
+    const rankCoursel = await reqGetRankCoursel();
+    this.rankCourselList = rankCoursel.rankList;
+    /*  this.rankCourselList.forEach(item => {
+      this.rankTitle.push({
+        id: item.id,
+        title: item.title
+      });
+    }); */
   },
   components: {
     SectionSong
@@ -378,6 +468,15 @@ a {
         width: 20%;
         height: 50%;
         position: relative;
+
+        .container-right-item-showImg {
+          position: absolute;
+          width: 70px;
+          height: 70px;
+          left: 33%;
+          top: 50%-25px;
+        }
+
         span {
           margin: 12px 16px;
           display: inline-block;
@@ -403,6 +502,7 @@ a {
           right: 20px;
           top: 10px;
           color: #fff;
+          line-height: 24px;
           i {
             padding: 0 8px;
           }
@@ -422,15 +522,22 @@ a {
   background: #f2f2f2;
   margin-top: 40px;
   .home-newsong-tag {
+    box-sizing: border-box;
     height: 60px;
+    width: 100%;
+    background: #fff;
     .tag-container {
-      height: 60px;
-      width: 1060px;
-      float: right;
+      margin: 0 auto;
+      width: 1400px - 340px;
+      padding-left: 340px;
       .hoverchange {
         margin-left: 26px;
         line-height: 60px;
         &:hover {
+          cursor: pointer;
+          color: #fd3f7f;
+        }
+        &.active {
           color: #fd3f7f;
         }
       }
@@ -439,6 +546,7 @@ a {
   .home-newsong-data {
     height: 410px;
     display: flex;
+
     .newsong-data-left {
       width: 340px;
       height: 410px;
@@ -466,7 +574,6 @@ a {
       padding-top: 23px;
       width: 1060px;
       height: 410px;
-
       .data-right-item {
         float: left;
         width: 50%;
@@ -478,6 +585,7 @@ a {
         display: flex;
         font-size: 14px;
         border-radius: 10px;
+
         // 移入显示图片
         .data-right-item-show {
           position: absolute;
@@ -508,12 +616,18 @@ a {
             }
           }
         }
-        .data-right-item-img {
-          cursor: pointer;
-          border-radius: 10px;
+        .data-right-item-img-container {
           width: 80px;
           height: 80px;
+          overflow: hidden;
+          .data-right-item-img {
+            cursor: pointer;
+            border-radius: 10px;
+            width: 80px;
+            height: 80px;
+          }
         }
+
         .data-right-item-content {
           width: 300px;
           padding: 0 20px;
@@ -543,6 +657,10 @@ a {
         }
         &:hover {
           background: #e6e6e6;
+        }
+        &:hover .data-right-item-img {
+          transform: scale(1.3);
+          transition: all 1.5s;
         }
       }
     }

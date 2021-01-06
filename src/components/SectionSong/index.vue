@@ -11,7 +11,19 @@
         </div>
       </div>
       <div class="sectionsong-container-bottom">
-        <div class="inner-item" v-for="song in songList" :key="song.id">
+        <div
+          class="inner-item"
+          v-for="(song, index) in songList"
+          :key="song.id"
+          @mouseenter="hoverBigImg(index)"
+          @mouseleave="leaveBigImg(index)"
+        >
+          <img
+            class="container-right-item-showImg"
+            src="@static/images/home/ia_100000166.png"
+            alt=""
+            v-show="song.isPlayShow"
+          />
           <div class="inner-item-container">
             <img :src="song.picUrl" alt="" />
             <p class="album-name">{{ song.name }}</p>
@@ -29,6 +41,14 @@ export default {
   props: {
     h2Title: String,
     songList: Array
+  },
+  methods: {
+    hoverBigImg(index) {
+      this.$set(this.songList[index], "isPlayShow", true);
+    },
+    leaveBigImg(index) {
+      this.$set(this.songList[index], "isPlayShow", false);
+    }
   }
 };
 </script>
@@ -66,7 +86,14 @@ a {
   .inner-item {
     width: 20%;
     height: 50%;
-
+    position: relative;
+    .container-right-item-showImg {
+      position: absolute;
+      width: 70px;
+      height: 70px;
+      left: 33%;
+      top: 50%-25px;
+    }
     .inner-item-container {
       margin: 0 21px;
       height: 288px;
