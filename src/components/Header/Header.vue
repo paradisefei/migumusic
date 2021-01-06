@@ -27,17 +27,24 @@
           <span class="iconfont icon-search"></span>
         </div>
         <div class="login">
+          <!-- 
+            1.鼠标移入
+              1.如果用户已登录，点击跳转到个人中心页面
+           -->
           <div
             class="loginImg"
             @mouseenter="handleLoginShow"
             @mouseleave="handleLoginDis"
+            @click="toMy"
           >
             <a>
-              <img :src="avatarUrl" alt="" v-if="avatarUrl"/>
-              <img src="../../assets/images/no-login.png" alt="" v-else/>
+              <img :src="avatarUrl" alt="" v-if="avatarUrl" />
+              <img src="../../assets/images/no-login.png" alt="" v-else />
             </a>
           </div>
           <div class="loginPageCon">
+            <!-- 登录和不登录显示的是两个弹窗 -->
+            <!-- 未登录时的弹窗 -->
             <div
               class="loginPage"
               v-show="showLogin"
@@ -62,6 +69,31 @@
               <div class="but">
                 <button class="but1" @click="login">登录</button>
                 <button class="but2">注册</button>
+              </div>
+            </div>
+            <!-- 已登录时的弹窗 -->
+            <div
+              class="loginPage logoutPage"
+              v-show="showLogout"
+              @mouseenter="handleLoginShow"
+              @mouseleave="handleLoginDis"
+            >
+              <div class="message">
+                <img :src="avatarUrl" class="msgImg" />
+                <span class="msgName">
+                  {{ nickname }}
+                  <a class="iconfont icon-VIPICON"></a>
+                  <a class="iconfont icon-cailing"></a>
+                </span>
+              </div>
+              <div class="fourCube">
+                <div><a class="iconfont icon-xihuan"></a>我喜欢的</div>
+                <!-- <div><i class="iconfont icon-lingdang"></i>铃声设置</div> -->
+                <div><a class="iconfont icon-zhuanji"></a>数字专辑</div>
+                <div><a class="iconfont icon-yinle"></a>我的歌单</div>
+              </div>
+              <div class="but">
+                <button class="but1" @click="logout">退出登录</button>
               </div>
             </div>
           </div>
@@ -125,11 +157,14 @@
  */
 import { Message } from "element-ui";
 import { mapState, mapActions } from "vuex";
+import "./iconfont/iconfont.css";
+
 export default {
   name: "Header",
   data() {
     return {
       showLogin: false,
+      showLogout: false,
       mask: false,
       phone: "",
       password: "",
@@ -137,12 +172,28 @@ export default {
   },
   computed: {
     ...mapState({
-      nickname: state => state.login.nickname,
-      avatarUrl: state => state.login.avatarUrl,
-    })
+      nickname: (state) => state.login.nickname,
+      avatarUrl: (state) => state.login.avatarUrl,
+    }),
   },
   methods: {
-    ...mapActions(["getLogin"]),
+    ...mapActions(["getLogin", "getLogout"]),
+    // 点击跳转到个人中心页面
+    toMy() {
+      /**
+       * 1.如果用户未登录，则点击无效
+       * 2.如果用户已经登录，则鼠标移入时不会出现登录框
+       */
+      // 未登录
+      if (this.showLogin) {
+        Message.error("请先登录");
+        return;
+      }
+      // 已登录
+      if (this.showLogout) {
+        this.$router.push("/my");
+      }
+    },
     // 登录
     async toLogin() {
       /**
@@ -165,18 +216,48 @@ export default {
         return;
       }
       console.log("登录,请求用户数据");
-      await this.getLogin({phone, password});
+      await this.getLogin({ phone, password });
       this.mask = false;
       this.$router.push("/my");
     },
+    // 鼠标移入请求登录
     handleLoginShow() {
+      /**
+       * 1.如果用户未登录，则出现去登录的那个弹窗
+       * 2.如果用户已登录，则出现可退出登录的弹窗
+       */
+      console.log("去登录");
+      if (this.nickname) {
+        /**
+         * 1.如果登录，则显示登出弹窗
+         */
+        this.showLogout = true;
+        return;
+      }
       this.showLogin = true;
     },
+    // 鼠标移出
     handleLoginDis() {
       this.showLogin = false;
+      this.showLogout = false;
     },
     login() {
       this.mask = true;
+    },
+    // 退出登录
+    logout() {
+      /**
+       * 1.把vuex中的登录信息都置为空
+       *  1.不需要发送请求，直接触发mutation函数即可
+       * 2.跳转到首页
+       * 3.把退出登录的弹窗隐藏
+       * 4.把用户名和密码置空
+       */
+      this.phone = "";
+      this.password = "";
+      this.getLogout();
+      this.$router.push("/");
+      this.showLogout = false;
     },
     cancleMask() {
       this.mask = false;
@@ -421,5 +502,60 @@ body {
       color: #e91e63;
     }
   }
+}
+// 已登录后的弹窗
+.loginPage.logoutPage {
+  width: 490px;
+  height: 320px;
+}
+// 弹窗上部
+.message {
+  width: 100%;
+  padding-top: 20px;
+  padding-left: 100px;
+  display: flex;
+  align-items: center;
+}
+// 头像
+.message img.msgImg {
+  width: 100px;
+  height: 100px;
+  border-radius: 50px;
+
+  margin-right: 30px;
+}
+// 昵称
+.message .msgName {
+  font-size: 30px;
+  font-weight: bolder;
+}
+// 昵称中的字体图标
+.msgName .iconfont {
+  font-size: 32px;
+}
+// 中间的四个小方块
+.fourCube {
+  width: 100%;
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-evenly;
+}
+.fourCube div {
+  width: 94px;
+  height: 94px;
+  border-radius: 10px;
+  line-height: 34px;
+  font-size: 14px;
+  text-align: center;
+  background: #f2f2f2;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  padding-top: 15px;
+}
+// 小方块中的字体图标
+.fourCube a {
+  color: #e91e63;
+  font-size: 30px;
 }
 </style>

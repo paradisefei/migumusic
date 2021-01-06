@@ -18,7 +18,6 @@ export default {
     /* 获取用户歌单 */
     async getPlayListDetail({ commit }, uid) {
       const res = await reqGetPlayListDetail(uid);
-      console.log(res);
       commit("GET_PLAYLIST_DETAIL", res);
     }
   },
@@ -47,7 +46,6 @@ export default {
       state.playListDetail = res.playlist.map((item) => {
         let { id, name, coverImgUrl, trackCount, createTime } = item;
         createTime = dayjs(createTime).format("YYYY-MM-DD");
-        console.log(createTime);
         return {
           id,
           name,

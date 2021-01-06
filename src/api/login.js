@@ -14,4 +14,11 @@ export const reqToLogin = ({phone, password}) => {
     }
   });
 };
+// 退出登录
+export const reqToLogout = () => {
+  return request({
+    method: "GET",
+    url: "/logout",
+  });
+};
 
