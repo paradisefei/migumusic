@@ -1,5 +1,5 @@
 <template>
-  <div class="home-container">
+  <div class="home-container" style="margin:28px 0;">
     <!-- 轮播图 -->
     <div class="home-bannerList">
       <!-- <Carousel :carouselList="banners" /> -->
@@ -457,7 +457,7 @@ a {
 .home-navbar {
   width: 100%;
   height: 80px;
-  margin-top: 28px;
+  margin-top: 56px;
 
   .home-navbar-item {
     width: 992px;
