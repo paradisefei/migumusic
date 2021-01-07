@@ -18,6 +18,7 @@ export default {
     /* 获取用户歌单 */
     async getPlayListDetail({ commit }, uid) {
       const res = await reqGetPlayListDetail(uid);
+      console.log(res, uid);
       commit("GET_PLAYLIST_DETAIL", res);
     }
   },

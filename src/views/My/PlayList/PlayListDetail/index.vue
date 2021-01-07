@@ -100,7 +100,7 @@ export default {
     }),
   },
   methods: {
-    ...mapActions(["getUpdateSongListName",'getPlayListDetail']),
+    ...mapActions(["getUpdateSongListName", "getPlayListDetail"]),
     //  将 `this.getUpdateSongListName()` 映射为 `this.$store.dispatch('getUpdateSongListName')`
     save() {
       // 点击保存跳转到我的歌单页面，并重新发送请求
@@ -161,6 +161,11 @@ export default {
     },
   },
   components: {},
+  mounted() {
+    this.$nextTick(() => {
+      this.getPlayListDetail(this.uid);
+    });
+  },
 };
 </script>
 
