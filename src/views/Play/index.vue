@@ -2,11 +2,12 @@
   <div class="play_container">
     <div class="header">
       <router-link to="/"><img src="./images/logo.png" class="logo"/></router-link>
-      <img src="./images/uniaccess.png" class="avatar" @click="toMy" />
+      <img :src="avatarUrl" class="avatar" v-if="avatarUrl"/>
+      <img src="./images/nopic.png" class="avatar" v-else/>
     </div>
     <div class="center_container">
       <ul class="left">
-        <li class="active">
+        <li :class="{active: playState}">
           <a>默认播放列表</a>
         </li>
         <li>
@@ -69,7 +70,7 @@
         </el-scrollbar>
       </div>
     </div>
-    <MusicControl :songMsg="isPlayingSong"></MusicControl>
+    <MusicControl :songMsg="isPlayingSong" @togglePlayState="togglePlayState"></MusicControl>
 
     <!-- 传入歌曲和歌词 -->
     <Lyric :songMsg="isPlayingSong" :songLyric="songLyric"></Lyric>
@@ -94,12 +95,13 @@ export default {
   data() {
     return {
       dayjs: dayjs,
-      checkedRowIndex: 0,
+      playState: true,
       songMsg: null
     };
   },
   computed: {
     ...mapState({
+      avatarUrl: state => state.login.avatarUrl,
       songLyric: (state) => state.play.songLyric,
       isPlayingList: (state) => state.play.isPlayingList,
       isPlayingSong: (state) => state.play.isPlayingSong,
@@ -112,6 +114,9 @@ export default {
   },
   methods: {
     ...mapActions(["getIsPlayingSong", "changeCheckedRowIndex", "getSongLyric"]),
+    togglePlayState(bool) {
+      this.playState = bool;
+    },
     // 表格某一行的样式
     tableRowClassName({ row, rowIndex }) {
       row.index = rowIndex;

@@ -2,7 +2,7 @@
   <div class="outer">
     <div class="inner">
       <div class="inner-img">
-        <img v-if="!songLyric" src="./ia_100000011534.png" />
+        <img v-if="!songLyric" src="./nopic.png" />
         <img v-else :src="songMsg.pic" alt="" />
       </div>
       <div class="inner-container">
@@ -34,6 +34,8 @@
  * 1.歌词
  *  1.处理歌词
  *  2.显示歌词
+ * 2.歌词滚动
+ *  audio和歌词在两个不同的组件，想办法把audio对象在这个组件拿到
  */
 export default {
   name: "Lyric",
@@ -48,36 +50,6 @@ export default {
       type: String,
     },
   },
-  watch: {
-    // songLyric: {
-    //   immediate: true,
-    //   handler: function (newValue) {
-    //     const strIfy = JSON.stringify(newValue);
-    //     let arrSplit = newValue.split("\n");
-    //     let timeReg = /^\[.*\]/;
-    //     let arrLyric = [];
-    //     arrSplit.forEach((item) => {
-    //       if (!item) return;
-    //       console.log("每一行", item);
-    //       let time = item.match(timeReg)[0].substr(1, 9);
-    //       let minute = time.substr(0, 2);
-    //       let second = time.substr(3, 2);
-    //       let ms = time.substr(6, 2);
-    //       arrLyric.push({
-    //         time,
-    //         ms:
-    //           parseInt(minute) * 60 * 1000 +
-    //           parseInt(second) * 1000 +
-    //           parseInt(ms) * 10,
-    //         content: item.substr(11),
-    //       });
-    //     });
-    //     console.log("arrSplit", arrSplit);
-    //     console.log("strIfy", strIfy);
-    //     console.log("arrLyric", arrLyric);
-    //   },
-    // },
-  },
   computed: {
     songLyricArray() {
       /**
@@ -85,20 +57,19 @@ export default {
        * 2.拿到歌词出来显示的时候已经就是没有\n的了
        */
       if (!this.songLyric) return;
-      if(this.songLyric === "暂无歌词") {
+      if (this.songLyric === "暂无歌词") {
         return "";
       }
-      const strIfy = JSON.stringify(this.songLyric);
+      // const strIfy = JSON.stringify(this.songLyric);
       let arrSplit = this.songLyric.split("\n");
       let timeReg = /^\[.*\]/;
       let arrLyric = [];
       arrSplit.forEach((item) => {
         if (!item) return;
-        console.log("每一行", item);
-        let time = item.match(timeReg)[0].substr(1, 9);
-        let minute = time.substr(0, 2);
-        let second = time.substr(3, 2);
-        let ms = time.substr(6, 2);
+        let time = item.match(timeReg)[0].slice(1, -1);
+        let minute = time.slice(0, 2);
+        let second = time.slice(3, 2);
+        let ms = time.slice(6, 2);
         arrLyric.push({
           time,
           ms:
@@ -108,9 +79,6 @@ export default {
           content: item.substr(11),
         });
       });
-      console.log("arrSplit", arrSplit);
-      console.log("strIfy", strIfy);
-      console.log("arrLyric", arrLyric);
       return arrLyric;
     },
   },
@@ -140,10 +108,12 @@ export default {
   .inner-img {
     width: 200px;
     height: 200px;
+    border-radius: 20px;
     img {
       padding: 0 20px;
       width: 200px;
       height: 200px;
+      border-radius: 25px;
     }
   }
   .inner-container {

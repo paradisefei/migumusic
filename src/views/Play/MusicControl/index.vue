@@ -12,7 +12,7 @@
           : 'http://m7.music.126.net/20210107094952/dae12f1b62673352b840e9846b8dfd07/ymusic/7245/c7bb/b078/81c1e81d3b5fed50ca6d51196fc59ad6.mp3',
         pic: songMsg
           ? songMsg.pic
-          : 'http://p4.music.126.net/ag6iowagVFQDR7WeERp9jg==/109951164882560642.jpg',
+          : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSTRsSoJfs6bJ0Pu7YMHJzVVY-E93aHxuvwrg&usqp=CAU',
       }"
       @play="playMusic"
       @pause="pauseMusic"
@@ -25,6 +25,7 @@
  * 1.暂停播放
  * 2.请求歌词
  *  1.把歌词文件放在vuex中
+ * 
  */
 import APlayer from "vue-aplayer";
 import dayjs from "dayjs";
@@ -93,11 +94,13 @@ export default {
        * 1.暂停播放时，没有播放行，所以需要改变播放行的下标
        * 2.记住上一次的下标，但这一次的下标
        */
+      this.$emit("togglePlayState", false);
       this.lastCheckedRowIndex = this.checkedRowIndexVuex;
       this.changeCheckedRowIndex(-1);
     },
     // 绑定的开始播放音乐的事件
     playMusic() {
+      this.$emit("togglePlayState", true);
       if (this.checkedRowIndexVuex === -1) {
         this.changeCheckedRowIndex(this.lastCheckedRowIndex);
       } 
@@ -129,6 +132,7 @@ export default {
     /**
      * 离开时将歌曲暂停
      */
+    console.log(12122);
     this.$refs.player.pause();
   },
 };
