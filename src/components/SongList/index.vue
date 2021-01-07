@@ -92,6 +92,7 @@ export default {
     // 去到播放界面
     async toPlay(scope) {
       console.log(scope.row);
+      // 把新添加的歌曲添加到正在播放列表中
       await this.getIsPlayingSong(scope.row);
       this.addOneSong(scope.row);
       this.$router.push("/play");

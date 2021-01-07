@@ -170,7 +170,7 @@ export default {
     })
   },
   methods: {
-    ...mapActions(["getLogin", "getLogout"]),
+    ...mapActions(["getLogin", "getLogout", "changeCheckedRowIndex","getIsPlayingSong", "addOneSong"]),
     // 点击跳转到个人中心页面
     toMy() {
       // 未登录
@@ -228,6 +228,7 @@ export default {
       const { keywords } = this;
       if (!keywords) return;
       const res = await reqSearchKeyWords(keywords);
+      console.log(res);
       if (res.code === 200) {
         const songs = res.result.songs;
         console.log(songs);
@@ -240,9 +241,17 @@ export default {
             picUrl: item.artists[0].img1v1Url,
             singer: item.artists[0].name,
             time: item.duration,
-            album: item.album.name
+            album: item.album.name,
+            showPlay: true,
           });
         });
+      // 清空isPlayingList列表
+      this.$store.commit("CLEAR_IS_PLAYING_LIST");
+      // 播放列表中的第一首歌
+      await this.getIsPlayingSong(playList[0]);
+      this.addOneSong(playList[0]);
+      // 改播放行的样式
+      this.changeCheckedRowIndex(0);
         // console.log(playList);
         this.$store.commit("SEARCH_SONG", playList);
         this.$router.push({

@@ -39,6 +39,10 @@ export default {
     }
   },
   mutations: {
+    // 清空isPlayingList
+    CLEAR_IS_PLAYING_LIST(state){
+      state.isPlayingList = [];
+    },
     // 修改index
     CHANGE_CHECKED_ROW_INDEX(state, index) {
       state.checkedRowIndexVuex = index;

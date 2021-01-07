@@ -50,6 +50,7 @@ export default {
   computed: {
     ...mapState({
       songUrl: (state) => state.play.songUrl,
+      isPlayingList: (state) => state.play.isPlayingList,
       checkedRowIndexVuex: (state) => state.play.checkedRowIndexVuex,
     }),
   },
@@ -108,8 +109,12 @@ export default {
     aplayer: APlayer
   },
   mounted() {
-    console.log("挂载MusicControl组件");
+    console.log("挂载MusicControl组件", this.songMsg);
     if (!this.songMsg) return;
+    /**
+     * 1.拿到播放列表中的第一首歌
+     */
+    console.log(this.songMsg.id);
     this.getSongUrl(this.songMsg.id);
   },
   beforeDestroy() {

@@ -213,6 +213,10 @@ a {
 
   color: #070707;
 }
+// 底部边框
+/deep/.el-table td, /deep/.el-table th.is-leaf{
+  border: 0;
+}
 // 横向滚动条
 /deep/.el-scrollbar__wrap {
   overflow-x: hidden;
