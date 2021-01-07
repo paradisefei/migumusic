@@ -74,29 +74,17 @@
       </div>
     </div>
     <MusicControl :songMsg="isPlayingSong"></MusicControl>
-    <!-- <div class="bottom">
-      <div class="control">
-        <i class="iconfont icon-shangyiquicoyinlekongzhimianban"></i>
-        <i class="iconfont icon-bofangicoyinlekongzhimianban"></i>
-        <i class="iconfont icon-xiayiquicoyinlekongzhimianban"></i>
-      </div>
-      <div class="msgAndProgress">
-        <div class="msg">
-          <span class="name">修炼爱情-林俊杰</span>
-          <span class="time">00:03/04:47</span>
-        </div>
-        <div class="progress">
-          <div class="played">
-            <div class="ball"></div>
-          </div>
-        </div>
-      </div>
-    </div> -->
+
     <Lyric></Lyric>
   </div>
 </template>
 
 <script>
+/**
+ * 1.一挂载到这个页面时不自动播放歌曲
+ * 2.点击某一首歌时，触发播放
+ * 3.实现自动播放
+ */
 import MusicControl from "./MusicControl";
 import "./iconfont/iconfont.css";
 import { mapState, mapActions } from "vuex";

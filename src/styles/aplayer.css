@@ -1,0 +1,16 @@
+.aplayer-body{
+    background: #393938 !important;
+}
+.aplayer-music {
+    color: white !important;
+}
+.aplayer-music .aplayer-author{
+    color: white !important;
+}
+.aplayer-played{
+  background: #e91e63 !important;
+}
+.aplayer-thumb{
+    border-color: #e91e63 !important;
+    background: #e91e63 !important;
+}

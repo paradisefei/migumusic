@@ -190,7 +190,9 @@ export default {
         Message.error("用户名或密码不能为空");
         return;
       }
+      console.log("登录");
       await this.getLogin({ phone, password });
+      console.log("现在去跳转");
       this.$router.push("/my");
       this.mask = false;
     },

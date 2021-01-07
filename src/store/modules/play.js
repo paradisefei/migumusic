@@ -19,7 +19,7 @@ export default {
     async getSongUrl({ commit }, id) {
       const res = await reqGetSongUrl(id);
       if (res.code === 200) {
-        console.log(res);
+        // console.log(res);
         commit("GET_SONG_URL", res);
       }
     },
@@ -28,7 +28,7 @@ export default {
       commit("ONE_SONG", data);
     },
     getIsPlayingSong({ commit }, data) {
-      console.log(data);
+      // console.log(data);
       commit("GET_IS_PLAYING_SONG", data);
     }
   },

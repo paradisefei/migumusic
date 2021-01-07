@@ -1,7 +1,7 @@
 <template>
-  <!-- <div class="bottom"> -->
-  <!-- 使用字体图标 -->
-  <!-- <div class="control">
+  <div class="bottom">
+    <!-- 使用字体图标 -->
+    <!-- <div class="control">
       <i class="iconfont icon-music-controller-play-prev"></i>
       <i
         :class="{
@@ -26,17 +26,28 @@
         </div>
       </div>
     </div> -->
-
-  <aplayer
-    autoplay
-    :music="{
-      title: songMsg ? songMsg.song : '',
-      artist: songMsg ? songMsg.singer : '' ,
-      src: songMsg ? songUrl : '',
-      pic: songMsg ? songMsg.pic : '',
-    }"
-  />
-  <!-- </div> -->
+    <!-- 
+      1.加上autoplay属性会有效，但在改变了什么之后又会变得无效
+      2.加载完了之后再给这个元素加上一个autoplay属性
+     -->
+    <!-- <button @click="playBtn">播放</button>
+    <button @click="pauseBtn">暂停</button> -->
+    <aplayer
+      v-if="isShow"
+      ref="player"
+      autoplay
+      :music="{
+        title: songMsg ? songMsg.song + ' - ' : 'hello',
+        artist: songMsg ? songMsg.singer: 'world',
+        src: songUrl
+          ? songUrl
+          : 'http://m7.music.126.net/20210107094952/dae12f1b62673352b840e9846b8dfd07/ymusic/7245/c7bb/b078/81c1e81d3b5fed50ca6d51196fc59ad6.mp3',
+        pic: songMsg
+          ? songMsg.pic
+          : 'http://p4.music.126.net/ag6iowagVFQDR7WeERp9jg==/109951164882560642.jpg',
+      }"
+    />
+  </div>
 </template>
 
 <script>
@@ -47,6 +58,7 @@ export default {
   name: "MusicControl",
   data() {
     return {
+      isShow: true,
       dayjs: dayjs,
       // 定义变量表示播放状态
       isPlaying: true,
@@ -55,8 +67,8 @@ export default {
   props: {
     songMsg: {
       type: Object,
-      default: function(){
-        return {}
+      default: function () {
+        return {};
       },
     },
   },
@@ -66,11 +78,18 @@ export default {
     }),
   },
   watch: {
+    songUrl: {
+      immediate: true,
+      handler: function (newValue) {
+        // 监视到播放地址变化时就自动播放歌曲
+        console.log("新的地址", newValue);
+      },
+    },
     // 监视songMsg对象的变化
     songMsg: {
       immediate: true,
       deep: true,
-      handler: function(newValue) {
+      handler: async function (newValue) {
         /**
          * 1.把歌曲的基本信息渲染在页面上
          * 2.发送请求，拿到歌曲的播放地址
@@ -78,12 +97,21 @@ export default {
          */
         // console.log(newValue, this);
         if (!this || !newValue) return;
-        this.getSongUrl(newValue.id);
+        await this.getSongUrl(newValue.id);
+        this.$refs.player.play();
       },
     },
   },
   methods: {
     ...mapActions(["getSongUrl"]),
+    // 暂停播放
+    // pauseBtn() {
+    //   this.$refs.player.pause();
+    // },
+    // // 播放歌曲
+    // playBtn() {
+    //   this.$refs.player.play();
+    // },
     // 切换播放状态
     togglePlayState() {
       this.isPlaying = !this.isPlaying;
@@ -93,22 +121,38 @@ export default {
     aplayer: APlayer,
   },
   mounted() {
-    // console.log(this.songMsg)
-    if(!this.songMsg) return;
+    // 使用nextTick解决aplayer无法自动播放的问题
+    // this.$nextTick(() => {
+    //   this.isShow = !!this.isShow;
+    // });
+    // 自动播放
+    // this.$refs.player.play();
+    console.log("挂载MusicControl组件");
+    if (!this.songMsg) return;
     this.getSongUrl(this.songMsg.id);
   },
+  beforeDestroy() {
+    /**
+     * 离开时将歌曲暂停
+     */
+    this.$refs.player.pause();
+  }
 };
 </script>
 
 <style lang="less" scoped>
 // 播放器组件自定义样式
-.aplayer{
+.aplayer {
   width: 1130px;
   height: 100px;
 }
 /deep/.aplayer-pic {
   width: 100px;
   height: 100px;
+}
+// 已播放条的颜色
+/deep/.aplayer-played{
+  background: #e91e63;
 }
 // 底部播放控制
 .bottom {
