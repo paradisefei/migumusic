@@ -108,14 +108,16 @@ export default {
       // 发送请求
       // 需要2个参数，一个是当前歌单的id值，第二个是输入的歌单的名字
       // 获取当前歌单的id值，当点击修改时可以得到该行的相关信息，歌单的id值可以这个时候获取到
+      let uid = this.uid;
       let id = this.id;
       let name = this.formLabelAlign.name;
-      console.log(this);
+      // console.log(this);
       let cookies = window.localStorage.getItem("userMsg");
       // 登录状态有cookies，可以修改歌单
       if (cookies) {
-        this.getUpdateSongListName({ id, name });
+        this.getUpdateSongListName({ uid, id, name });
       }
+      this.updataSongMsg();
     },
     // 点击返回或取消时，改变头部的状态
     changeSongList() {

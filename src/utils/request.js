@@ -8,12 +8,16 @@ import "nprogress/nprogress.css";
 // 通过其值来区分运行环境
 // console.log(process.env.NODE_ENV); // development  production
 const prefix_url = process.env.NODE_ENV === "development" ? "/" : " ";
-
+// 修改歌单需要登录信息，发送请求时可以直接携带用户信息，保存在cookie中，从本地读取cookie
+// let cookies = window.localStorage.getItem('userMsg'),
 const instance = axios.create({
+  
   //  / 就是当前服务器地址
   baseURL: `${prefix_url}api`, // 公共的基础路径
   headers: {
     // token: 'xxx' // 不行，登录接口不需要
+    // 请求的时候携带cookie，以进行歌单的修改工作
+    cookies : window.localStorage.getItem('userMsg')
   }
 });
 
