@@ -25,7 +25,7 @@
  * 1.暂停播放
  * 2.请求歌词
  *  1.把歌词文件放在vuex中
- * 
+ * 3.把audio对象传到父组件中
  */
 import APlayer from "vue-aplayer";
 import dayjs from "dayjs";
@@ -118,6 +118,10 @@ export default {
     aplayer: APlayer
   },
   async mounted() {
+    /**
+     * 1.挂载成功把audio对象传到父组件
+     */
+    this.$emit("getAudioElement", this.$refs.player);
     console.log("挂载MusicControl组件", this.songMsg);
     if (!this.songMsg) return;
     /**

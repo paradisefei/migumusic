@@ -1,13 +1,15 @@
 <template>
   <div class="play_container">
     <div class="header">
-      <router-link to="/"><img src="./images/logo.png" class="logo"/></router-link>
-      <img :src="avatarUrl" class="avatar" v-if="avatarUrl"/>
-      <img src="./images/nopic.png" class="avatar" v-else/>
+      <router-link to="/"
+        ><img src="./images/logo.png" class="logo"
+      /></router-link>
+      <img :src="avatarUrl" class="avatar" v-if="avatarUrl" />
+      <img src="./images/nopic.png" class="avatar" v-else />
     </div>
     <div class="center_container">
       <ul class="left">
-        <li :class="{active: playState}">
+        <li :class="{ active: playState }">
           <a>默认播放列表</a>
         </li>
         <li>
@@ -47,7 +49,9 @@
                     @mouseleave="scope.row.showPlay = true"
                     @click="playAudio(scope.$index, scope.row)"
                   ></a>
-                  <a v-else @mouseenter="scope.row.showPlay = false">{{ scope.$index + 1 }}</a>
+                  <a v-else @mouseenter="scope.row.showPlay = false">{{
+                    scope.$index + 1
+                  }}</a>
                 </span>
                 <img v-else src="./images/playing.gif" /> </template
             ></el-table-column>
@@ -70,10 +74,14 @@
         </el-scrollbar>
       </div>
     </div>
-    <MusicControl :songMsg="isPlayingSong" @togglePlayState="togglePlayState"></MusicControl>
+    <MusicControl
+      :songMsg="isPlayingSong"
+      @togglePlayState="togglePlayState"
+      @getAudioElement="getAudioElement"
+    ></MusicControl>
 
     <!-- 传入歌曲和歌词 -->
-    <Lyric :songMsg="isPlayingSong" :songLyric="songLyric"></Lyric>
+    <Lyric :songMsg="isPlayingSong" :songLyric="songLyric" :audioElement="audioElement"></Lyric>
     <div class="mask"></div>
   </div>
 </template>
@@ -96,12 +104,13 @@ export default {
     return {
       dayjs: dayjs,
       playState: true,
-      songMsg: null
+      songMsg: null,
+      audioElement: null,
     };
   },
   computed: {
     ...mapState({
-      avatarUrl: state => state.login.avatarUrl,
+      avatarUrl: (state) => state.login.avatarUrl,
       songLyric: (state) => state.play.songLyric,
       isPlayingList: (state) => state.play.isPlayingList,
       isPlayingSong: (state) => state.play.isPlayingSong,
@@ -110,12 +119,20 @@ export default {
   },
   components: {
     MusicControl,
-    Lyric
+    Lyric,
   },
   methods: {
-    ...mapActions(["getIsPlayingSong", "changeCheckedRowIndex", "getSongLyric"]),
+    ...mapActions([
+      "getIsPlayingSong",
+      "changeCheckedRowIndex",
+      "getSongLyric",
+    ]),
     togglePlayState(bool) {
       this.playState = bool;
+    },
+    // 接收MusicControl组件的audio元素
+    getAudioElement(ele) {
+      this.audioElement = ele;
     },
     // 表格某一行的样式
     tableRowClassName({ row, rowIndex }) {
@@ -146,7 +163,7 @@ export default {
     },
     toggleSelection(rows) {
       if (rows) {
-        rows.forEach(row => {
+        rows.forEach((row) => {
           this.$refs.multipleTable.toggleRowSelection(row);
         });
       } else {
@@ -155,9 +172,9 @@ export default {
     },
     handleSelectionChange(val) {
       this.multipleSelection = val;
-    }
+    },
   },
-  mounted() {}
+  mounted() {},
 };
 </script>
 
@@ -225,7 +242,8 @@ a {
   color: #070707;
 }
 // 底部边框
-/deep/.el-table td, /deep/.el-table th.is-leaf{
+/deep/.el-table td,
+/deep/.el-table th.is-leaf {
   border: 0;
 }
 // 横向滚动条

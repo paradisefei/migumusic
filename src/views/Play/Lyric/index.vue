@@ -11,18 +11,38 @@
           <p>歌手名:{{ songMsg ? songMsg.singer : "歌手" }}</p>
         </div>
         <div class="inner-container-scorll">
-          <el-scrollbar class="scroll">
-            <!-- :class="['lyric-item', { active: activeIndex === index }]" -->
-            <div
+          <!-- <el-scrollbar class="scroll"> -->
+          <!-- :class="['lyric-item', { active: activeIndex === index }]" -->
+          <!-- <div
               v-for="(item, index) in songLyricArray"
               :key="index"
               @click="lyricClick(item)"
             >
               {{ item.content }}
             </div>
-            <div v-show="!songLyricArray">暂无歌词</div>
-            <!-- <div>{{ songLyric }}</div> -->
-          </el-scrollbar>
+            <div v-show="!songLyricArray">暂无歌词</div> -->
+          <!-- <div>{{ songLyric }}</div> -->
+          <div class="lyric">
+            <div class="lyric-content" ref="lyric">
+              <div class="lyric-item-wrapper">
+                <!-- 每一行的换行问题 -->
+                <div
+                  :class="['lyric-item', { active: activeIndex === index }]"
+                  v-for="(item, index) in songLyricArray"
+                  :key="index"
+                >
+                  {{ item.content }}
+                </div>
+                <div
+                  v-show="!songLyricArray"
+                  style="color: white; font-size: 14px"
+                >
+                  暂无歌词
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- </el-scrollbar> -->
         </div>
       </div>
     </div>
@@ -36,9 +56,18 @@
  *  2.显示歌词
  * 2.歌词滚动
  *  audio和歌词在两个不同的组件，想办法把audio对象在这个组件拿到
+ * 3.现在已经确定好了哪一行高亮了
  */
+// import dayjs from "dayjs";
+import BScroll from "better-scroll";
 export default {
   name: "Lyric",
+  data() {
+    return {
+      scroll: null,
+      activeIndex: 0,
+    };
+  },
   props: {
     songMsg: {
       type: Object,
@@ -48,6 +77,75 @@ export default {
     },
     songLyric: {
       type: String,
+    },
+    audioElement: {
+      type: Object,
+    },
+  },
+  watch: {
+    // 监视activeIndex的变化
+    activeIndex: {
+      immediate: true,
+      handler: function () {
+        /**
+         * 1.有个问题是，每次变完了之后又跳回到了顶部位置
+         * 2.每次跳都是从0开始跳
+         */
+        if (!this.scroll) return;
+        // this.scroll.scrollFrom(0, -27 * this.activeIndex + 53);
+        this.scroll.scrollTo(0, -27 * this.activeIndex + 54, 500);
+        this.scroll.refresh();
+      },
+    },
+    // audioElement: {
+    //   immediate: true,
+    //   handler: function(newValue) {
+    //     console.log(newValue);
+    //   }
+    // }
+    songLyric: {
+      immediate: true,
+      handler: function () {
+        /**
+         * 1.拿到对象来绑定事件
+         */
+        // console.log(this.audioElement);
+        this.init();
+        // this.lyricScrollInit();
+      },
+    },
+  },
+  methods: {
+    init() {
+      // console.log(this.audioElement);
+      if (!this.audioElement) return;
+      if (!this.songLyricArray) return;
+      // console.log(this.audioElement);
+      this.audioElement.$refs.audio.addEventListener("timeupdate", (e) => {
+        let timeStamp = e.target.currentTime * 1000;
+        // console.log(timeStamp);
+        // let timeStampFormat = dayjs(timeStamp).format("mm:ss")
+        // console.log(timeStampFormat);
+        this.activeIndex = this.songLyricArray.findIndex((item, index) => {
+          /**
+           * 1.找到需要被高亮的那一行
+           *  1.这个没问题
+           *  2.现在就是要去让高亮的显示出来
+          //  */
+          // console.log("item", item);
+          // console.log("item.ms", item.ms);
+          // console.log("timeStamp", timeStamp);
+          return item.ms < timeStamp && this.songLyricArray[index + 1]
+            ? this.songLyricArray[index + 1].ms > timeStamp
+            : true;
+        });
+        console.log(this.activeIndex);
+      });
+    },
+    lyricScrollInit() {
+      this.scroll = new BScroll(this.$refs.lyric);
+      this.scroll.scrollTo(0, 54);
+      this.scroll.refresh();
     },
   },
   computed: {
@@ -68,8 +166,17 @@ export default {
         if (!item) return;
         let time = item.match(timeReg)[0].slice(1, -1);
         let minute = time.slice(0, 2);
-        let second = time.slice(3, 2);
-        let ms = time.slice(6, 2);
+        let second = time.slice(3, 5);
+        let ms = time.slice(6);
+        // console.log("time", time);
+        // console.log("minute", minute);
+        // console.log("second", second);
+        // console.log("ms", ms);
+        // console.log(
+        //   parseInt(minute) * 60 * 1000 +
+        //     parseInt(second) * 1000 +
+        //     parseInt(ms) * 10
+        // );
         arrLyric.push({
           time,
           ms:
@@ -81,6 +188,13 @@ export default {
       });
       return arrLyric;
     },
+  },
+  mounted() {
+    /**
+     * 1.只执行一次mounted
+     */
+    this.lyricScrollInit();
+    this.init();
   },
 };
 </script>
@@ -165,6 +279,43 @@ export default {
       }
       /deep/ .el-scrollbar__thumb {
         display: none;
+      }
+    }
+  }
+}
+.lyric {
+  .lyric-content {
+    position: relative;
+    // height: 108px;
+    height: calc(100vh - 110px - 100px);
+    overflow: hidden;
+    background: transparent;
+    border-radius: 8px;
+    user-select: none;
+    .lyric-item-wrapper {
+      .lyric-item {
+        color: #999;
+        // height: 27px;
+        height: auto;
+        transition: all 1s;
+        cursor: pointer;
+        padding-left: 1em;
+        margin: 10px 0;
+        white-space: wrap;
+        &.active {
+          color: white;
+        }
+      }
+    }
+    .play-btn {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      color: #999;
+      cursor: pointer;
+      font-size: 14px;
+      &:hover {
+        color: #333;
       }
     }
   }

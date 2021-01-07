@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "axios": "^0.21.0",
+    "better-scroll": "^2.1.1",
     "core-js": "^3.6.5",
     "dayjs": "^1.10.1",
     "element-ui": "^2.4.5",
