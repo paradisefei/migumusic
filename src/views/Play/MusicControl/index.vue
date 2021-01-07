@@ -38,7 +38,7 @@
       autoplay
       :music="{
         title: songMsg ? songMsg.song + ' - ' : 'hello',
-        artist: songMsg ? songMsg.singer: 'world',
+        artist: songMsg ? songMsg.singer : 'world',
         src: songUrl
           ? songUrl
           : 'http://m7.music.126.net/20210107094952/dae12f1b62673352b840e9846b8dfd07/ymusic/7245/c7bb/b078/81c1e81d3b5fed50ca6d51196fc59ad6.mp3',
@@ -46,11 +46,16 @@
           ? songMsg.pic
           : 'http://p4.music.126.net/ag6iowagVFQDR7WeERp9jg==/109951164882560642.jpg',
       }"
+      @play="playMusic"
+      @pause="pauseMusic"
     />
   </div>
 </template>
 
 <script>
+/**
+ * 1.暂停播放
+ */
 import APlayer from "vue-aplayer";
 import dayjs from "dayjs";
 import { mapState, mapActions } from "vuex";
@@ -62,6 +67,8 @@ export default {
       dayjs: dayjs,
       // 定义变量表示播放状态
       isPlaying: true,
+      // 记录上一次播放行的下标
+      lastCheckedRowIndex: -1,
     };
   },
   props: {
@@ -75,6 +82,7 @@ export default {
   computed: {
     ...mapState({
       songUrl: (state) => state.play.songUrl,
+      checkedRowIndexVuex: (state) => state.play.checkedRowIndexVuex,
     }),
   },
   watch: {
@@ -103,7 +111,43 @@ export default {
     },
   },
   methods: {
-    ...mapActions(["getSongUrl"]),
+    ...mapActions(["getSongUrl", "changeCheckedRowIndex"]),
+    // 暂停播放
+    pauseMusic() {
+      /**
+       * 1.暂停播放时，没有播放行，所以需要改变播放行的下标
+       * 2.记住上一次的下标，但这一次的下标
+       */
+      console.log("暂停播放");
+      this.lastCheckedRowIndex = this.checkedRowIndexVuex;
+      this.changeCheckedRowIndex(-1);
+    },
+    // 绑定的开始播放音乐的事件
+    playMusic() {
+      /**
+       * 1.重新开始播放时，又得把播放行下标改成之前的那个
+       * 2.上下都可以播放，只有下面可以暂停
+       *  1.下面点击了暂停之后，没有选中行样式
+       *    1.暂停之后记住上一次的下标，再次播放时使用这个下标
+       *  2.再点击播放时，还是原本的选中行样式
+       */
+      console.log(
+        "开始播放",
+        this.lastCheckedRowIndex,
+        this.checkedRowIndexVuex
+      );
+      if (this.checkedRowIndexVuex === -1) {
+        /**
+         * 1.暂停过之后checkedRowIndexVuex就已经变成了-1
+         */
+        // console.log("暂停过 上一次的", this.lastCheckedRowIndex)
+        this.changeCheckedRowIndex(this.lastCheckedRowIndex);
+      } 
+      if(this.checkedRowIndexVuex > -1) {
+        // console.log("没暂停过",this.checkedRowIndexVuex)
+        this.changeCheckedRowIndex(this.checkedRowIndexVuex);
+      }
+    },
     // 暂停播放
     // pauseBtn() {
     //   this.$refs.player.pause();
@@ -136,7 +180,7 @@ export default {
      * 离开时将歌曲暂停
      */
     this.$refs.player.pause();
-  }
+  },
 };
 </script>
 
@@ -151,7 +195,7 @@ export default {
   height: 100px;
 }
 // 已播放条的颜色
-/deep/.aplayer-played{
+/deep/.aplayer-played {
   background: #e91e63;
 }
 // 底部播放控制
