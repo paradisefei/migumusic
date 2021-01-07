@@ -124,6 +124,7 @@ export default {
       .scroll {
         height: 100%;
         width: 100%;
+        color: #999;
       }
       /deep/ .el-scrollbar__wrap {
         overflow-x: hidden !important;

@@ -31,9 +31,9 @@
     autoplay
     :music="{
       title: songMsg ? songMsg.song : '',
-      artist: songMsg ? songMsg.singer : '' ,
-      src: songMsg ? songUrl : '',
-      pic: songMsg ? songMsg.pic : '',
+      artist: songMsg ? songMsg.singer : '',
+      src: songUrl ? songUrl : '',
+      pic: songMsg ? songMsg.pic : ''
     }"
   />
   <!-- </div> -->
@@ -49,21 +49,21 @@ export default {
     return {
       dayjs: dayjs,
       // 定义变量表示播放状态
-      isPlaying: true,
+      isPlaying: true
     };
   },
   props: {
     songMsg: {
       type: Object,
-      default: function(){
-        return {}
-      },
-    },
+      default: function() {
+        return {};
+      }
+    }
   },
   computed: {
     ...mapState({
-      songUrl: (state) => state.play.songUrl,
-    }),
+      songUrl: state => state.play.songUrl
+    })
   },
   watch: {
     // 监视songMsg对象的变化
@@ -79,30 +79,30 @@ export default {
         // console.log(newValue, this);
         if (!this || !newValue) return;
         this.getSongUrl(newValue.id);
-      },
-    },
+      }
+    }
   },
   methods: {
     ...mapActions(["getSongUrl"]),
     // 切换播放状态
     togglePlayState() {
       this.isPlaying = !this.isPlaying;
-    },
+    }
   },
   components: {
-    aplayer: APlayer,
+    aplayer: APlayer
   },
   mounted() {
     // console.log(this.songMsg)
-    if(!this.songMsg) return;
+    if (!this.songMsg) return;
     this.getSongUrl(this.songMsg.id);
-  },
+  }
 };
 </script>
 
 <style lang="less" scoped>
 // 播放器组件自定义样式
-.aplayer{
+.aplayer {
   width: 1130px;
   height: 100px;
 }
