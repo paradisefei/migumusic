@@ -92,8 +92,9 @@ export default {
     // 去到播放界面
     async toPlay(scope) {
       console.log(scope.row);
-      // 把新添加的歌曲添加到正在播放列表中
+      // 把被点击的歌曲保存到vuex中
       await this.getIsPlayingSong(scope.row);
+      // 把被点击的歌曲添加到正在播放列表的最前端
       this.addOneSong(scope.row);
       this.$router.push("/play");
     },

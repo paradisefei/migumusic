@@ -1,4 +1,4 @@
-import { reqGetSongUrl } from "@api/play";
+import { reqGetSongUrl, reqGetSongLyric } from "@api/play";
 /**
  * 1.批量添加歌曲到播放列表
  * 2.获取歌曲时长
@@ -13,10 +13,22 @@ export default {
     checkedRowIndexVuex: 0,
     // 歌曲的url
     songUrl: "",
+    songLyric: "",
     songListId: []
   },
   getters: {},
   actions: {
+    // 获取歌词
+    async getSongLyric({ commit }, id){
+      /**
+       * 1.如果是纯音乐的话是没有歌词的
+       */
+      const res = await reqGetSongLyric(id);
+      if (res.code === 200) {
+        // console.log(res);
+        commit("GET_SONG_LYRIC", res);
+      }
+    },
     // 获取歌曲的url
     async getSongUrl({ commit }, id) {
       const res = await reqGetSongUrl(id);
@@ -50,6 +62,20 @@ export default {
     // 歌曲的url
     GET_SONG_URL(state, res) {
       state.songUrl = res.data[0].url;
+    },
+    // 歌曲的歌词
+    GET_SONG_LYRIC(state, res) {
+      /**
+       * 1.如果是纯音乐的话是没有歌词的
+       */
+      if(res.nolyric){
+        /**
+         * 1.没有歌词
+         */
+        state.songLyric = "暂无歌词";
+        return;
+      }
+      state.songLyric = res.lrc.lyric;
     },
     ONE_SONG(state, data) {
       const res = state.isPlayingList.find((item) => item.id === data.id)

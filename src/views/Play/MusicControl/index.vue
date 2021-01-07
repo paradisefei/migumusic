@@ -23,6 +23,8 @@
 <script>
 /**
  * 1.暂停播放
+ * 2.请求歌词
+ *  1.把歌词文件放在vuex中
  */
 import APlayer from "vue-aplayer";
 import dayjs from "dayjs";
@@ -80,7 +82,11 @@ export default {
     },
   },
   methods: {
-    ...mapActions(["getSongUrl", "changeCheckedRowIndex"]),
+    ...mapActions(["getSongUrl", "changeCheckedRowIndex", "getSongLyric"]),
+    // 
+    timePlayed(time) {
+      console.log(this.dayjs(time.timeStamp).format("mm:ss.SSS"));
+    },
     // 暂停播放
     pauseMusic() {
       /**
@@ -108,14 +114,16 @@ export default {
   components: {
     aplayer: APlayer
   },
-  mounted() {
+  async mounted() {
     console.log("挂载MusicControl组件", this.songMsg);
     if (!this.songMsg) return;
     /**
-     * 1.拿到播放列表中的第一首歌
+     * 1.获取歌曲的url
+     * 2.获取歌曲的歌词
      */
     console.log(this.songMsg.id);
-    this.getSongUrl(this.songMsg.id);
+    await this.getSongUrl(this.songMsg.id);
+    await this.getSongLyric(this.songMsg.id);
   },
   beforeDestroy() {
     /**
@@ -128,10 +136,10 @@ export default {
 
 <style lang="less" scoped>
 // 播放器组件自定义样式
-.aplayer {
-  width: 1130px;
-  height: 100px;
-}
+// .aplayer {
+//   width: 1330px;
+//   height: 100px;
+// }
 /deep/.aplayer-pic {
   width: 100px;
   height: 100px;
@@ -142,71 +150,11 @@ export default {
 }
 // 底部播放控制
 .bottom {
-  width: 1130px;
+  width: 1400px;
   height: 110px;
-  padding-top: 20px;
-  margin-left: 70px;
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
+  margin-left: 50px;
 
   position: absolute;
-  bottom: 20px;
-}
-.bottom .control {
-  width: 280px;
-  height: 100%;
-  color: white;
-  // background: yellow;
-  flex-shrink: 0;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-}
-// 控制条中的字体图标
-.bottom .control .iconfont {
-  font-size: 32px;
-  cursor: pointer;
-}
-// 右边的进度条
-.msgAndProgress {
-  height: 100%;
-  padding-bottom: 20px;
-  display: flex;
-  flex-direction: column;
-  // align-items: center;
-  justify-content: center;
-}
-.bottom .progress {
-  width: 760px;
-  height: 4px;
-  background: #848484;
-}
-// 歌曲信息
-.bottom .msg {
-  color: #cbcbcb;
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 10px;
-}
-// 歌曲名
-.bottom .msg .name {
-  font-size: 16px;
-}
-// 已播放
-.bottom .progress .played {
-  width: 10%;
-  height: 100%;
-  background: white;
-}
-// 播放球
-.bottom .progress .played .ball {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: white;
-  position: relative;
-  top: -4px;
-  left: 100%;
+  bottom: 40px;
 }
 </style>

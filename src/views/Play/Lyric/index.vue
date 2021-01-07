@@ -1,48 +1,27 @@
 <template>
   <div class="outer">
     <div class="inner">
-      <div class="inner-img"><img src="@static/images/home/ia_100000037.jpg" alt="" /></div>
+      <div class="inner-img">
+        <img v-if="!songLyric" src="./ia_100000011534.png" />
+        <img v-else :src="songMsg.pic" alt="" />
+      </div>
       <div class="inner-container">
         <div class="inner-container-title">
-          <p>歌曲名:q2</p>
-          <p>歌手名:123123</p>
+          <p>歌曲名:{{ songMsg ? songMsg.song : "歌曲" }}</p>
+          <p>歌手名:{{ songMsg ? songMsg.singer : "歌手" }}</p>
         </div>
         <div class="inner-container-scorll">
           <el-scrollbar class="scroll">
-            <p>23123</p>
-            <p>23123</p>
-            <p>23123</p>
-            <p>23123</p>
-            <p>23123</p>
-            <p>23123</p>
-            <p>23123</p>
-            <p>23123</p>
-            <p>23123</p>
-            <p>23123</p>
-            <p>23123</p>
-            <p>23123</p>
-            <p>23123</p>
-            <p>23123</p>
-            <p>23123</p>
-            <p>23123</p>
-            <p>23123</p>
-            <p>23123</p>
-            <p>23123</p>
-            <p>23123</p>
-            <p>23123</p>
-            <p>23123</p>
-            <p>23123</p>
-            <p>23123</p>
-            <p>23123</p>
-            <p>231asdasdad23</p>
-            <p>231asdasdad23</p>
-            <p>231asdasdad23</p>
-            <p>231asdasdad23</p>
-            <p>231asdasdad23</p>
-            <p>231asdasdad23</p>
-            <p>231asdasdad2asdasdasdasdsadsadsadsadasd fghsdgdfg ed gdfg asfasdf asd3</p>
-            <p>231asdasdad23</p>
-            <p>231asdasdad23</p>
+            <!-- :class="['lyric-item', { active: activeIndex === index }]" -->
+            <div
+              v-for="(item, index) in songLyricArray"
+              :key="index"
+              @click="lyricClick(item)"
+            >
+              {{ item.content }}
+            </div>
+            <div v-show="!songLyricArray">暂无歌词</div>
+            <!-- <div>{{ songLyric }}</div> -->
           </el-scrollbar>
         </div>
       </div>
@@ -51,8 +30,90 @@
 </template>
 
 <script>
+/**
+ * 1.歌词
+ *  1.处理歌词
+ *  2.显示歌词
+ */
 export default {
-  name: "Lyric"
+  name: "Lyric",
+  props: {
+    songMsg: {
+      type: Object,
+      default: function () {
+        return {};
+      },
+    },
+    songLyric: {
+      type: String,
+    },
+  },
+  watch: {
+    // songLyric: {
+    //   immediate: true,
+    //   handler: function (newValue) {
+    //     const strIfy = JSON.stringify(newValue);
+    //     let arrSplit = newValue.split("\n");
+    //     let timeReg = /^\[.*\]/;
+    //     let arrLyric = [];
+    //     arrSplit.forEach((item) => {
+    //       if (!item) return;
+    //       console.log("每一行", item);
+    //       let time = item.match(timeReg)[0].substr(1, 9);
+    //       let minute = time.substr(0, 2);
+    //       let second = time.substr(3, 2);
+    //       let ms = time.substr(6, 2);
+    //       arrLyric.push({
+    //         time,
+    //         ms:
+    //           parseInt(minute) * 60 * 1000 +
+    //           parseInt(second) * 1000 +
+    //           parseInt(ms) * 10,
+    //         content: item.substr(11),
+    //       });
+    //     });
+    //     console.log("arrSplit", arrSplit);
+    //     console.log("strIfy", strIfy);
+    //     console.log("arrLyric", arrLyric);
+    //   },
+    // },
+  },
+  computed: {
+    songLyricArray() {
+      /**
+       * 1.歌词成功显示
+       * 2.拿到歌词出来显示的时候已经就是没有\n的了
+       */
+      if (!this.songLyric) return;
+      if(this.songLyric === "暂无歌词") {
+        return "";
+      }
+      const strIfy = JSON.stringify(this.songLyric);
+      let arrSplit = this.songLyric.split("\n");
+      let timeReg = /^\[.*\]/;
+      let arrLyric = [];
+      arrSplit.forEach((item) => {
+        if (!item) return;
+        console.log("每一行", item);
+        let time = item.match(timeReg)[0].substr(1, 9);
+        let minute = time.substr(0, 2);
+        let second = time.substr(3, 2);
+        let ms = time.substr(6, 2);
+        arrLyric.push({
+          time,
+          ms:
+            parseInt(minute) * 60 * 1000 +
+            parseInt(second) * 1000 +
+            parseInt(ms) * 10,
+          content: item.substr(11),
+        });
+      });
+      console.log("arrSplit", arrSplit);
+      console.log("strIfy", strIfy);
+      console.log("arrLyric", arrLyric);
+      return arrLyric;
+    },
+  },
 };
 </script>
 

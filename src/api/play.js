@@ -13,5 +13,15 @@ export const reqGetSongUrl = (id) => {
     }
   });
 };
+/* 获取歌曲的歌词 */
+export const reqGetSongLyric = (id) => {
+  return request({
+    method: "GET",
+    url: "/lyric",
+    params: {
+      id
+    }
+  });
+};
 
 

@@ -1,5 +1,10 @@
+.aplayer {
+    width: 1400px !important;
+    height: 100px;
+    background: transparent !important;
+}
 .aplayer-body{
-    background:#080510 !important;
+    background:transparent !important;
     border: 0 !important;
 }
 .aplayer-music {

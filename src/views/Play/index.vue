@@ -71,7 +71,8 @@
     </div>
     <MusicControl :songMsg="isPlayingSong"></MusicControl>
 
-    <Lyric></Lyric>
+    <!-- 传入歌曲和歌词 -->
+    <Lyric :songMsg="isPlayingSong" :songLyric="songLyric"></Lyric>
     <div class="mask"></div>
   </div>
 </template>
@@ -99,6 +100,7 @@ export default {
   },
   computed: {
     ...mapState({
+      songLyric: (state) => state.play.songLyric,
       isPlayingList: (state) => state.play.isPlayingList,
       isPlayingSong: (state) => state.play.isPlayingSong,
       checkedRowIndexVuex: (state) => state.play.checkedRowIndexVuex,
@@ -109,7 +111,7 @@ export default {
     Lyric
   },
   methods: {
-    ...mapActions(["getIsPlayingSong", "changeCheckedRowIndex"]),
+    ...mapActions(["getIsPlayingSong", "changeCheckedRowIndex", "getSongLyric"]),
     // 表格某一行的样式
     tableRowClassName({ row, rowIndex }) {
       row.index = rowIndex;
@@ -121,13 +123,17 @@ export default {
       }
     },
     // 点击播放
-    playAudio(index, row) {
+    async playAudio(index, row) {
       /**
        * 1.新添加的歌曲已存在在播放列表中
+       * 2.再请求一次歌词
        */
+      console.log(111111111111, row.id);
       row.showPlay = true;
       this.changeCheckedRowIndex(index);
-      this.getIsPlayingSong(row);
+      await this.getIsPlayingSong(row);
+      // 请求歌词
+      await this.getSongLyric(row.id);
     },
     // 点击头像去到首页
     toMy() {
@@ -311,71 +317,6 @@ a {
 
 .el-table::before {
   height: 0px;
-}
-// 底部播放控制
-.bottom {
-  width: 1130px;
-  height: 110px;
-  padding-top: 20px;
-  margin-left: 70px;
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-}
-.bottom .control {
-  width: 280px;
-  height: 100%;
-  color: white;
-  // background: yellow;
-  flex-shrink: 0;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-}
-// 控制条中的字体图标
-.bottom .control .iconfont {
-  font-size: 32px;
-}
-// 右边的进度条
-.msgAndProgress {
-  height: 100%;
-  padding-bottom: 20px;
-  display: flex;
-  flex-direction: column;
-  // align-items: center;
-  justify-content: center;
-}
-.bottom .progress {
-  width: 760px;
-  height: 4px;
-  background: #848484;
-}
-// 歌曲信息
-.bottom .msg {
-  color: #cbcbcb;
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 10px;
-}
-// 歌曲名
-.bottom .msg .name {
-  font-size: 14px;
-}
-// 已播放
-.bottom .progress .played {
-  width: 10%;
-  height: 100%;
-  background: white;
-}
-// 播放球
-.bottom .progress .played .ball {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: white;
-  position: relative;
-  top: -4px;
-  left: 100%;
 }
 
 /deep/.el-table,
