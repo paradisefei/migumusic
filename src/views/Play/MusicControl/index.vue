@@ -1,37 +1,5 @@
 <template>
   <div class="bottom">
-    <!-- 使用字体图标 -->
-    <!-- <div class="control">
-      <i class="iconfont icon-music-controller-play-prev"></i>
-      <i
-        :class="{
-          iconfont: true,
-          'icon-music-controller-start-play': !isPlaying,
-          'icon-music-controller-pause-play': isPlaying,
-        }"
-        @click="togglePlayState"
-      ></i>
-      <i class="iconfont icon-music-controller-play-next"></i>
-    </div>
-    <div class="msgAndProgress">
-      <div class="msg">
-        <span class="name">{{ songMsg.song }} - {{ songMsg.singer }}</span>
-        <span class="time"
-          >00:03/{{ dayjs(songMsg.time).format("mm:ss") }}</span
-        >
-      </div>
-      <div class="progress">
-        <div class="played">
-          <div class="ball"></div>
-        </div>
-      </div>
-    </div> -->
-    <!-- 
-      1.加上autoplay属性会有效，但在改变了什么之后又会变得无效
-      2.加载完了之后再给这个元素加上一个autoplay属性
-     -->
-    <!-- <button @click="playBtn">播放</button>
-    <button @click="pauseBtn">暂停</button> -->
     <aplayer
       v-if="isShow"
       ref="player"
@@ -118,44 +86,19 @@ export default {
        * 1.暂停播放时，没有播放行，所以需要改变播放行的下标
        * 2.记住上一次的下标，但这一次的下标
        */
-      console.log("暂停播放");
       this.lastCheckedRowIndex = this.checkedRowIndexVuex;
       this.changeCheckedRowIndex(-1);
     },
     // 绑定的开始播放音乐的事件
     playMusic() {
-      /**
-       * 1.重新开始播放时，又得把播放行下标改成之前的那个
-       * 2.上下都可以播放，只有下面可以暂停
-       *  1.下面点击了暂停之后，没有选中行样式
-       *    1.暂停之后记住上一次的下标，再次播放时使用这个下标
-       *  2.再点击播放时，还是原本的选中行样式
-       */
-      console.log(
-        "开始播放",
-        this.lastCheckedRowIndex,
-        this.checkedRowIndexVuex
-      );
       if (this.checkedRowIndexVuex === -1) {
-        /**
-         * 1.暂停过之后checkedRowIndexVuex就已经变成了-1
-         */
-        // console.log("暂停过 上一次的", this.lastCheckedRowIndex)
         this.changeCheckedRowIndex(this.lastCheckedRowIndex);
       } 
       if(this.checkedRowIndexVuex > -1) {
-        // console.log("没暂停过",this.checkedRowIndexVuex)
         this.changeCheckedRowIndex(this.checkedRowIndexVuex);
       }
     },
-    // 暂停播放
-    // pauseBtn() {
-    //   this.$refs.player.pause();
-    // },
-    // // 播放歌曲
-    // playBtn() {
-    //   this.$refs.player.play();
-    // },
+
     // 切换播放状态
     togglePlayState() {
       this.isPlaying = !this.isPlaying;
@@ -165,12 +108,6 @@ export default {
     aplayer: APlayer,
   },
   mounted() {
-    // 使用nextTick解决aplayer无法自动播放的问题
-    // this.$nextTick(() => {
-    //   this.isShow = !!this.isShow;
-    // });
-    // 自动播放
-    // this.$refs.player.play();
     console.log("挂载MusicControl组件");
     if (!this.songMsg) return;
     this.getSongUrl(this.songMsg.id);

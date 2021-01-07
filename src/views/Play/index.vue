@@ -107,14 +107,6 @@ export default {
       checkedRowIndexVuex: (state) => state.play.checkedRowIndexVuex,
     }),
   },
-  watch: {
-    // checkedRowIndexVuex: {
-    //   handler: function (newValue) {
-    //     console.log(newValue);
-    //     this.checkedRowIndex = newValue;
-    //   },
-    // },
-  },
   components: {
     MusicControl,
     Lyric,
@@ -138,7 +130,6 @@ export default {
        */
       row.showPlay = true;
       this.changeCheckedRowIndex(index);
-      // this.checkedRowIndex = index;
       this.getIsPlayingSong(row);
     },
     // 点击头像去到首页

@@ -41,7 +41,7 @@
         >
       </el-table-column>
     </el-table>
-    
+
     <el-pagination
       :page-size="10"
       :pager-count="11"
@@ -74,8 +74,8 @@ export default {
   },
   watch: {
     songList(newValue) {
-    this.songListFinally = newValue.slice(0, 10);
-    }
+      this.songListFinally = newValue.slice(0, 10);
+    },
   },
   computed: {},
   methods: {
@@ -91,12 +91,6 @@ export default {
     },
     // 去到播放界面
     async toPlay(scope) {
-      /**
-       * 1.把当前歌曲添加到正在播放的列表中
-       * 2.触发vuex中的函数执行
-       * 3.把这首歌的信息保存到vuex中
-       * 4.如果这首歌已经存在在了播放列表中
-       */
       console.log(scope.row);
       await this.getIsPlayingSong(scope.row);
       this.addOneSong(scope.row);
@@ -119,8 +113,7 @@ export default {
       this.multipleSelection = val;
     },
   },
-  mounted() {
-  },
+  mounted() {},
 };
 </script>
 
