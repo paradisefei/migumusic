@@ -12,7 +12,7 @@ const PlayList = () => import(/* webpackChunkName: "Listen" */ "../views/My/Play
 const Create = () => import(/* webpackChunkName: "Listen" */ "../views/My/PlayList/Create");
 const Play = () => import(/* webpackChunkName: "Play" */ "../views/Play");
 const MiGuList = () => import(/* webpackChunkName: "MiGuList" */ "../views/MiGuList");
-
+const ArtList = () => import(/* webpackChunkName: "ArtList" */ "../views/ArtList");
 // 重写push和replace方法
 // 目的：为了让编程式导航重复点击时不报错~
 const push = VueRouter.prototype.push;
@@ -94,6 +94,11 @@ const router = new VueRouter({
     {
       path: "/migulist",
       component: MiGuList
+    },
+    {
+      name: "artlist",
+      path: "/artlist",
+      component: ArtList
     }
   ],
   // 每次切换路由页面滚动条位置
