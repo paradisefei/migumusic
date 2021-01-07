@@ -90,7 +90,7 @@ export default {
       this.songListFinally = this.songList.slice(value * 10 - 10, value * 10);
     },
     // 去到播放界面
-    toPlay(scope) {
+    async toPlay(scope) {
       /**
        * 1.把当前歌曲添加到正在播放的列表中
        * 2.触发vuex中的函数执行
@@ -98,7 +98,7 @@ export default {
        * 4.如果这首歌已经存在在了播放列表中
        */
       console.log(scope.row);
-      this.getIsPlayingSong(scope.row);
+      await this.getIsPlayingSong(scope.row);
       this.addOneSong(scope.row);
       this.$router.push("/play");
     },

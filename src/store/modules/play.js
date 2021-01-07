@@ -9,6 +9,8 @@ export default {
     isPlayingList: [],
     // 正在播放的歌曲
     isPlayingSong: null,
+    // 播放歌曲的下标
+    checkedRowIndexVuex: 0,
     // 歌曲的url
     songUrl: "",
     songListId: []
@@ -23,6 +25,10 @@ export default {
         commit("GET_SONG_URL", res);
       }
     },
+    // 修改被选中行的index
+    changeCheckedRowIndex({ commit }, index) {
+      commit("CHANGE_CHECKED_ROW_INDEX", index)
+    },
     /* 点击播放时向正在播放列表中添加某一首歌曲信息 */
     addOneSong({ commit }, data) {
       commit("ONE_SONG", data);
@@ -33,6 +39,10 @@ export default {
     }
   },
   mutations: {
+    // 修改index
+    CHANGE_CHECKED_ROW_INDEX(state, index) {
+      state.checkedRowIndexVuex = index;
+    },
     // 歌曲的url
     GET_SONG_URL(state, res) {
       state.songUrl = res.data[0].url;
@@ -43,8 +53,20 @@ export default {
       state.isPlayingList.unshift(data);
     },
     GET_IS_PLAYING_SONG(state, data) {
+      /**
+       * 1.如果添加的歌曲已经存在在了播放列表中，直接开始播放那首歌
+       *  1.拿到那首歌的下标
+       *  2.修改播放列表中的播放行下标
+       */
       state.isPlayingSong = data;
-      const res = state.isPlayingList.find(item => item.id === data.id);
+      const res = state.isPlayingList.find((item, index) => { 
+        if(item.id === data.id){
+          state.checkedRowIndexVuex = index;
+          console.log(state.checkedRowIndexVuex);
+          return true;
+        }
+        state.checkedRowIndexVuex = 0;
+      });
       if (res) return;
       state.isPlayingList.unshift(data);
     },

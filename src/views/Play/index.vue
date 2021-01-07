@@ -41,7 +41,7 @@
             <el-table-column type="selection" width="50"> </el-table-column>
             <el-table-column type="index" width="50">
               <template slot-scope="scope">
-                <span v-if="checkedRowIndex != scope.$index">
+                <span v-if="checkedRowIndexVuex != scope.$index">
                   <a
                     class="iconfont icon-bofang"
                     v-if="!scope.row.showPlay"
@@ -104,19 +104,28 @@ export default {
     ...mapState({
       isPlayingList: (state) => state.play.isPlayingList,
       isPlayingSong: (state) => state.play.isPlayingSong,
+      checkedRowIndexVuex: (state) => state.play.checkedRowIndexVuex,
     }),
+  },
+  watch: {
+    // checkedRowIndexVuex: {
+    //   handler: function (newValue) {
+    //     console.log(newValue);
+    //     this.checkedRowIndex = newValue;
+    //   },
+    // },
   },
   components: {
     MusicControl,
     Lyric,
   },
   methods: {
-    ...mapActions(["getIsPlayingSong"]),
+    ...mapActions(["getIsPlayingSong", "changeCheckedRowIndex"]),
     // 表格某一行的样式
     tableRowClassName({ row, rowIndex }) {
       row.index = rowIndex;
       // console.log(row);
-      if (row.index === this.checkedRowIndex) {
+      if (row.index === this.checkedRowIndexVuex) {
         return "success-row";
       } else {
         return "";
@@ -124,8 +133,12 @@ export default {
     },
     // 点击播放
     playAudio(index, row) {
+      /**
+       * 1.新添加的歌曲已存在在播放列表中
+       */
       row.showPlay = true;
-      this.checkedRowIndex = index;
+      this.changeCheckedRowIndex(index);
+      // this.checkedRowIndex = index;
       this.getIsPlayingSong(row);
     },
     // 点击头像去到首页
