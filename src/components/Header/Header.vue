@@ -230,16 +230,17 @@ export default {
       const res = await reqSearchKeyWords(keywords);
       if (res.code === 200) {
         const songs = res.result.songs;
-        // console.log(songs);
+        console.log(songs);
         const playList = [];
         songs.forEach(item => {
           playList.push({
             id: item.id,
-            name: item.name,
+            song: item.name,
             /* 搜索返回只有默认图片  没有歌曲信息的图片*/
             picUrl: item.artists[0].img1v1Url,
             singer: item.artists[0].name,
-            time: item.duration
+            time: item.duration,
+            album: item.album.name
           });
         });
         // console.log(playList);

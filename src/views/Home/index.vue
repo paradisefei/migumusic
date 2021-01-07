@@ -1,5 +1,5 @@
 <template>
-  <div class="home-container">
+  <div class="home-container" style="margin:28px 0;">
     <!-- 轮播图 -->
     <div class="home-bannerList">
       <!-- <Carousel :carouselList="banners" /> -->
@@ -114,7 +114,7 @@
               <img class="data-right-item-img" :src="list.al.picUrl" alt="" />
             </div>
             <div class="data-right-item-content">
-              <p class="data-right-item-content-name1">{{ list.al.name }}</p>
+              <p class="data-right-item-content-name1">{{ list.name }}</p>
               <p class="data-right-item-content-name2">{{ list.ar[0].name }}</p>
             </div>
             <span class="data-right-item-time" v-show="!list.isPlayButtonShow">{{
@@ -269,7 +269,8 @@ export default {
           singer: item.ar[0].name,
           song: item.name,
           album: item.al.name,
-          time: item.dt
+          time: item.dt,
+          showPlay: true
         });
       });
 
@@ -280,7 +281,6 @@ export default {
     },
     // tab切换
     tabChange(index) {
-      console.log(index);
       this.tabChangeList.map(item => {
         item.active = false;
       });
@@ -311,6 +311,7 @@ export default {
 
       const resPlayListChinese = await reqGetQuickPlayList(id);
       this.playList = resPlayListChinese.playlist.tracks.splice(1, 8);
+
       this.playListImg = this.playList.slice(0, 6);
       this.$nextTick(() => {
         loadingInstance.close();
@@ -324,16 +325,16 @@ export default {
         this.songId = id;
       } */
 
-      console.log(message);
       this.songMessage = {
         id: message.id,
         pic: message.al.picUrl,
         singer: message.ar[0].name,
         song: message.name,
         album: message.al.name,
-        time: message.dt
+        time: message.dt,
+        showPlay: true
       };
-      console.log(this.songMessage);
+
       this.$store.commit("ONE_SONG", this.songMessage);
       /* this.$router.push({
         name: "play",
@@ -456,7 +457,7 @@ a {
 .home-navbar {
   width: 100%;
   height: 80px;
-  margin-top: 28px;
+  margin-top: 56px;
 
   .home-navbar-item {
     width: 992px;

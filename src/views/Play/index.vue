@@ -1,9 +1,7 @@
 <template>
   <div class="play_container">
     <div class="header">
-      <router-link to="/"
-        ><img src="./images/logo.png" class="logo"
-      /></router-link>
+      <router-link to="/"><img src="./images/logo.png" class="logo"/></router-link>
       <img src="./images/uniaccess.png" class="avatar" @click="toMy" />
     </div>
     <div class="center_container">
@@ -32,7 +30,7 @@
             ref="multipleTable"
             :data="isPlayingList"
             tooltip-effect="dark"
-            style="width: 100%; background: #393938"
+            style="width: 100%; background: transparent"
             :row-style="{ height: '80px' }"
             fit
             @selection-change="handleSelectionChange"
@@ -48,9 +46,7 @@
                     @mouseleave="scope.row.showPlay = true"
                     @click="playAudio(scope.$index, scope.row)"
                   ></a>
-                  <a v-else @mouseenter="scope.row.showPlay = false">{{
-                    scope.$index + 1
-                  }}</a>
+                  <a v-else @mouseenter="scope.row.showPlay = false">{{ scope.$index + 1 }}</a>
                 </span>
                 <img v-else src="./images/playing.gif" /> </template
             ></el-table-column>
@@ -76,6 +72,7 @@
     <MusicControl :songMsg="isPlayingSong"></MusicControl>
 
     <Lyric></Lyric>
+    <div class="mask"></div>
   </div>
 </template>
 
@@ -97,7 +94,7 @@ export default {
     return {
       dayjs: dayjs,
       checkedRowIndex: 0,
-      songMsg: null,
+      songMsg: null
     };
   },
   computed: {
@@ -109,7 +106,7 @@ export default {
   },
   components: {
     MusicControl,
-    Lyric,
+    Lyric
   },
   methods: {
     ...mapActions(["getIsPlayingSong", "changeCheckedRowIndex"]),
@@ -138,7 +135,7 @@ export default {
     },
     toggleSelection(rows) {
       if (rows) {
-        rows.forEach((row) => {
+        rows.forEach(row => {
           this.$refs.multipleTable.toggleRowSelection(row);
         });
       } else {
@@ -147,9 +144,9 @@ export default {
     },
     handleSelectionChange(val) {
       this.multipleSelection = val;
-    },
+    }
   },
-  mounted() {},
+  mounted() {}
 };
 </script>
 
@@ -162,8 +159,34 @@ a {
   height: 100%;
   padding: 0 50px;
   box-sizing: border-box;
-  background: #393938;
+
   overflow: hidden;
+  .mask {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 99.1vw;
+    height: 100vh;
+    background: transparent url("./images/mask.jpg");
+    background-size: cover;
+    z-index: -1;
+    overflow: hidden;
+    &::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 90vw;
+      height: 90vh;
+      background: rgba(0, 0, 0, 0.6);
+      background-size: cover;
+      filter: blur(50px);
+      z-index: -1;
+      overflow: hidden;
+      background-size: cover;
+    }
+  }
 }
 // 头部
 .header {
@@ -187,7 +210,7 @@ a {
 // 滚动条
 .center_container .scrollbar {
   height: 630px;
-  background: #393938;
+
   color: #070707;
 }
 // 横向滚动条
@@ -231,7 +254,7 @@ a {
   font-size: 14px;
   margin-bottom: 30px;
   display: flex;
-  background: #393938;
+
   color: white;
 }
 // 两个按钮
@@ -249,12 +272,7 @@ a {
 .center_container .center {
   width: 1130px;
 }
-// 具体的音乐列表块
-/deep/.el-table td,
-/deep/.el-table th.is-leaf {
-  background: #393939;
-  border-bottom: none;
-}
+
 // 复选框的背景颜色
 /deep/.el-checkbox__inner {
   background: transparent;
@@ -274,11 +292,6 @@ a {
   background: transparent;
   border-color: #ccc;
 }
-// 改变表格中的字体样式
-// /deep/.el-table .el-table__row {
-//   color: green;
-// }
-// 表格某一行的样式
 
 /deep/.el-table {
   color: red !important;
@@ -359,5 +372,32 @@ a {
   position: relative;
   top: -4px;
   left: 100%;
+}
+
+/deep/.el-table,
+/deep/.el-table__expanded-cell {
+  background-color: transparent !important;
+}
+/deep/.el-table th,
+.el-table tr,
+.el-table td {
+  background-color: transparent !important;
+}
+/deep/ .el-table__row {
+  background-color: transparent !important;
+}
+/deep/.el-table th,
+.el-table tr {
+  background-color: transparent !important;
+}
+/deep/ .has-gutter {
+  background-color: transparent !important;
+}
+/deep/ tr {
+  background-color: transparent !important;
+}
+/deep/ .el-table td,
+.el-table th.is-leaf {
+  border-bottom: 1px solid transparent;
 }
 </style>

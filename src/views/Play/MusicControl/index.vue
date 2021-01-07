@@ -102,10 +102,10 @@ export default {
     // 切换播放状态
     togglePlayState() {
       this.isPlaying = !this.isPlaying;
-    },
+    }
   },
   components: {
-    aplayer: APlayer,
+    aplayer: APlayer
   },
   mounted() {
     console.log("挂载MusicControl组件");
