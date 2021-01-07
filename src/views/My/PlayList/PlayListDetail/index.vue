@@ -162,6 +162,7 @@ export default {
   },
   components: {},
   mounted() {
+    // 等到列表加载时在渲染
     this.$nextTick(() => {
       this.getPlayListDetail(this.uid);
     });
