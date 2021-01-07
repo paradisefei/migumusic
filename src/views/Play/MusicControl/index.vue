@@ -74,6 +74,7 @@ export default {
          * 1.把歌曲的基本信息渲染在页面上
          * 2.发送请求，拿到歌曲的播放地址
          * 3.监视属性中拿不到实例对象
+         *  使用普通函数
          */
         // console.log(newValue, this);
         if (!this || !newValue) return;
@@ -92,7 +93,7 @@ export default {
     pauseMusic() {
       /**
        * 1.暂停播放时，没有播放行，所以需要改变播放行的下标
-       * 2.记住上一次的下标，但这一次的下标
+       * 2.记住上一次的下标
        */
       this.$emit("togglePlayState", false);
       this.lastCheckedRowIndex = this.checkedRowIndexVuex;
@@ -136,7 +137,6 @@ export default {
     /**
      * 离开时将歌曲暂停
      */
-    console.log(12122);
     this.$refs.player.pause();
   },
 };
