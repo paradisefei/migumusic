@@ -5,7 +5,7 @@
       <!-- <Carousel :carouselList="banners" /> -->
       <el-carousel :interval="4000" type="card" height="350px">
         <el-carousel-item v-for="item in banners" :key="item.id">
-          <img class="banner-item-img" :src="item.imgUrl" alt="" />
+          <img class="banner-item-img" v-lazy="item.imgUrl" alt="" />
         </el-carousel-item>
       </el-carousel>
     </div>
@@ -63,7 +63,7 @@
               v-show="recommendList.isPlayShow"
             />
 
-            <img :src="recommendList.coverImgUrl" alt="" />
+            <img v-lazy="recommendList.coverImgUrl" alt="" />
             <span>{{ recommendList.name }}</span>
             <div class="right-play-count">
               <i class="iconfont icon-erji"></i>
@@ -96,7 +96,7 @@
               v-for="list in playListImg"
               :key="list.al.picUrl"
               class="data-left-imgs"
-              :src="list.al.picUrl"
+              v-lazy="list.al.picUrl"
               alt=""
             />
           </div>
@@ -111,7 +111,7 @@
             @click="getSongMessage(list)"
           >
             <div class="data-right-item-img-container">
-              <img class="data-right-item-img" :src="list.al.picUrl" alt="" />
+              <img class="data-right-item-img" v-lazy="list.al.picUrl" alt="" />
             </div>
             <div class="data-right-item-content">
               <p class="data-right-item-content-name1">{{ list.name }}</p>
@@ -168,7 +168,7 @@
                 @change="rankChange"
               >
                 <el-carousel-item v-for="list in rankCourselList" :key="list.id" :name="list.title">
-                  <img :src="list.imgUrl" alt="" />
+                  <img v-lazy="list.imgUrl" alt="" />
                 </el-carousel-item>
               </el-carousel>
             </div>
@@ -192,7 +192,7 @@
                   @click="getSongMessage(list)"
                 >
                   <span class="item-num">{{ index + 1 }}</span>
-                  <img class="item-img" :src="list.al.picUrl" alt="" />
+                  <img class="item-img" v-lazy="list.al.picUrl" alt="" />
 
                   <span class="item-songname">{{ list.al.name }} </span>
                   <span class="item-singername">{{ list.ar[0].name }}</span>

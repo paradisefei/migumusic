@@ -230,7 +230,7 @@ export default {
       const res = await reqSearchKeyWords(keywords);
       if (res.code === 200) {
         const songs = res.result.songs;
-        console.log(songs);
+
         const playList = [];
         songs.forEach(item => {
           playList.push({
@@ -243,7 +243,7 @@ export default {
             album: item.album.name
           });
         });
-        // console.log(playList);
+        console.log(playList);
         this.$store.commit("SEARCH_SONG", playList);
         this.$router.push({
           name: "play"
