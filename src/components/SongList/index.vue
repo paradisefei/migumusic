@@ -7,6 +7,7 @@
       style="width: 100%"
       fit
       @selection-change="handleSelectionChange"
+      @select-all="allSelect"
     >
       <el-table-column type="selection" width="50"> </el-table-column>
       <el-table-column width="50">
@@ -56,7 +57,7 @@
 
 <script>
 import "./iconfont/iconfont.css";
-import { mapActions } from "vuex";
+import { mapActions, mapState } from "vuex";
 export default {
   name: "SongList",
   data() {
@@ -65,6 +66,7 @@ export default {
       // showPlay: true,
       songListFinally: [],
       currentPage: 1,
+      songMsg: [],
     };
   },
   props: {
@@ -77,9 +79,11 @@ export default {
       this.songListFinally = newValue.slice(0, 10);
     },
   },
-  computed: {},
+  computed: {
+    ...mapState(["isPlayingList"]),
+  },
   methods: {
-    ...mapActions(["addOneSong", "getIsPlayingSong"]),
+    ...mapActions(["addOneSong", "getIsPlayingSong", "ADD_SONG", "PLAY_SONG"]),
     // 点击分页器页码
     handleCurrentChange(value) {
       /**
@@ -98,6 +102,7 @@ export default {
       this.addOneSong(scope.row);
       this.$router.push("/play");
     },
+
     // 播放按钮显示隐藏
     handleMouseEnter(row) {
       this.$set(row, "showPlay", true);
@@ -111,8 +116,22 @@ export default {
         this.$refs.multipleTable.clearSelection();
       }
     },
+    // 单选
     handleSelectionChange(val) {
       this.multipleSelection = val;
+      console.log("val", val);
+    
+      // this.songMsg = {
+      //   ...val[0],
+      // };
+      console.log("this.songMsg", this.songMsg);
+      // this.ADD_SONG(this.songMsg);
+      this.$store.commit("ADD_SONG", val);
+    },
+    // 全选
+    allSelect(value) {
+      console.log("value", value);
+      this.$store.commit("PLAY_SONG", value);
     },
   },
   mounted() {},

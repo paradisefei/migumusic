@@ -9,7 +9,7 @@
       <el-form-item label="歌单封面">
         <el-upload
           class="avatar-uploader"
-          action="https://jsonplaceholder.typicode.com/posts/"
+          action="http://81.69.57.198:3000/my/playlist"
           :show-file-list="false"
           :on-success="handleAvatarSuccess"
           :before-upload="beforeAvatarUpload"

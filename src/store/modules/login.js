@@ -25,7 +25,16 @@ export default {
 	mutations: {
 		// 登录
 		GET_LOGIN(state, res) {
-			window.localStorage.setItem('userMsg', res.cookie)
+			// console.log(res);
+			// 获取到用户的登录信息
+			let rest = res.cookie.split(";;");
+			let cookies = rest.filter((item) => {
+				return item.indexOf("MUSIC_U") === 0;
+			});
+			// let cookies = res.cookie;
+      // console.log(cookies);
+      // 把登录的信息保存在本地
+			window.localStorage.setItem("userMsg", cookies);
 			state.userMsg = res;
 			state.nickname = res.profile.nickname;
 			state.avatarUrl = res.profile.avatarUrl;

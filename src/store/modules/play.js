@@ -19,7 +19,7 @@ export default {
   getters: {},
   actions: {
     // 获取歌词
-    async getSongLyric({ commit }, id){
+    async getSongLyric({ commit }, id) {
       /**
        * 1.如果是纯音乐的话是没有歌词的
        */
@@ -52,7 +52,7 @@ export default {
   },
   mutations: {
     // 清空isPlayingList
-    CLEAR_IS_PLAYING_LIST(state){
+    CLEAR_IS_PLAYING_LIST(state) {
       state.isPlayingList = [];
     },
     // 修改index
@@ -68,7 +68,7 @@ export default {
       /**
        * 1.如果是纯音乐的话是没有歌词的
        */
-      if(res.nolyric){
+      if (res.nolyric) {
         /**
          * 1.没有歌词
          */
@@ -89,8 +89,8 @@ export default {
        *  2.修改播放列表中的播放行下标
        */
       state.isPlayingSong = data;
-      const res = state.isPlayingList.find((item, index) => { 
-        if(item.id === data.id){
+      const res = state.isPlayingList.find((item, index) => {
+        if (item.id === data.id) {
           state.checkedRowIndexVuex = index;
           console.log(state.checkedRowIndexVuex);
           return true;
@@ -113,6 +113,24 @@ export default {
       console.log("vuex", data);
       state.isPlayingList = [];
       state.isPlayingList = data;
-    }
-  }
+    },
+    // 榜单页面使用
+    ADD_SONG(state, data) {
+      // 正确操作：直接把操作的数组赋值给播放列表
+      state.isPlayingList = [];
+      state.isPlayingList = data;
+      // 错误操作:把传递的数组加入到数组中
+      // state.isPlayingList.push(data);
+      // console.log("res", res);
+    },
+    PLAY_SONG(state, data) {
+      state.isPlayingList = data;
+      // console.log("PLAY_SONG", data);
+
+      // playlist.forEach((item) => {
+      // 	state.isPlayingList.unshift(item);
+      // });
+    },
+  },
+  //
 };

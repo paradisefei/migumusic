@@ -50,11 +50,12 @@ export default {
     Create,
     PlayListDetail,
   },
-  mounted() {
+  async mounted() {
     /**
      * 1.挂载成功请求歌单数据
      */
-    this.getPlayListDetail(this.uid);
+    console.log(this.uid);
+    await this.getPlayListDetail(this.uid);
     this.$bus.$on("changeShowSongListName", this.changeShowSongListName);
   },
 };

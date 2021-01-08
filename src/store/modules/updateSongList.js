@@ -11,10 +11,10 @@ export default {
 	getters: {},
 	actions: {
 		// 更新歌曲名字
-		async getUpdateSongListName({ commit }, { id, name }) {
-			console.log(id, name);
-			const updateSongListName = await reqGetUpdateSongListName({ id, name });
-			console.log(updateSongListName);
+		async getUpdateSongListName({ commit }, { uid,id, name }) {
+			// console.log(id, name);
+			const updateSongListName = await reqGetUpdateSongListName({ uid,id, name });
+			// console.log(updateSongListName);
 			commit("GET_UPDATE_SONG_LIST_NAME", updateSongListName);
 		},
 	},
