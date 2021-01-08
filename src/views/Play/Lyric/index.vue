@@ -33,10 +33,7 @@
                 >
                   {{ item.content }}
                 </div>
-                <div
-                  v-show="!songLyricArray"
-                  style="color: white; font-size: 14px"
-                >
+                <div v-show="!songLyricArray" style="color: white; font-size: 14px">
                   暂无歌词
                 </div>
               </div>
@@ -50,61 +47,58 @@
 </template>
 
 <script>
-
 import BScroll from "better-scroll";
 export default {
   name: "Lyric",
   data() {
     return {
       scroll: null,
-      activeIndex: 0,
+      activeIndex: 0
     };
   },
   props: {
     songMsg: {
       type: Object,
-      default: function () {
+      default: function() {
         return {};
-      },
+      }
     },
     songLyric: {
-      type: String,
+      type: String
     },
     audioElement: {
-      type: Object,
-    },
+      type: Object
+    }
   },
   watch: {
     // 监视activeIndex的变化
     activeIndex: {
       immediate: true,
-      handler: function () {
-
+      handler: function() {
         if (!this.scroll) return;
         this.scroll.scrollTo(0, -27 * this.activeIndex + 54, 500);
         this.scroll.refresh();
-      },
+      }
     },
     songLyric: {
       immediate: true,
-      handler: function () {
+      handler: function() {
         /**
          * 1.拿到对象来绑定事件
          */
         this.init();
-      },
-    },
+      }
+    }
   },
   methods: {
     init() {
       if (!this.audioElement) return;
       if (!this.songLyricArray) return;
       // console.log(this.audioElement);
-      this.audioElement.$refs.audio.addEventListener("timeupdate", (e) => {
+      this.audioElement.$refs.audio.addEventListener("timeupdate", e => {
         let timeStamp = e.target.currentTime * 1000;
 
         this.activeIndex = this.songLyricArray.findIndex((item, index) => {
-
           return item.ms < timeStamp && this.songLyricArray[index + 1]
             ? this.songLyricArray[index + 1].ms > timeStamp
             : true;
@@ -116,11 +110,10 @@ export default {
       this.scroll = new BScroll(this.$refs.lyric);
       this.scroll.scrollTo(0, 54);
       this.scroll.refresh();
-    },
+    }
   },
   computed: {
     songLyricArray() {
-
       if (!this.songLyric) return;
       if (this.songLyric === "暂无歌词") {
         return "";
@@ -128,7 +121,7 @@ export default {
       let arrSplit = this.songLyric.split("\n");
       let timeReg = /^\[.*\]/;
       let arrLyric = [];
-      arrSplit.forEach((item) => {
+      arrSplit.forEach(item => {
         if (!item) return;
         let time = item.match(timeReg)[0].slice(1, -1);
         let minute = time.slice(0, 2);
@@ -137,23 +130,19 @@ export default {
 
         arrLyric.push({
           time,
-          ms:
-            parseInt(minute) * 60 * 1000 +
-            parseInt(second) * 1000 +
-            parseInt(ms) * 10,
-          content: item.substr(11),
+          ms: parseInt(minute) * 60 * 1000 + parseInt(second) * 1000 + parseInt(ms) * 10,
+          content: item.substr(11)
         });
       });
       return arrLyric;
-    },
+    }
   },
   mounted() {
-
     this.lyricScrollInit();
     this.init();
     // 离开时歌词置空
-    this.$store.commit("GET_SONG_LYRIC", {nolyric: true})
-  },
+    this.$store.commit("GET_SONG_LYRIC", { nolyric: true });
+  }
 };
 </script>
 
