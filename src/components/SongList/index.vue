@@ -117,21 +117,47 @@ export default {
       }
     },
     // 单选
-    handleSelectionChange(val) {
+    async handleSelectionChange(val) {
+      /**
+       * 1.把数组中的每一项添加到正在播放列表中
+       * 2.先把正在播放列表清空
+       * 3.把列表添加到正在播放列表中
+      //  */
+      // this.$store.commit("CLEAR_IS_PLAYING_LIST");
       this.multipleSelection = val;
-      console.log("val", val);
-    
+      console.log("val", val, val[val.length - 1]);
+      let newVal = val.map((item) => {
+        return {
+          ...item,
+          showPlay: true
+        }
+      })
+      this.$store.commit("ADD_SONG", newVal.slice(0, -1));
+      await this.getIsPlayingSong(newVal[newVal.length - 1]);
+      this.addOneSong(newVal[newVal.length - 1]);
+      // this.$store.commit("ADD_SONG");
       // this.songMsg = {
       //   ...val[0],
       // };
-      console.log("this.songMsg", this.songMsg);
+      // console.log("this.songMsg", this.songMsg);
       // this.ADD_SONG(this.songMsg);
-      this.$store.commit("ADD_SONG", val);
+      // this.$store.commit("ADD_SONG", val);
     },
     // 全选
-    allSelect(value) {
-      console.log("value", value);
-      this.$store.commit("PLAY_SONG", value);
+    async allSelect(value) {
+      /**
+       * 1.自动播放第一首歌
+       */
+      // console.log("value", value);
+      let newValue = value.map((item) => {
+        return {
+          ...item,
+          showPlay: true
+        }
+      })
+      this.$store.commit("ADD_SONG", newValue.slice(1));
+      await this.getIsPlayingSong(newValue[0]);
+      this.addOneSong(newValue[0]);
     },
   },
   mounted() {},

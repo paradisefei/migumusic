@@ -23,7 +23,8 @@ export default {
 					singer: artists[0].name,
 					song: name,
 					album: album.name,
-					time: duration
+					time: duration,
+					showPlay: false
 				}
 			});
 		},
