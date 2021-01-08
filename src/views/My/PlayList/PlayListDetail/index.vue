@@ -10,6 +10,10 @@
         <el-table-column label="歌单" width="180" height="120">
           <template v-slot="{ row }">
             <img :src="row.coverImgUrl" class="playListPic" />
+            <!-- <img
+              src="@static/images/home/ia_100000166.png"
+              class="playListPicHover"
+            /> -->
           </template>
         </el-table-column>
         <el-table-column prop="name" label="名称" width="500">
@@ -100,7 +104,7 @@ export default {
     }),
   },
   methods: {
-    ...mapActions(["getUpdateSongListName",'getPlayListDetail']),
+    ...mapActions(["getUpdateSongListName", "getPlayListDetail"]),
     //  将 `this.getUpdateSongListName()` 映射为 `this.$store.dispatch('getUpdateSongListName')`
     save() {
       // 点击保存跳转到我的歌单页面，并重新发送请求
@@ -182,6 +186,22 @@ export default {
 img.playListPic {
   width: 120px;
   height: 120px;
+}
+// 图片上的播放图标图片
+img.playListPicHover {
+  width: 50px;
+  height: 50px;
+
+  position: absolute;
+  left: 45px;
+  top: 45px;
+}
+/deep/.cell img.playListPicHover:hover {
+  transition: all 1.5s;
+}
+img.playListPicHover:hover {
+  cursor: pointer;
+  transform: scale(1.1);
 }
 // 两个操作按钮
 .el-button {

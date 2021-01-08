@@ -176,7 +176,11 @@
                 ref="remarkCarusel"
                 @change="rankChange"
               >
-                <el-carousel-item v-for="list in rankCourselList" :key="list.id" :name="list.title">
+                <el-carousel-item
+                  v-for="list in rankCourselList"
+                  :key="list.id"
+                  :name="list.title"
+                >
                   <img v-lazy="list.imgUrl" alt="" />
                 </el-carousel-item>
               </el-carousel>
@@ -323,7 +327,12 @@ export default {
       this.rankTitle = title;
       this.getHotList(topListId);
     },
-    ...mapActions(["getRecommendPlayList", "changeCheckedRowIndex", "getIsPlayingSong", "addOneSong"]),
+    ...mapActions([
+      "getRecommendPlayList",
+      "changeCheckedRowIndex",
+      "getIsPlayingSong",
+      "addOneSong",
+    ]),
     /* 新歌速递 */
     async getQuickPlayList(id) {
       const iDom = document.querySelector(".newsong-data-right");
@@ -549,6 +558,7 @@ a {
           position: absolute;
           width: 70px;
           height: 70px;
+          z-index: 9999;
           left: 33%;
           top: 50%-25px;
         }
@@ -568,6 +578,11 @@ a {
           margin: 0 auto;
           height: 190px;
           width: 190px;
+
+          transition: all 1.5s;
+          &:hover {
+            transform: scale(1.1);
+          }
         }
         .right-play-count {
           border-radius: 12px;
@@ -696,11 +711,13 @@ a {
           width: 80px;
           height: 80px;
           overflow: hidden;
+          border-radius: 10px;
           .data-right-item-img {
             cursor: pointer;
             border-radius: 10px;
             width: 80px;
             height: 80px;
+            transition: all 0.8s;
           }
         }
 
