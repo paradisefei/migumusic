@@ -42,18 +42,39 @@
             <el-table-column type="selection" width="50"> </el-table-column>
             <el-table-column type="index" width="50">
               <template slot-scope="scope">
+                <!-- 
+                  1.如果播放行的下标和当前的下标不相等时，就显示图标
+                  2.如果播放行的下标和当前行的下标相等，就显示播放图片
+                 -->
                 <span v-if="checkedRowIndexVuex != scope.$index">
+                  <!-- 
+                    showPlay为true时，显示数字
+                    showPlay为false时，显示图标
+                   -->
+                  <div class="iconfontAndNumber" 
+                    v-if="!scope.row.showPlay"
+                    @mouseleave="handleMouseLeave(scope.row)"
+                    @click="playAudio(scope.$index, scope.row)">
                   <a
                     class="iconfont icon-bofang"
-                    v-if="!scope.row.showPlay"
-                    @mouseleave="scope.row.showPlay = true"
-                    @click="playAudio(scope.$index, scope.row)"
                   ></a>
-                  <a v-else @mouseenter="scope.row.showPlay = false">{{
+                  </div>
+                  <!-- <a v-else @mouseenter="scope.row.showPlay = false">{{
                     scope.$index + 1
-                  }}</a>
+                  }}</a> -->
+                  <!-- 
+                    1.鼠标移入，直接就他妈的显示播放图片，把整个字体图标都隐藏了
+                      1.字体图标能被隐藏，那就说明了checkedRowIndexVuex有问题
+                   -->
+                  <div class="iconfontAndNumber" 
+                    v-else
+                    @mouseenter="handleMouseEnter(scope.row)">
+                  <a
+                    >{{ scope.$index + 1 }}</a
+                  >
+                  </div>
                 </span>
-                <img v-else src="./images/playing.gif" /> </template
+                <img v-else src="./images/playing.gif"/> </template
             ></el-table-column>
             <el-table-column label="歌曲">
               <template slot-scope="scope"
@@ -81,7 +102,11 @@
     ></MusicControl>
 
     <!-- 传入歌曲和歌词 -->
-    <Lyric :songMsg="isPlayingSong" :songLyric="songLyric" :audioElement="audioElement"></Lyric>
+    <Lyric
+      :songMsg="isPlayingSong"
+      :songLyric="songLyric"
+      :audioElement="audioElement"
+    ></Lyric>
     <div class="mask"></div>
   </div>
 </template>
@@ -127,6 +152,28 @@ export default {
       "changeCheckedRowIndex",
       "getSongLyric",
     ]),
+    // 鼠标移出播放图标
+    handleMouseLeave(row) {
+      /**
+       * 1.图标只加了移出事件，没有移入事件
+       */
+      console.log("鼠标移出播放图标", row.showPlay);
+      row.showPlay = true;
+    },
+    // 鼠标移入数字时
+    handleMouseEnter(row) {
+      /**
+       * 1.把歌曲暂停了之后，显示数字
+       *  1.把鼠标再次移入到数字身上时，为什么会播放
+       *    1.鼠标移入数字的时候是true，true的时候是显示数字
+       *    2.然后这里又立马把它变成了false，此时就显示图标了
+       *    3.按理说移出的时候是还是显示数字的，为啥会显示播放呢
+       * 2.鼠标移入数字的时候，图标是会先变成三角形图标的，然后再变成播放的图片
+       *  1.如果正常的移入数字，移出图标是没有问题的
+       */
+      console.log("鼠标移入数字时的paused", this.audioElement.$refs.audio.paused);
+      row.showPlay = false;
+    },
     togglePlayState(bool) {
       this.playState = bool;
     },
@@ -240,6 +287,16 @@ a {
   height: 630px;
 
   color: #070707;
+}
+// 给字体图标设置宽高
+div.iconfontAndNumber {
+  // color: white;
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
+  padding-top: 1px;
+  // background: green;
+  text-align: center;
 }
 // 底部边框
 /deep/.el-table td,

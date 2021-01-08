@@ -44,7 +44,7 @@
               <img src="../../assets/images/no-login.png" alt="" v-else />
             </a>
           </div>
-          <div class="loginPageCon">
+          <div class="loginPageCon" style="width: 150px">
             <!-- 登录和不登录显示的是两个弹窗 -->
             <!-- 未登录时的弹窗 -->
             <transition name="el-fade-in-linear">

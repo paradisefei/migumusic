@@ -9,7 +9,7 @@
         artist: songMsg ? songMsg.singer : 'world',
         src: songUrl
           ? songUrl
-          : 'http://m7.music.126.net/20210107094952/dae12f1b62673352b840e9846b8dfd07/ymusic/7245/c7bb/b078/81c1e81d3b5fed50ca6d51196fc59ad6.mp3',
+          : 'http://m8.music.126.net/20210109000935/c3037be807b4cedba12547fe195f8230/ymusic/560b/525b/065a/aa95d15723e10e652b6410ab1c473a09.mp3',
         pic: songMsg
           ? songMsg.pic
           : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSTRsSoJfs6bJ0Pu7YMHJzVVY-E93aHxuvwrg&usqp=CAU',
@@ -17,6 +17,11 @@
       @play="playMusic"
       @pause="pauseMusic"
     />
+    <!-- 
+      1.给audio元素绑定上这个play事件，这个事件是异步的，是在audio的pasued从true变为false时触发的
+        未播放状态和暂停状态的值都是true
+        是一个只读属性
+     -->
   </div>
 </template>
 
@@ -60,9 +65,10 @@ export default {
   watch: {
     songUrl: {
       immediate: true,
-      handler: function (newValue) {
+      handler: function (newValue, oldValue) {
         // 监视到播放地址变化时就自动播放歌曲
         console.log("新的地址", newValue);
+        console.log("旧的地址", oldValue);
       },
     },
     // 监视songMsg对象的变化
@@ -94,18 +100,31 @@ export default {
       /**
        * 1.暂停播放时，没有播放行，所以需要改变播放行的下标
        * 2.记住上一次的下标
+       * 3.因为监视到了地址的变化，所以就播放了
+       *  1.为什么地址会发生变化
        */
+      console.log("我是暂停", this.$refs.player.audio.paused);
       this.$emit("togglePlayState", false);
       this.lastCheckedRowIndex = this.checkedRowIndexVuex;
+      console.log("暂停之后保存上一次的下标", this.lastCheckedRowIndex);
       this.changeCheckedRowIndex(-1);
     },
     // 绑定的开始播放音乐的事件
     playMusic() {
+      console.log("我是播放", this.$refs.player.audio.paused);
       this.$emit("togglePlayState", true);
       if (this.checkedRowIndexVuex === -1) {
+        /**
+         * 1.播放的时候，如果下标是-2的话，就说明是点击了暂停的，那就拿上次播放的那首歌的下标去渲染
+         */
+        console.log("暂停了之后再播放，上一次的播放行的下标为", this.lastCheckedRowIndex);
         this.changeCheckedRowIndex(this.lastCheckedRowIndex);
       } 
-      if(this.checkedRowIndexVuex > -1) {
+      if(this.checkedRowIndexVuex !== -1) {
+        /**
+         * 1.播放的时候如果被选中行不是-1，就说明是点击了播放图标去播放的
+         */
+        console.log("点击了播放图标的播放");
         this.changeCheckedRowIndex(this.checkedRowIndexVuex);
       }
     },

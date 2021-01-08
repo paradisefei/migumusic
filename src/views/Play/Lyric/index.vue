@@ -76,7 +76,7 @@ export default {
       immediate: true,
       handler: function() {
         if (!this.scroll) return;
-        this.scroll.scrollTo(0, -27 * this.activeIndex + 54, 500);
+        this.scroll.scrollTo(0, -37 * this.activeIndex + 54, 500);
         this.scroll.refresh();
       }
     },
@@ -242,13 +242,13 @@ export default {
     .lyric-item-wrapper {
       .lyric-item {
         color: #999;
-        // height: 27px;
-        height: auto;
+        height: 27px;
+        // height: auto;
         transition: all 1s;
         cursor: pointer;
         padding-left: 1em;
-        margin: 10px 0;
-        white-space: wrap;
+        margin-top: 10px;
+        white-space: nowrap;
         &.active {
           color: white;
         }
