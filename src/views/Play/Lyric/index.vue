@@ -151,6 +151,8 @@ export default {
 
     this.lyricScrollInit();
     this.init();
+    // 离开时歌词置空
+    this.$store.commit("GET_SONG_LYRIC", {nolyric: true})
   },
 };
 </script>

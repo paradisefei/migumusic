@@ -68,7 +68,7 @@
       </div>
       <router-link to="/play">
         <div class="iconBox">
-          <span class="iconfont icon-bofang1 icon"></span>
+          <span class="iconfont icon-bofang icon"></span>
         </div>
       </router-link>
     </div>
