@@ -7,11 +7,11 @@
             <li class="active">首页</li>
           </router-link>
           <li>歌单</li>
-          <li>专辑</li> 
+          <li>专辑</li>
           <li>
             <router-link to="/migulist">榜单</router-link>
           </li>
-          <li>歌手</li>
+          <li><router-link to="/artlist">歌手</router-link></li>
           <li>彩铃</li>
         </ul>
       </div>
@@ -21,7 +21,7 @@
 
 <script>
 export default {
-  name: "NavBar",
+  name: "NavBar"
 };
 </script>
 

@@ -231,7 +231,7 @@ export default {
       console.log(res);
       if (res.code === 200) {
         const songs = res.result.songs;
-        console.log(songs);
+
         const playList = [];
         songs.forEach(item => {
           playList.push({
@@ -253,6 +253,7 @@ export default {
       // 改播放行的样式
       this.changeCheckedRowIndex(0);
         // console.log(playList);
+        console.log(playList);
         this.$store.commit("SEARCH_SONG", playList);
         this.$router.push({
           name: "play"

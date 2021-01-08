@@ -25,7 +25,7 @@
             v-show="song.isPlayShow"
           />
           <div class="inner-item-container">
-            <img :src="song.picUrl" alt="" />
+            <img v-lazy="song.picUrl" alt="" />
             <p class="album-name">{{ song.name }}</p>
             <p class="singer-name">{{ song.singer ? song.singer : "网易云咪咕" }}</p>
           </div>
