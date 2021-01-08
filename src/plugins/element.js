@@ -16,7 +16,8 @@ import {
   Row,
   Submenu,
   MenuItem,
-  Loading
+  Loading,
+  Notification
 } from "element-ui";
 
 Vue.use(Button);
@@ -38,3 +39,4 @@ Vue.use(MenuItem);
 Vue.use(Loading);
 
 Vue.prototype.$loading = Loading.service;
+Vue.prototype.$notify = Notification;

@@ -5,7 +5,7 @@
       <!-- <Carousel :carouselList="banners" /> -->
       <el-carousel :interval="4000" type="card" height="350px">
         <el-carousel-item v-for="item in banners" :key="item.id">
-          <img class="banner-item-img" v-lazy="item.imgUrl" alt="" />
+          <img class="banner-item-img" :src="item.imgUrl" alt="" />
         </el-carousel-item>
       </el-carousel>
     </div>
@@ -117,24 +117,15 @@
               <p class="data-right-item-content-name1">{{ list.name }}</p>
               <p class="data-right-item-content-name2">{{ list.ar[0].name }}</p>
             </div>
-            <span
-              class="data-right-item-time"
-              v-show="!list.isPlayButtonShow"
-              >{{ dayjs(list.dt).format("mm:ss") }}</span
-            >
+            <span class="data-right-item-time" v-show="!list.isPlayButtonShow">{{
+              dayjs(list.dt).format("mm:ss")
+            }}</span>
             <div class="data-right-item-show" v-show="list.isPlayButtonShow">
               <div class="data-right-item-show-img">
-                <img
-                  src="@static/images/home/ia_100000166.png"
-                  class=""
-                  alt=""
-                />
+                <img src="@static/images/home/ia_100000166.png" class="" alt="" />
               </div>
             </div>
-            <div
-              class="data-right-item-show-icon"
-              v-show="list.isPlayButtonShow"
-            >
+            <div class="data-right-item-show-icon" v-show="list.isPlayButtonShow">
               <i class="iconfont icon-aixin"></i>
               <i class="iconfont icon-zhuanfa"></i>
               <i class="iconfont icon-lingdang"></i>
@@ -213,10 +204,7 @@
       </div>
     </div>
     <!-- 推荐电台 -->
-    <SectionSong
-      :h2Title="h2Title[2]"
-      :songList="personalizedList"
-    ></SectionSong>
+    <SectionSong :h2Title="h2Title[2]" :songList="personalizedList"></SectionSong>
   </div>
 </template>
 <script>
@@ -228,7 +216,7 @@ import {
   reqGetAlbumList,
   reqPersonalized,
   reqGetHotTopSongs,
-  reqGetRankCoursel,
+  reqGetRankCoursel
 } from "@api/home";
 import { Loading } from "element-ui";
 import SectionSong from "@comps/SectionSong";
@@ -243,7 +231,7 @@ export default {
       tabChangeList: [
         { title: "华语", topId: 21845217, active: true },
         { title: "欧美", topId: 2023401535, active: false },
-        { title: "日语", topId: 60131, active: false },
+        { title: "日语", topId: 60131, active: false }
       ],
       fourForKingKong: [],
       playList: [],
@@ -256,15 +244,15 @@ export default {
       hotSongList: [],
       rankCourselList: [],
       rankTitle: "热歌榜",
-      songMessage: {},
+      songMessage: {}
 
       // isPlayButtonShow: false
     };
   },
   computed: {
     ...mapState({
-      recommendPlayList: (state) => state.home.recommendPlayList,
-    }),
+      recommendPlayList: state => state.home.recommendPlayList
+    })
   },
   methods: {
     /* 获取歌单 */
@@ -280,7 +268,7 @@ export default {
       const res = await reqGetQuickPlayList(id);
       const tracks = res.playlist.tracks;
       const songList = [];
-      tracks.forEach((item) => {
+      tracks.forEach(item => {
         songList.push({
           id: item.id,
           pic: item.al.picUrl,
@@ -288,7 +276,7 @@ export default {
           song: item.name,
           album: item.al.name,
           time: item.dt,
-          showPlay: true,
+          showPlay: true
         });
       });
 
@@ -299,12 +287,12 @@ export default {
       // 改播放行的样式
       this.changeCheckedRowIndex(0);
       this.$router.push({
-        name: "play",
+        name: "play"
       });
     },
     // tab切换
     tabChange(index) {
-      this.tabChangeList.map((item) => {
+      this.tabChangeList.map(item => {
         item.active = false;
       });
       this.tabChangeList[index].active = true;
@@ -323,13 +311,18 @@ export default {
       this.rankTitle = title;
       this.getHotList(topListId);
     },
-    ...mapActions(["getRecommendPlayList", "changeCheckedRowIndex", "getIsPlayingSong", "addOneSong"]),
+    ...mapActions([
+      "getRecommendPlayList",
+      "changeCheckedRowIndex",
+      "getIsPlayingSong",
+      "addOneSong"
+    ]),
     /* 新歌速递 */
     async getQuickPlayList(id) {
       const iDom = document.querySelector(".newsong-data-right");
       let loadingInstance = Loading.service({
         target: iDom,
-        background: "#f2f2f2",
+        background: "#f2f2f2"
       });
 
       const resPlayListChinese = await reqGetQuickPlayList(id);
@@ -355,7 +348,7 @@ export default {
         song: message.name,
         album: message.al.name,
         time: message.dt,
-        showPlay: true,
+        showPlay: true
       };
 
       await this.getIsPlayingSong(this.songMessage);
@@ -386,19 +379,19 @@ export default {
 
       let loadingInstance = Loading.service({
         target: iDom,
-        background: "#f2f2f2",
+        background: "#f2f2f2"
       });
 
       const resHotTopSongs = await reqGetHotTopSongs(id);
       // this.hotSongList = resHotTopSongs;
-      this.hotSongList = resHotTopSongs.playlist.tracks.splice(1, 20);
+      this.hotSongList = resHotTopSongs.playlist.tracks.splice(1, 14);
       // loadingInstance.close();
 
       // 以服务的方式调用的 Loading 需要异步关闭
       this.$nextTick(() => {
         loadingInstance.close();
       });
-    },
+    }
   },
   async mounted() {
     this.dayjs = dayjs;
@@ -414,33 +407,33 @@ export default {
     this.getQuickPlayList(this.tabChangeList[0].topId);
     /* 新歌歌单 */
     const resNewSong = await reqGetNewSong();
-    resNewSong.result.forEach((item) => {
+    resNewSong.result.forEach(item => {
       this.newSongList.push({
         id: item.id,
         name: item.name,
         picUrl: item.picUrl,
-        singer: item.song.artists[0].name,
+        singer: item.song.artists[0].name
       });
     });
     /* 专辑 */
     const resAlbumList = await reqGetAlbumList();
 
-    resAlbumList.albumProducts.forEach((item) => {
+    resAlbumList.albumProducts.forEach(item => {
       this.albumList.push({
         id: item.albumId,
         name: item.albumName,
         picUrl: item.coverUrl,
-        singer: item.artistName,
+        singer: item.artistName
       });
     });
     /* 电台 */
     const resPersonalized = await reqPersonalized();
-    resPersonalized.result.slice(0, 5).forEach((item) => {
+    resPersonalized.result.slice(0, 5).forEach(item => {
       this.personalizedList.push({
         id: item.id,
         name: item.name,
         picUrl: item.picUrl,
-        singer: item.program.channels[0],
+        singer: item.program.channels[0]
       });
     });
     /* 排行榜榜单 */
@@ -456,9 +449,9 @@ export default {
     }); */
   },
   components: {
-    SectionSong,
+    SectionSong
     // Carousel
-  },
+  }
 };
 </script>
 <style lang="less" scoped>

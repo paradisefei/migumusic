@@ -2,18 +2,18 @@
   <div class="my_center">
     <div class="top">
       <div class="avatar">
-        <img :src="avatarUrl" class="avatarImg" v-if="avatarUrl"/>
+        <img :src="avatarUrl" class="avatarImg" v-if="avatarUrl" />
         <img src="@assets/images/no-login.png" class="avatarImg" v-else />
         <!-- 等级 -->
-        <span class="level">LV5 咪咕新人</span>
+        <span class="level">LV9 咪咕尊享会员</span>
       </div>
       <span class="username">
-        {{nickname}}
+        {{ nickname }}
         <i class="iconfont icon-VIPICON"></i>
         <i class="iconfont icon-cailing"></i>
       </span>
       <span class="money"
-        >咪咕币：0
+        >咪咕币：67354611
         <a class="putMoney">充值</a>
       </span>
     </div>
@@ -50,35 +50,35 @@ export default {
       leftList: [
         {
           id: 1,
-          title: "最近在听",
+          title: "最近在听"
         },
         {
           id: 2,
-          title: "我喜欢的",
+          title: "我喜欢的"
         },
         {
           id: 3,
-          title: "我的歌单",
+          title: "我的歌单"
         },
         {
           id: 4,
-          title: "关注歌手",
+          title: "关注歌手"
         },
         {
           id: 5,
-          title: "数字专辑",
+          title: "数字专辑"
         },
         {
           id: 6,
-          title: "彩铃设置",
-        },
-      ],
+          title: "彩铃设置"
+        }
+      ]
     };
   },
   computed: {
     ...mapState({
       nickname: state => state.login.nickname,
-      avatarUrl: state => state.login.avatarUrl,
+      avatarUrl: state => state.login.avatarUrl
     })
   },
   methods: {
@@ -93,13 +93,13 @@ export default {
       if (id === 3) {
         this.$router.push("/my/playlist");
       }
-    },
+    }
   },
   components: {
     // Create,
   },
   mounted() {
-    window.onscroll = (e) => {
+    window.onscroll = e => {
       let scrollY = e.path[1].pageYOffset;
       if (scrollY < 420) {
         this.isAbsolute = true;
@@ -107,11 +107,15 @@ export default {
         this.isAbsolute = false;
       }
     };
-  },
+  }
 };
 </script>
 
 <style lang="less" scoped>
+.bottom .left li:hover {
+  transition: all 0.3s;
+  background: #e91e63;
+}
 // 上半部分
 .top {
   width: 100%;

@@ -24,6 +24,7 @@
             id=""
             placeholder="搜索歌曲、歌手、MV"
             v-model="keywords"
+            @keyup.enter="searchKeywords"
           />
           <span class="iconfont icon-search" @click="searchKeywords"></span>
         </div>
@@ -46,57 +47,61 @@
           <div class="loginPageCon">
             <!-- 登录和不登录显示的是两个弹窗 -->
             <!-- 未登录时的弹窗 -->
-            <div
-              class="loginPage"
-              v-show="showLogin"
-              @mouseenter="handleLoginShow"
-              @mouseleave="handleLoginDis"
-            >
-              <p>- 登录后可专享 -</p>
-              <div class="cards">
-                <div class="card1">
-                  <img src="../../assets/images/记录.png" alt="" />
-                  <p>试听记录同步</p>
+            <transition name="el-fade-in-linear">
+              <div
+                class="loginPage"
+                v-show="showLogin"
+                @mouseenter="handleLoginShow"
+                @mouseleave="handleLoginDis"
+              >
+                <p>- 登录后可专享 -</p>
+                <div class="cards">
+                  <div class="card1">
+                    <img src="../../assets/images/记录.png" alt="" />
+                    <p>试听记录同步</p>
+                  </div>
+                  <div class="card1">
+                    <img src="../../assets/images/铃铛.png" alt="" />
+                    <p>订购炫酷铃音</p>
+                  </div>
+                  <div class="card1">
+                    <img src="../../assets/images/无损音质.png" alt="" />
+                    <p>下载无损音乐</p>
+                  </div>
                 </div>
-                <div class="card1">
-                  <img src="../../assets/images/铃铛.png" alt="" />
-                  <p>订购炫酷铃音</p>
-                </div>
-                <div class="card1">
-                  <img src="../../assets/images/无损音质.png" alt="" />
-                  <p>下载无损音乐</p>
+                <div class="but">
+                  <button class="but1" @click="login">登录</button>
+                  <button class="but2">注册</button>
                 </div>
               </div>
-              <div class="but">
-                <button class="but1" @click="login">登录</button>
-                <button class="but2">注册</button>
-              </div>
-            </div>
+            </transition>
             <!-- 已登录时的弹窗 -->
-            <div
-              class="loginPage logoutPage"
-              v-show="showLogout"
-              @mouseenter="handleLoginShow"
-              @mouseleave="handleLoginDis"
-            >
-              <div class="message">
-                <img :src="avatarUrl" class="msgImg" />
-                <span class="msgName">
-                  {{ nickname }}
-                  <a class="iconfont icon-VIPICON"></a>
-                  <a class="iconfont icon-cailing"></a>
-                </span>
+            <transition name="el-fade-in-linear">
+              <div
+                class="loginPage logoutPage"
+                v-show="showLogout"
+                @mouseenter="handleLoginShow"
+                @mouseleave="handleLoginDis"
+              >
+                <div class="message">
+                  <img :src="avatarUrl" class="msgImg" />
+                  <span class="msgName">
+                    {{ nickname }}
+                    <a class="iconfont icon-VIPICON"></a>
+                    <a class="iconfont icon-cailing"></a>
+                  </span>
+                </div>
+                <div class="fourCube">
+                  <div><a class="iconfont icon-xihuan"></a>我喜欢的</div>
+                  <!-- <div><i class="iconfont icon-lingdang"></i>铃声设置</div> -->
+                  <div><a class="iconfont icon-zhuanji"></a>数字专辑</div>
+                  <div><a class="iconfont icon-yinle"></a>我的歌单</div>
+                </div>
+                <div class="but">
+                  <button class="but1" @click="logout">退出登录</button>
+                </div>
               </div>
-              <div class="fourCube">
-                <div><a class="iconfont icon-xihuan"></a>我喜欢的</div>
-                <!-- <div><i class="iconfont icon-lingdang"></i>铃声设置</div> -->
-                <div><a class="iconfont icon-zhuanji"></a>数字专辑</div>
-                <div><a class="iconfont icon-yinle"></a>我的歌单</div>
-              </div>
-              <div class="but">
-                <button class="but1" @click="logout">退出登录</button>
-              </div>
-            </div>
+            </transition>
           </div>
         </div>
       </div>
@@ -145,6 +150,7 @@
 </template>
 
 <script>
+import "element-ui/lib/theme-chalk/base.css";
 import { reqSearchKeyWords } from "@api/header";
 
 import { Message } from "element-ui";
@@ -170,7 +176,13 @@ export default {
     })
   },
   methods: {
-    ...mapActions(["getLogin", "getLogout", "changeCheckedRowIndex","getIsPlayingSong", "addOneSong"]),
+    ...mapActions([
+      "getLogin",
+      "getLogout",
+      "changeCheckedRowIndex",
+      "getIsPlayingSong",
+      "addOneSong"
+    ]),
     // 点击跳转到个人中心页面
     toMy() {
       // 未登录
@@ -228,7 +240,7 @@ export default {
       const { keywords } = this;
       if (!keywords) return;
       const res = await reqSearchKeyWords(keywords);
-      console.log(res);
+
       if (res.code === 200) {
         const songs = res.result.songs;
 
@@ -238,22 +250,21 @@ export default {
             id: item.id,
             song: item.name,
             /* 搜索返回只有默认图片  没有歌曲信息的图片*/
-            picUrl: item.artists[0].img1v1Url,
+            pic: item.artists[0].img1v1Url,
             singer: item.artists[0].name,
             time: item.duration,
             album: item.album.name,
-            showPlay: true,
+            showPlay: true
           });
         });
-      // 清空isPlayingList列表
-      this.$store.commit("CLEAR_IS_PLAYING_LIST");
-      // 播放列表中的第一首歌
-      await this.getIsPlayingSong(playList[0]);
-      this.addOneSong(playList[0]);
-      // 改播放行的样式
-      this.changeCheckedRowIndex(0);
-        // console.log(playList);
-        console.log(playList);
+        // 清空isPlayingList列表
+        this.$store.commit("CLEAR_IS_PLAYING_LIST");
+        // 播放列表中的第一首歌
+        await this.getIsPlayingSong(playList[0]);
+        this.addOneSong(playList[0]);
+        // 改播放行的样式
+        this.changeCheckedRowIndex(0);
+
         this.$store.commit("SEARCH_SONG", playList);
         this.$router.push({
           name: "play"
