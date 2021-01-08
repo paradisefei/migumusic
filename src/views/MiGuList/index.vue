@@ -103,47 +103,55 @@ export default {
   computed: {
     ...mapState({
       newSongList: (state) => state.migulist.newSongList,
+      // 把放歌曲的容器映射到计算属性中
+      // songListCon: (state) => state.play.songListCon,
     }),
   },
   methods: {
     ...mapActions(["getNewSongList"]),
     ...mapMutations(["ONE_SONG", "ALL_SONG"]),
     // 保存点击时获取的歌曲信息
-    song(e) {
-      // 当点击全选时，直接把所有数据传给播放函数
-      /* 
-        需要的数据格式：
-        id: message.id,
-        pic: message.al.picUrl,
-        singer: message.ar[0].name,
-        song: message.name,
-        album: message.al.name,
-        time: message.dt
-      */
-      console.log("e", e);
-      this.songMsg = {
-        id: e.id,
-        pic: e.pic,
-        singer: e.singer,
-        album: e.album,
-        time: e.time,
-      };
-    },
+
+    // song(e) {
+    //   // 当点击全选时，直接把所有数据传给播放函数
+    //   /* 
+    //     需要的数据格式：
+    //     id: message.id,
+    //     pic: message.al.picUrl,
+    //     singer: message.ar[0].name,
+    //     song: message.name,
+    //     album: message.al.name,
+    //     time: message.dt
+    //   */
+    //   console.log("e----", e);
+    //   this.songMsg = {
+    //     id: e[0].id,
+    //     pic: e.pic,
+    //     singer: e.singer,
+    //     album: e.album,
+    //     time: e.time,
+    //   };
+    //   // this.songListCon = this.songMsg;
+    //   console.log(this.songMsg);
+    //   let res = this.isPlayingList.push(this.songMsg);
+    //   console.log("res", res);
+    // },
     async getSongMsg() {
       /* 
-       要播放选中的歌曲，首先要知道选中的歌曲时那个，可以通过row可以知道哪个具体被选中了
-       点击前面的复选框时，可以获取到当前选中的所有的信息，
+       1.要播放选中的歌曲，首先要知道选中的歌曲时那个，可以通过row可以知道哪个具体被选中了
+       2.点击前面的复选框时，可以获取到当前选中的所有的信息，
+       3.选中时，需要把选择的歌曲传递到 isPlayingList 这个vuex中，
        选中时，把信息传递过来，就可以调用vuex中方法播放歌曲
       */
-      // this.newSongList 这个是所有的数据
-      // console.log(this.newSongList);
-
-      await this.$store.commit("ONE_SONG", this.songMsg);
+   
       this.$router.push("play");
     },
   },
   mounted() {
     this.getNewSongList();
+    // this.$nextTick(() => {
+    //   this.$bus.$on("song", this.song);
+    // });
   },
   components: {
     SongList,
